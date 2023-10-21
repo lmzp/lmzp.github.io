@@ -103,6 +103,70 @@
       </tags>
   </entry>
   <entry>
+    <title>怎么办</title>
+    <url>/2023/10/15/%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
+    <content><![CDATA[<p>​      今天已经是第15天，我又忍不住想要找你聊天，我心里好矛盾，明明那么想，又要强忍着不找你。心里好难受，我好想好想找你，好想站在你面前对你说，我爱你，我好喜欢你<span id="more"></span>，可我没有那个勇气，我特别怕你反感。</p>
+<p>​      这些天，我每天都会想到你，为此，我想让自己忙碌起来，终究无济于事，不知梦到多少次和你在一起，早上醒来，眼泪也只能在眼睛打转。可那天你的那些话真的好伤我心，如果我回头找你，我的爱是不是特别廉价…哎，矛盾，纠结真的好纠结。</p>
+<p>​      你会在意我吗？(｡•́__ก̀｡)</p>
+]]></content>
+      <categories>
+        <category>她</category>
+      </categories>
+      <tags>
+        <tag>love</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安装ROS</title>
+    <url>/2023/10/21/%E5%AE%89%E8%A3%85ROS/</url>
+    <content><![CDATA[<h3 id="1-设置sources-list"><a href="#1-设置sources-list" class="headerlink" title="1.设置sources.list"></a>1.设置sources.list</h3><p>设置电脑添加以安装来自packages.ros.org的软件。  以下按照网络环境二选一即可，鉴于国内网络环境😓，推荐第二个清华源。</p>
+<p>终端输入：</p>
+<p>官方源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;echo &quot;deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>清华源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;. /etc/lsb-release &amp;&amp; echo &quot;deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-设置密钥"><a href="#2-设置密钥" class="headerlink" title="2.设置密钥"></a>2.设置密钥</h3><p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-key adv --keyserver <span class="string">&#x27;hkp://keyserver.ubuntu.com:80&#x27;</span> --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</span><br></pre></td></tr></table></figure>
+
+<p>若无法连接到密钥服务器，建议更换网络重试。</p>
+<h3 id="3-开始安装"><a href="#3-开始安装" class="headerlink" title="3.开始安装"></a>3.开始安装</h3><p>终端输入：</p>
+<ul>
+<li>更新软件索引apt</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+
+<p>本次安装ROS版本代号为<noetic>,此版本为最后一版ros1,官方将持续维护更新止2025年。</p>
+<ul>
+<li>安装完整桌面版</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-desktop-full</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装其他软件包</li>
+</ul>
+<p>在ROS中还有更多可用的软件包。你可以直接安装一个特定的软件包。  </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-包名</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-设置环境"><a href="#3-设置环境" class="headerlink" title="3.设置环境"></a>3.设置环境</h3><p> 命令可以在每次启动新的shell窗口时很方便地为你自动source一下这个脚本：  </p>
+<p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source /opt/ros/noetic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+
+
+<p>安装已进入尾声，在终端输入<code>rosversion -d</code>，看到输出为<code>noetic</code>,则表示安装顺利成功。😄</p>
+<p>end~</p>
+]]></content>
+      <categories>
+        <category>ROS</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ros</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>STM32与NBIOT智慧农业</title>
     <url>/2023/07/21/STM32%E4%B8%8ENBIOT%E6%99%BA%E6%85%A7%E5%86%9C%E4%B8%9A/</url>
     <content><![CDATA[<h2 id="整体介绍"><a href="#整体介绍" class="headerlink" title="整体介绍"></a>整体介绍</h2><p> <strong>1. 主控</strong><br>&emsp;&emsp;采用搭载STM32L4R5ZI低功耗芯片的ST官方NUCLEO-L4R5ZI开发板，使用stm32cubeMX配置，HAL库开发。<br><img src="C:\Users\Pursue\Pictures\typecho\008BeftEly1hj3a2ybyvpj30i90hrgtl.jpg" alt="l4r5zi"></p>
@@ -201,70 +265,6 @@
       </tags>
   </entry>
   <entry>
-    <title>安装ROS</title>
-    <url>/2023/10/21/%E5%AE%89%E8%A3%85ROS/</url>
-    <content><![CDATA[<h3 id="1-设置sources-list"><a href="#1-设置sources-list" class="headerlink" title="1.设置sources.list"></a>1.设置sources.list</h3><p>设置电脑添加以安装来自packages.ros.org的软件。  以下按照网络环境二选一即可，鉴于国内网络环境😓，推荐第二个清华源。</p>
-<p>终端输入：</p>
-<p>官方源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;echo &quot;deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>清华源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;. /etc/lsb-release &amp;&amp; echo &quot;deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-设置密钥"><a href="#2-设置密钥" class="headerlink" title="2.设置密钥"></a>2.设置密钥</h3><p>终端输入：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-key adv --keyserver <span class="string">&#x27;hkp://keyserver.ubuntu.com:80&#x27;</span> --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</span><br></pre></td></tr></table></figure>
-
-<p>若无法连接到密钥服务器，建议更换网络重试。</p>
-<h3 id="3-开始安装"><a href="#3-开始安装" class="headerlink" title="3.开始安装"></a>3.开始安装</h3><p>终端输入：</p>
-<ul>
-<li>更新软件索引apt</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
-
-<p>本次安装ROS版本代号为<noetic>,此版本为最后一版ros1,官方将持续维护更新止2025年。</p>
-<ul>
-<li>安装完整桌面版</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-desktop-full</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>安装其他软件包</li>
-</ul>
-<p>在ROS中还有更多可用的软件包。你可以直接安装一个特定的软件包。  </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-包名</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-设置环境"><a href="#3-设置环境" class="headerlink" title="3.设置环境"></a>3.设置环境</h3><p> 命令可以在每次启动新的shell窗口时很方便地为你自动source一下这个脚本：  </p>
-<p>终端输入：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source /opt/ros/noetic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-
-
-
-<p>安装已进入尾声，在终端输入<code>rosversion -d</code>，看到输出为<code>noetic</code>,则表示安装顺利成功。😄</p>
-<p>end~</p>
-]]></content>
-      <categories>
-        <category>ROS</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>ros</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>怎么办</title>
-    <url>/2023/10/15/%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
-    <content><![CDATA[<p>​      今天已经是第15天，我又忍不住想要找你聊天，我心里好矛盾，明明那么想，又要强忍着不找你。心里好难受，我好想好想找你，好想站在你面前对你说，我爱你，我好喜欢你<span id="more"></span>，可我没有那个勇气，我特别怕你反感。</p>
-<p>​      这些天，我每天都会想到你，为此，我想让自己忙碌起来，终究无济于事，不知梦到多少次和你在一起，早上醒来，眼泪也只能在眼睛打转。可那天你的那些话真的好伤我心，如果我回头找你，我的爱是不是特别廉价…哎，矛盾，纠结真的好纠结。</p>
-<p>​      你会在意我吗？(｡•́__ก̀｡)</p>
-]]></content>
-      <categories>
-        <category>她</category>
-      </categories>
-      <tags>
-        <tag>love</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>思想</title>
     <url>/2021/09/01/%E6%80%9D%E6%83%B3/</url>
     <content><![CDATA[<blockquote>
@@ -308,6 +308,84 @@
       <tags>
         <tag>随记</tag>
         <tag>freedom</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>root</title>
+    <url>/2021/11/21/root/</url>
+    <content><![CDATA[<p><strong>Magisk</strong> : </p>
+<ul>
+<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
+<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
+
+<p>刷入boot</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
+<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Root</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>文艺</title>
+    <url>/2023/06/21/%E6%96%87%E8%89%BA/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>时间照例无情的向前走，光阴斑驳从树荫中更替，我在无人之地无声的死亡腐烂。为终将枯萎的花供养。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>Your time is limited, so don’t waste it living someone else’s life.</strong></em></p>
+</blockquote>
+<blockquote>
+<p style="text-align: right; font-style: italic; font-weight: bold;">Steve Jobs</p> 
+</blockquote>
+<blockquote>
+<p><em><strong>荒凉白日里，我被禁锢在陈朽的黑白梦境中，这里乌云蔽日，寸草不生，万物都荒芜。直到你从荒原中走过。你踏过之处，世界开始苏醒，我看见野花压满枝头沿途狂野生长，白雪滑落树梢寒梅怒放，我看见归鸟鸣蝉，烈日骄阳。我看见白日梦的尽头是你，从此天光大亮。你是我全部的渴望与幻想。</strong></em></p>
+</blockquote>
+<blockquote>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——《白日梦我》</p>
+</blockquote>
+<blockquote>
+<p><em><strong>岁月落下的苍白，落下的一份孤独，只能静坐在时光的角落，用文字去祭奠那些逝去的光阴，那千载难寻的梦境，早被傍晚的余辉扯成了彩色的幻觉，留在清静空灵世界上，寻一处灵魂的栖息地，诉说一段诗歌年华。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>如花似叶，岁岁年年，共占春风</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>飞光飞光，劝尔一杯酒，吾不识青天高，黄地厚，唯见月寒日暖，来煎人寿</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>孤独是一个人的狂欢，狂欢是一群人的孤独</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>也许我该追随黄昏而去，而不是期待明日的清晨</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>思念从不会如惊涛骇浪般汹涌而来，却也不妨碍它会像浪花一样从不间断一遍遍拍打着情绪</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>人活着就是有意义的，生而平凡，各有各路，我们总是把幸福定为终点，怎么说呢，当代人的欲望是无尽的，因为这样，我们很难满足，因为这样，幸福何谈？如果我们生下来时，物质就很困难，我们将很容易幸福，我穷其一生的敬，善，忠，义，使我这一遭没白走，希望以后也如此，我很渺小,你很平凡，愿芸芸众生，各有所安。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>你我目标本就不是罗马，何不期待今晚的风和月光。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>惟江上之清风，与山间之明月，耳得之而为声，目遇之而成色，取之无禁，用之不竭，是造物者之无尽藏也，而吾与子之所共适。</strong></em></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+      <tags>
+        <tag>文学</tag>
       </tags>
   </entry>
   <entry>
@@ -439,84 +517,6 @@
       </tags>
   </entry>
   <entry>
-    <title>root</title>
-    <url>/2021/11/21/root/</url>
-    <content><![CDATA[<p><strong>Magisk</strong> : </p>
-<ul>
-<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
-<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
-
-<p>刷入boot</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
-<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>Root</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>文艺</title>
-    <url>/2023/06/21/%E6%96%87%E8%89%BA/</url>
-    <content><![CDATA[<blockquote>
-<p><em><strong>时间照例无情的向前走，光阴斑驳从树荫中更替，我在无人之地无声的死亡腐烂。为终将枯萎的花供养。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>Your time is limited, so don’t waste it living someone else’s life.</strong></em></p>
-</blockquote>
-<blockquote>
-<p style="text-align: right; font-style: italic; font-weight: bold;">Steve Jobs</p> 
-</blockquote>
-<blockquote>
-<p><em><strong>荒凉白日里，我被禁锢在陈朽的黑白梦境中，这里乌云蔽日，寸草不生，万物都荒芜。直到你从荒原中走过。你踏过之处，世界开始苏醒，我看见野花压满枝头沿途狂野生长，白雪滑落树梢寒梅怒放，我看见归鸟鸣蝉，烈日骄阳。我看见白日梦的尽头是你，从此天光大亮。你是我全部的渴望与幻想。</strong></em></p>
-</blockquote>
-<blockquote>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——《白日梦我》</p>
-</blockquote>
-<blockquote>
-<p><em><strong>岁月落下的苍白，落下的一份孤独，只能静坐在时光的角落，用文字去祭奠那些逝去的光阴，那千载难寻的梦境，早被傍晚的余辉扯成了彩色的幻觉，留在清静空灵世界上，寻一处灵魂的栖息地，诉说一段诗歌年华。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>如花似叶，岁岁年年，共占春风</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>飞光飞光，劝尔一杯酒，吾不识青天高，黄地厚，唯见月寒日暖，来煎人寿</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>孤独是一个人的狂欢，狂欢是一群人的孤独</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>也许我该追随黄昏而去，而不是期待明日的清晨</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>思念从不会如惊涛骇浪般汹涌而来，却也不妨碍它会像浪花一样从不间断一遍遍拍打着情绪</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>人活着就是有意义的，生而平凡，各有各路，我们总是把幸福定为终点，怎么说呢，当代人的欲望是无尽的，因为这样，我们很难满足，因为这样，幸福何谈？如果我们生下来时，物质就很困难，我们将很容易幸福，我穷其一生的敬，善，忠，义，使我这一遭没白走，希望以后也如此，我很渺小,你很平凡，愿芸芸众生，各有所安。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>你我目标本就不是罗马，何不期待今晚的风和月光。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>惟江上之清风，与山间之明月，耳得之而为声，目遇之而成色，取之无禁，用之不竭，是造物者之无尽藏也，而吾与子之所共适。</strong></em></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>摘录</category>
-      </categories>
-      <tags>
-        <tag>文学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>短信轰炸</title>
     <url>/2022/09/21/%E7%9F%AD%E4%BF%A1%E8%BD%B0%E7%82%B8/</url>
     <content><![CDATA[<blockquote>
@@ -621,25 +621,6 @@
       </categories>
   </entry>
   <entry>
-    <title>诗歌</title>
-    <url>/2022/10/10/%E8%AF%97%E6%AD%8C/</url>
-    <content><![CDATA[<p><em><strong>二八佳人体似酥，腰间仗剑斩凡夫。虽然不见人头落，暗里教君骨髓枯。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——吕岩«警世»</p>
-
-
-<p><em><strong>看水看山独坐，听风听雨高眠。客去客来日日，花开花落年年。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——徐贲«写意»</p>
-
-]]></content>
-      <categories>
-        <category>摘录</category>
-      </categories>
-      <tags>
-        <tag>随记</tag>
-        <tag>诗歌</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>记录</title>
     <url>/2023/09/23/%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<p>​      喜欢一个人到底是喜欢什么呢？在遇到你之前，我主观地喜欢微胖、清纯、不化妆那种自然不需粉黛装饰的女生。但遇到你之后，与你接触了一段时间，你虽然瘦巧，也和其他爱美的女孩一样化妆，淡妆轻抹，既温柔又漂亮，我发现我原本的想法变得微不重要。我感觉可以包容并深深地喜欢你的一切，从你的每一个动作到每一个细节，只因为那个人是你，心之所向、爱之所往。</p>
@@ -660,6 +641,25 @@
       </categories>
       <tags>
         <tag>love</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>诗歌</title>
+    <url>/2022/10/10/%E8%AF%97%E6%AD%8C/</url>
+    <content><![CDATA[<p><em><strong>二八佳人体似酥，腰间仗剑斩凡夫。虽然不见人头落，暗里教君骨髓枯。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——吕岩«警世»</p>
+
+
+<p><em><strong>看水看山独坐，听风听雨高眠。客去客来日日，花开花落年年。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——徐贲«写意»</p>
+
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+      <tags>
+        <tag>随记</tag>
+        <tag>诗歌</tag>
       </tags>
   </entry>
 </search>
