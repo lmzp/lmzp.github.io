@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>思想</title>
+    <url>/2021/09/01/%E6%80%9D%E6%83%B3/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>有亡国，有亡天下。亡国与亡天下奚辨？曰：易姓改号，谓之亡国。仁义充塞，而至率兽食人，人将相食，谓之亡天下。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——《日知录·正始》</p>
+</blockquote>
+<blockquote>
+<p><em><strong>少年自有少年志，当论天下不平事，若至小人当道时，拔剑三尺敢换日</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>爱国很容易，只需要付出口水，爱别人太难，那是要付出行动的。</strong></em></p>
+</blockquote>
+<blockquote>
+<p>***愚昧才是一切的根源，愚昧是因为一直拒绝被启蒙，如果帝国主义的侵略想一把匕首，那么愚昧封建就是民族的毒药 ***</p>
+</blockquote>
+<blockquote>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——胡适</p> 
+</blockquote>
+<blockquote>
+<p><em><strong>今日若我冷眼旁观，他日祸临己身，则无人为我摇旗呐喊</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>战争结束后，政治家握手言和，资本家赚的盆满钵满，只有母亲含泪埋葬自己的孩子</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>迟来的阳光救不了枯萎的向日葵</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>如果孩子的出生是为了继承自己的劳碌，恐慌，贫困，那么，不生也是善良</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>世界上最无耻、最阴险、最歹毒的赞美，就是用穷人的艰辛和苦难，当做励志故事愚弄底层人。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>想要毁掉一个民族，抽调男人身上的脊梁和血气，拿掉女人身上的善良和廉耻</strong></em></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+      <tags>
+        <tag>随记</tag>
+        <tag>freedom</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>STM32与NBIOT智慧农业</title>
+    <url>/2023/07/21/STM32%E4%B8%8ENBIOT%E6%99%BA%E6%85%A7%E5%86%9C%E4%B8%9A/</url>
+    <content><![CDATA[<h2 id="整体介绍"><a href="#整体介绍" class="headerlink" title="整体介绍"></a>整体介绍</h2><p> <strong>1. 主控</strong><br>&emsp;&emsp;采用搭载STM32L4R5ZI低功耗芯片的ST官方NUCLEO-L4R5ZI开发板，使用stm32cubeMX配置，HAL库开发。<br><img src="/"><br> <strong>2. 传感器部分</strong><br>&emsp;&emsp;使用DHT11采集环境温湿度，BH1750采集光照强度，采用电容式土壤湿度传感器，JW01 CO2,HCHO,TVOC三合一传感器。<br> <strong>3. 按键开关</strong><br>&emsp;&emsp;使用了一个RGB灯来代表植物生长灯，设有红、蓝、绿、白四种颜色；配备6个按键，分别控制RGB灯、板载LED2、4路继电器。<br> <strong>4. NB-IOT</strong><br>&emsp;&emsp;采用安信可EC-01F-kit开发板，通过串口与单片机通讯。<br>![EC-01F](<a href="http://www.kryzin.eu.org/usr/uploads/2023/07/2417855181.png">http://www.kryzin.eu.org/usr/uploads/2023/07/2417855181.png</a> &#x3D;100X100)<br> <strong>5. 阿里云物联网平台</strong><br>&emsp;&emsp;将采集到的数据通过NB-IOT模组通过MQTT协议发送到阿里云物联网平台，并利用IOT-Studio简单绘制用户端页面。</p>
+<p><img src="http://www.kryzin.eu.org/usr/uploads/2023/07/4190382302.jpg" alt="IMG_20230717_132547.jpg"></p>
+<p><img src="http://www.kryzin.eu.org/usr/uploads/2023/07/1481654368.jpg" alt="微信图片_20230718214643.jpg"></p>
+<hr>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p> <strong>1. 时钟，定时器配置</strong><br>&emsp;&emsp;首先配置RCC,SYS。其次配置定时器TIM1实现微秒级延时，用来读取DHT11温湿度数据，具体可以参考DHT11数据手册。<br><img src="http://www.kryzin.eu.org/usr/uploads/2023/07/3325008565.png" alt="微信图片_20230725091515.png"></p>
+<p> <strong>2. 引脚配置</strong></p>
+<table>
+<thead>
+<tr>
+<th>GPIO</th>
+<th>引脚</th>
+<th>对应功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>推挽输出</td>
+<td>PB7,PF15</td>
+<td>主灯和DHT11温湿度传感器</td>
+</tr>
+<tr>
+<td>LPUART</td>
+<td>PG7(TX),PG8(RX)</td>
+<td>与上位机通信串口，通过板载usb连接</td>
+</tr>
+<tr>
+<td>USART2</td>
+<td>PD5(TX),PD6(RX)</td>
+<td>JW01二氧化碳传感器</td>
+</tr>
+<tr>
+<td>I2C1</td>
+<td>PB8(SCL),PB9(SDA)</td>
+<td>BH1750光照强度传感器</td>
+</tr>
+<tr>
+<td>TIM2</td>
+<td>PA0,PA1,PA2</td>
+<td>RGB植物生长灯</td>
+</tr>
+<tr>
+<td>推挽输出</td>
+<td>PG10,PG11,PG13,PG15</td>
+<td>四路继电器开关</td>
+</tr>
+<tr>
+<td>上拉输入(EXTI)</td>
+<td>PA4,PB0,PC1,PD3,PD12,PG2</td>
+<td>按键中断，分别控制主灯,RGB,四个继电器</td>
+</tr>
+<tr>
+<td>ADC1_IN1</td>
+<td>PC0</td>
+<td>土壤湿度传感器</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>继电器可连接水泵，风扇等，实现控制开关。</p>
+</blockquote>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><ol>
+<li>DHT11温湿度传感器<br>DHT11.C</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &quot;dht11.h&quot;</span><br><span class="line"></span><br><span class="line">extern TIM_HandleTypeDef htim1;</span><br><span class="line"></span><br><span class="line">static void DATA_OUTPUT(u8 flg);//DATA输出</span><br><span class="line">static u8 DATA_INPUT(void);//DATA输入</span><br><span class="line">static u8 DH11_Read_Byte(void);//DH11读信号</span><br><span class="line"></span><br><span class="line">u8 DH11_Read(void);//读取DH11温度和湿度</span><br><span class="line"></span><br><span class="line">static void Test(void);//测试程序</span><br><span class="line"></span><br><span class="line">DH11_DATA DH11_data;</span><br><span class="line"></span><br><span class="line">void Delay_us(uint16_t us)</span><br><span class="line">&#123;     //微秒延时</span><br><span class="line">	uint16_t differ = 0xffff-us-5;				</span><br><span class="line">	__HAL_TIM_SET_COUNTER(&amp;htim1,differ);	//设定TIM1计数器起始值</span><br><span class="line">	HAL_TIM_Base_Start(&amp;htim1);		//启动定时器	</span><br><span class="line">	</span><br><span class="line">	while(differ &lt; 0xffff-5)&#123;	//判断</span><br><span class="line">		differ = __HAL_TIM_GET_COUNTER(&amp;htim1);		//查询计数器的计数值</span><br><span class="line">	&#125;</span><br><span class="line">	HAL_TIM_Base_Stop(&amp;htim1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">void DATA_OUTPUT(u8 flg)</span><br><span class="line">&#123;</span><br><span class="line">  	GPIO_InitTypeDef GPIO_InitStruct = &#123;0&#125;;</span><br><span class="line">	</span><br><span class="line">	GPIO_InitStruct.Pin = DATA_Pin;</span><br><span class="line">	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;</span><br><span class="line">	GPIO_InitStruct.Pull = GPIO_NOPULL;</span><br><span class="line">	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;</span><br><span class="line">	HAL_GPIO_Init(DATA_GPIO_Port, &amp;GPIO_InitStruct);</span><br><span class="line"></span><br><span class="line">	if(flg==0)</span><br><span class="line">	&#123;</span><br><span class="line">		DATA_RESET();</span><br><span class="line">	&#125;</span><br><span class="line">	else</span><br><span class="line">	&#123;</span><br><span class="line">		DATA_SET();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">u8 DATA_INPUT(void)</span><br><span class="line">&#123;</span><br><span class="line">  	GPIO_InitTypeDef GPIO_InitStruct = &#123;0&#125;;</span><br><span class="line">	u8 flg=0;</span><br><span class="line">	</span><br><span class="line">	GPIO_InitStruct.Pin = DATA_Pin;</span><br><span class="line">  	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;</span><br><span class="line">  	GPIO_InitStruct.Pull = GPIO_PULLUP;</span><br><span class="line">  	HAL_GPIO_Init(DATA_GPIO_Port, &amp;GPIO_InitStruct);</span><br><span class="line"></span><br><span class="line">	if(DATA_READ()==GPIO_PIN_RESET)</span><br><span class="line">	&#123;</span><br><span class="line">		flg=0;</span><br><span class="line">	&#125;</span><br><span class="line">	else </span><br><span class="line">	&#123;</span><br><span class="line">		flg=1;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return flg;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">u8 DH11_Read_Byte(void)</span><br><span class="line">&#123;</span><br><span class="line">    u8 ReadDat=0;</span><br><span class="line">    u8 temp=0;</span><br><span class="line">    u8 retry=0;</span><br><span class="line">    u8 i=0;</span><br><span class="line">    </span><br><span class="line">    for(i=0;i&lt;8;i++)</span><br><span class="line">    &#123;</span><br><span class="line">      while(DATA_READ()==0&amp;&amp;retry&lt;100)//等待直到DHT11输出高电平</span><br><span class="line">      &#123;</span><br><span class="line">        Delay_us(1);</span><br><span class="line">        retry++;</span><br><span class="line">      &#125;</span><br><span class="line">      retry=0;</span><br><span class="line">      Delay_us(40);</span><br><span class="line">      if(DATA_READ()==1)</span><br><span class="line">      &#123;</span><br><span class="line">        temp=1;</span><br><span class="line">      &#125;</span><br><span class="line">      else</span><br><span class="line">      &#123;</span><br><span class="line">        temp=0;</span><br><span class="line">      &#125;</span><br><span class="line">      while(DATA_READ()==1&amp;&amp;retry&lt;100)//等待直到DHT11输出低电平，表示退出。本轮1bit信号接收完毕。</span><br><span class="line">      &#123;</span><br><span class="line">        Delay_us(1);</span><br><span class="line">        retry++;</span><br><span class="line">      &#125;</span><br><span class="line">      retry=0;</span><br><span class="line">      ReadDat&lt;&lt;=1;</span><br><span class="line">      ReadDat|=temp;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return ReadDat;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">u8 DH11_Read(void)</span><br><span class="line">&#123;</span><br><span class="line">  u8 retry=0;</span><br><span class="line">  u8 i=0;</span><br><span class="line">  </span><br><span class="line">  DATA_OUTPUT(0);//设置为输出模式MCU向DH11发送信号</span><br><span class="line">  HAL_Delay(18);</span><br><span class="line">  DATA_SET();</span><br><span class="line">  Delay_us(20);</span><br><span class="line">  </span><br><span class="line">  DATA_INPUT();//设置为输入模式DH11向MCU发送信号</span><br><span class="line">  Delay_us(20);</span><br><span class="line">  if(DATA_READ()==0)</span><br><span class="line">  &#123;</span><br><span class="line">    while(DATA_READ()==0&amp;&amp;retry&lt;100)</span><br><span class="line">    &#123;</span><br><span class="line">      Delay_us(1);</span><br><span class="line">      retry=0;</span><br><span class="line">    &#125;</span><br><span class="line">    retry=0;</span><br><span class="line">    while(DATA_READ()==1&amp;&amp;retry&lt;100)</span><br><span class="line">    &#123;</span><br><span class="line">      Delay_us(1);</span><br><span class="line">      retry++;</span><br><span class="line">    &#125;</span><br><span class="line">    retry=0;</span><br><span class="line">    </span><br><span class="line">    for(i=0;i&lt;5;i++)//Data[0]湿度， Data[2]温度。Data[1]和Data[3]分别为0和2的小数位。Data[4]用于校验。</span><br><span class="line">    &#123;</span><br><span class="line">      DH11_data.Data[i]=DH11_Read_Byte();</span><br><span class="line">    &#125;</span><br><span class="line">    Delay_us(50);</span><br><span class="line">  &#125;</span><br><span class="line">  u32 sum=DH11_data.Data[0]+DH11_data.Data[1]+DH11_data.Data[2]+DH11_data.Data[3];//校验</span><br><span class="line">  if((sum)==DH11_data.Data[4])</span><br><span class="line">  &#123;</span><br><span class="line">    DH11_data.humidity=DH11_data.Data[0];//获取湿度</span><br><span class="line">    DH11_data.temp=DH11_data.Data[2];//获取温度</span><br><span class="line">    return 1;    </span><br><span class="line">  &#125;</span><br><span class="line">  else</span><br><span class="line">  &#123;</span><br><span class="line">    return 0;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Test(void)</span><br><span class="line">&#123;</span><br><span class="line">  if(DH11_Read())</span><br><span class="line">  &#123;</span><br><span class="line">    DH11_data.index++;</span><br><span class="line">    if(DH11_data.index&gt;=128)</span><br><span class="line">    &#123;</span><br><span class="line">      DH11_data.index=0;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">void DH11_Task(void)</span><br><span class="line">&#123;</span><br><span class="line">     Test();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>DHT11.H</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#ifndef _DH11_H_</span><br><span class="line">#define _DH11_H_</span><br><span class="line"></span><br><span class="line">#include&quot;main.h&quot;</span><br><span class="line"></span><br><span class="line">#define u8 unsigned char </span><br><span class="line">#define u16 unsigned short</span><br><span class="line">#define u32 unsigned int</span><br><span class="line"></span><br><span class="line">//DATA IO的定义</span><br><span class="line">#define DATA_SET() HAL_GPIO_WritePin(DATA_GPIO_Port, DATA_Pin, GPIO_PIN_SET)</span><br><span class="line">#define DATA_RESET() HAL_GPIO_WritePin(DATA_GPIO_Port, DATA_Pin, GPIO_PIN_RESET)</span><br><span class="line"></span><br><span class="line">#define DATA_READ() HAL_GPIO_ReadPin(DATA_GPIO_Port,DATA_Pin)</span><br><span class="line"></span><br><span class="line">typedef struct</span><br><span class="line">&#123;</span><br><span class="line">  u8 Data[5];//数据存放数组</span><br><span class="line">  u8 index;</span><br><span class="line">  u8 temp;//温度</span><br><span class="line">  u8 humidity;//湿度</span><br><span class="line">  </span><br><span class="line">&#125;DH11_DATA;</span><br><span class="line"></span><br><span class="line">extern DH11_DATA DH11_data;//DH11属性封装</span><br><span class="line"></span><br><span class="line">void DH11_Task(void);//后台轮询调用</span><br><span class="line"></span><br><span class="line">#define DATA_Pin GPIO_PIN_15</span><br><span class="line">#define DATA_GPIO_Port GPIOF</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<p>实现</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">  HAL_TIM_Base_Start(&amp;htim1);</span><br><span class="line">  while(1)</span><br><span class="line">  &#123;</span><br><span class="line">    DH11_Task();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>BH1750光照强度传感器<br>BH1750.C</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &quot;bh1750.h&quot;</span><br><span class="line">#include &quot;i2c.h&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/*i2c句柄*/</span><br><span class="line">#define bh1750_i2c hi2c1</span><br><span class="line"></span><br><span class="line">/*内部函数声明区*/</span><br><span class="line">static uint8_t	BH1750_Send_Cmd(BH1750_MODE cmd);</span><br><span class="line">static uint8_t BH1750_Read_Dat(uint8_t* dat);</span><br><span class="line">static uint16_t BH1750_Dat_To_Lux(uint8_t* dat);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @brief	向BH1750发送一条指令</span><br><span class="line"> * @param	cmd —— BH1750工作模式指令（在BH1750_MODE中枚举定义）</span><br><span class="line"> * @retval	成功返回HAL_OK</span><br><span class="line">*/</span><br><span class="line">static uint8_t	BH1750_Send_Cmd(BH1750_MODE cmd)</span><br><span class="line">&#123;</span><br><span class="line">	return HAL_I2C_Master_Transmit(&amp;bh1750_i2c, BH1750_ADDR_WRITE, (uint8_t*)&amp;cmd, 1, 0xFFFF);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @brief	从BH1750接收一次光强数据</span><br><span class="line"> * @param	dat —— 存储光照强度的地址（两个字节数组）</span><br><span class="line"> * @retval	成功 —— 返回HAL_OK</span><br><span class="line">*/</span><br><span class="line">static uint8_t BH1750_Read_Dat(uint8_t* dat)</span><br><span class="line">&#123;</span><br><span class="line">	return HAL_I2C_Master_Receive(&amp;bh1750_i2c, BH1750_ADDR_READ, dat, 2, 0XFFFF);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @brief	将BH1750的两个字节数据转换为光照强度值（0-65535）</span><br><span class="line"> * @param	dat  —— 存储光照强度的地址（两个字节数组）</span><br><span class="line"> * @retval	成功 —— 返回光照强度值</span><br><span class="line">*/</span><br><span class="line">static uint16_t BH1750_Dat_To_Lux(uint8_t* dat)</span><br><span class="line">&#123;</span><br><span class="line">	uint16_t lux = 0;</span><br><span class="line">	lux = dat[0];</span><br><span class="line">	lux &lt;&lt;= 8;</span><br><span class="line">	lux |= dat[1];</span><br><span class="line">	lux = (int)(lux / 1.2);</span><br><span class="line">	</span><br><span class="line">	return lux;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @brief	返回光照强度值</span><br><span class="line"> * @param	无</span><br><span class="line"> * @retval	成功 —— 返回光照强度值</span><br><span class="line">*/</span><br><span class="line">uint16_t Get_BH1750_Value(void)</span><br><span class="line">&#123;</span><br><span class="line">	uint8_t dat[2] = &#123;0&#125;;		//dat[0]是高字节，dat[1]是低字节</span><br><span class="line">	uint16_t lux;</span><br><span class="line"></span><br><span class="line">	if(HAL_OK != BH1750_Send_Cmd(ONCE_H_MODE))</span><br><span class="line">	&#123;</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">	HAL_Delay(120);</span><br><span class="line">	if(HAL_OK != BH1750_Read_Dat(dat))</span><br><span class="line">	&#123;</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	lux = BH1750_Dat_To_Lux(dat);</span><br><span class="line">	return lux;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>BH1750.H</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#ifndef __BH1750_H_</span><br><span class="line">#define __BH1750_H_</span><br><span class="line"></span><br><span class="line">#include &quot;stdint.h&quot;</span><br><span class="line"></span><br><span class="line">/*外部函数区*/</span><br><span class="line">/*通过指针获取光照强度值*/</span><br><span class="line">uint16_t Get_BH1750_Value(void);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/*	//用法</span><br><span class="line"></span><br><span class="line">	uint16_t bh1750_lux;</span><br><span class="line">	bh1750_lux = Get_BH1750_Value();</span><br><span class="line">	printf(&quot;current: %5d lux\r\n&quot;, bh1750_lux);</span><br><span class="line"></span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/*bh1750地址*/</span><br><span class="line">#define	BH1750_ADDR_WRITE	0x46	//01000110</span><br><span class="line">#define	BH1750_ADDR_READ	0x47	//01000111</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">typedef enum</span><br><span class="line">&#123;</span><br><span class="line">	POWER_OFF_CMD	=	0x00,	//断电：无激活状态</span><br><span class="line">	POWER_ON_CMD	=	0x01,	//通电：等待测量指令</span><br><span class="line">	RESET_REGISTER	=	0x07,	//重置数字寄存器（在断电状态下不起作用）</span><br><span class="line">	CONT_H_MODE		=	0x10,	//连续H分辨率模式：在11x分辨率下开始测量，测量时间120ms</span><br><span class="line">	CONT_H_MODE2	=	0x11,	//连续H分辨率模式2：在0.51x分辨率下开始测量，测量时间120ms</span><br><span class="line">	CONT_L_MODE		=	0x13,	//连续L分辨率模式：在411分辨率下开始测量，测量时间16ms</span><br><span class="line">	ONCE_H_MODE		=	0x20,	//一次高分辨率模式：在11x分辨率下开始测量，测量时间120ms，测量后自动设置为断电模式</span><br><span class="line">	ONCE_H_MODE2	=	0x21,	//一次高分辨率模式2：在0.51x分辨率下开始测量，测量时间120ms，测量后自动设置为断电模式</span><br><span class="line">	ONCE_L_MODE		=	0x23	//一次低分辨率模式：在411x分辨率下开始测量，测量时间16ms，测量后自动设置为断电模式</span><br><span class="line">&#125; BH1750_MODE;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#endif /*__BH1750_H_*/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>实现</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int lux;</span><br><span class="line">lux = Get_BH1750_Value();</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>JW01二氧化碳传感器<br>采用串口中断与DMA接收数据。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//串口中断回调函数</span><br><span class="line">void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)</span><br><span class="line">&#123;</span><br><span class="line">	uint8_t sum = 0;</span><br><span class="line">  if(huart -&gt; Instance == USART3)</span><br><span class="line">	&#123;</span><br><span class="line">		if(rx_buf[0] == 44)&#123;</span><br><span class="line">			</span><br><span class="line">			tvoc = (rx_buf[2]*256+rx_buf[3]) * 0.001;</span><br><span class="line">			ch2o = (rx_buf[4]*256+rx_buf[5]) * 0.001;</span><br><span class="line">			co2  = (rx_buf[6]*256+rx_buf[7]);</span><br><span class="line">			</span><br><span class="line">			HAL_UART_Receive_DMA((UART_HandleTypeDef *)&amp;huart3, (uint8_t *)rx_buf, 9);</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			HAL_UART_DMAStop((UART_HandleTypeDef *)&amp;huart3);</span><br><span class="line">			HAL_Delay(10);</span><br><span class="line">			HAL_UART_Receive_DMA((UART_HandleTypeDef *)&amp;huart3, (uint8_t *)rx_buf, 9);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>单片机</category>
+      </categories>
+      <tags>
+        <tag>stm32</tag>
+        <tag>嵌入式</tag>
+        <tag>物联网</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记录</title>
+    <url>/2023/10/15/%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
+    <content><![CDATA[<p>​      今天已经是第15天，我又忍不住想要找你聊天，我心里好矛盾，明明那么想，又要强忍着不找你。心里好难受，我好想好想找你，好想站在你面前对你说，我爱你，我好喜欢你<span id="more"></span>，可我没有那个勇气，我特别怕你反感。</p>
+<p>​      这些天，我每天都会想到你，为此，我想让自己忙碌起来，终究无济于事，不知梦到多少次和你在一起，早上醒来，眼泪也只能在眼睛打转。可那天你的那些话真的好伤我心，如果我回头找你，我的爱是不是特别廉价…哎，矛盾，纠结真的好纠结。</p>
+<p>​      你会在意我吗？(｡•́__ก̀｡)</p>
+]]></content>
+      <categories>
+        <category>她</category>
+      </categories>
+      <tags>
+        <tag>love</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人权</title>
+    <url>/2022/12/10/%E4%BA%BA%E6%9D%83/</url>
+    <content><![CDATA[<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">hello world!</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="何为人权？"><a href="#何为人权？" class="headerlink" title="何为人权？"></a>何为人权？</h2><blockquote>
+<p>人权是所有人与生俱有的权利，它不分种族、性别、国籍、族裔、语言、宗教或任何其他身份地位。人权包括生命和自由的权利、不受奴役和酷刑的权利、意见和言论自由的权利、获得工作和教育的权利以及其他更多权利。人人有权不受歧视地享受这些权利。</p>
+</blockquote>
+<h2 id="人权包括什么？"><a href="#人权包括什么？" class="headerlink" title="人权包括什么？"></a>人权包括什么？</h2><h3 id="通常包括以下方面的权利"><a href="#通常包括以下方面的权利" class="headerlink" title="通常包括以下方面的权利"></a>通常包括以下方面的权利</h3><p>   <strong>1. 生存权：</strong>个人有权享有生命，不受他人随意剥夺生命的权力。</p>
+<p>   <strong>2. 自由权：</strong>包括人身自由、迁徙自由、言论自由、信仰自由等各种自由权。个人有追求个人发展的自由。</p>
+<p>   <strong>3. 平等权：</strong>不因人种、肤色、性别、语言、宗教等不同而受到歧视。法律面前人人平等。</p>
+<p>   <strong>4. 政治权利：</strong>有选举权和被选举权，可以通过选举民主形式参与政治。</p>
+<p>   <strong>5. 思想信仰自由：</strong>个人有独立思考和表达想法的权利，有信仰和不信仰宗教的自由。</p>
+<p>   <strong>6. 结社自由：</strong>个人有自由地和平集会以及加入或离开团体的自由。</p>
+<p>   <strong>7. 经济权利：</strong>包括工作权、集体谈判权、受教育权、参与文化生活权等。</p>
+<p>   <strong>8. 社会权利：</strong>包括免于恐惧和匮乏的生活权，以及享受社会保障和医疗的权利。</p>
+<p>   <strong>9. 司法权利：</strong>受到公正审判的权利，以及被认为无罪直到被证明有罪的权利。</p>
+<p>   <strong>10. 发展权：</strong>个人应享有持续进步和发展的权利，以提高物质生活和精神生活的水平。</p>
+<h2 id="宣扬人权的意义"><a href="#宣扬人权的意义" class="headerlink" title="宣扬人权的意义"></a>宣扬人权的意义</h2><p><strong>简单来说，就是要让更多人明白“人权”是什么，弘扬人权理念，提高全社会的人权意识。让更多人了解什么是人权，人人都应享有的权利。人权实施需要广大民众的参与，同时督促政府履行保护和实现人权的义务，消除歧视、打击侵犯人权行为。更促进社会公正、自由和谐，造就一个崇尚人权、自由平等的文明社会。这是人类持续进步的目标。</strong></p>
+<span id="more"></span>
+
+
+<p>##<center>世界人权宣言</center>##<br>###序言###</p>
+<p>　　鉴于对人类家庭所有成员的固有尊严及其平等的和不移的权利的承认，乃是世界自由、正义与和平的基础，</p>
+<p>　　鉴于对人权的无视和侮蔑已发展为野蛮暴行，这些暴行玷污了人类的良心，而一个人人享有言论和信仰自由并免予恐惧和匮乏的世界的来临，已被宣布为普通人民的最高愿望，</p>
+<p>　　鉴于为使人类不致迫不得已铤而走险对暴政和压迫进行反叛，有必要使人权受法治的保护，</p>
+<p>　　鉴于有必要促进各国间友好关系的发展，</p>
+<p>　　鉴于各联合国国家的人民已在联合国宪章中重申他们对基本人权、人格尊严和价值以及男女平等权利的信念，并决心促成较大自由中的社会进步和生活水平的改善，</p>
+<p>　　鉴于各会员国业已誓愿同联合国合作以促进对人权和基本自由的普遍尊重和遵行，</p>
+<p>　　鉴于对这些权利和自由的普遍了解对于这个誓愿的充分实现具有很大的重要性，</p>
+<p>　　因此现在，</p>
+<p>　　大会，</p>
+<p>　　发布这一世界人权宣言，作为所有人民和所有国家努力实现的共同标准，以期每一个人和社会机构经常铭念本宣言，努力通过教诲和教育促进对权利和自由的尊重，并通过国家的和国际的渐进措施，使这些权利和自由在各会员国本身人民及在其管辖下领土的人民中得到普遍和有效的承认和遵行；</p>
+<h3 id="第一条"><a href="#第一条" class="headerlink" title="第一条"></a>第一条</h3><blockquote>
+<p>人人生而自由，在尊严和权利上一律平等。他们赋有理性和良心，并应以兄弟关系的精神相对待。</p>
+</blockquote>
+<h3 id="第二条"><a href="#第二条" class="headerlink" title="第二条"></a>第二条</h3><blockquote>
+<p>人人有资格享有本宣言所载的一切权利和自由，不分种族、肤色、性别、语言、宗教、政治或其他见解、国籍或社会出身、财产、出生或其他身分等任何区别。 并且不得因一人所属的国家或领土的政治的、行政的或者国际的地位之不同而有所区别，无论该领土是独立领土、托管领土、非自治领土或者处于其他任何主权受限制的情况之下。</p>
+</blockquote>
+<h3 id="第三条"><a href="#第三条" class="headerlink" title="第三条"></a>第三条</h3><blockquote>
+<p>人人有权享有生命、自由和人身安全。</p>
+</blockquote>
+<h3 id="第四条"><a href="#第四条" class="headerlink" title="第四条"></a>第四条</h3><blockquote>
+<p>任何人不得使为奴隶或奴役；一切形式的奴隶制度和奴隶买卖，均应予以禁止。</p>
+</blockquote>
+<h3 id="第五条"><a href="#第五条" class="headerlink" title="第五条"></a>第五条</h3><blockquote>
+<p>任何人不得加以酷刑，或施以残忍的、不人道的或侮辱性的待遇或刑罚。</p>
+</blockquote>
+<h3 id="第六条"><a href="#第六条" class="headerlink" title="第六条"></a>第六条</h3><blockquote>
+<p>人人在任何地方有权被承认在法律前的人格。</p>
+</blockquote>
+<h3 id="第七条"><a href="#第七条" class="headerlink" title="第七条"></a>第七条</h3><blockquote>
+<p>法律之前人人平等，并有权享受法律的平等保护，不受任何歧视。人人有权享受平等保护，以免受违反本宣言的任何歧视行为以及煽动这种歧视的任何行为之害。</p>
+</blockquote>
+<h3 id="第八条"><a href="#第八条" class="headerlink" title="第八条"></a>第八条</h3><blockquote>
+<p>任何人当宪法或法律所赋予他的基本权利遭受侵害时，有权由合格的国家法庭对这种侵害行为作有效的补救。</p>
+</blockquote>
+<h3 id="第九条"><a href="#第九条" class="headerlink" title="第九条"></a>第九条</h3><blockquote>
+<p>任何人不得加以任意逮捕、拘禁或放逐。</p>
+</blockquote>
+<h3 id="第十条"><a href="#第十条" class="headerlink" title="第十条"></a>第十条</h3><blockquote>
+<p>人人完全平等地有权由一个独立而无偏倚的法庭进行公正的和公开的审讯，以确定他的权利和义务并判定对他提出的任何刑事指控。</p>
+</blockquote>
+<h3 id="第十一条"><a href="#第十一条" class="headerlink" title="第十一条"></a>第十一条</h3><blockquote>
+<p>㈠ 凡受刑事控告者，在未经获得辩护上所需的一切保证的公开审判而依法证实有罪以前，有权被视为无罪。<br>㈡ 任何人的任何行为或不行为，在其发生时依国家法或国际法均不构成刑事罪者，不得被判为犯有刑事罪。刑罚不得重于犯罪时适用的法律规定。</p>
+</blockquote>
+<h3 id="第十二条"><a href="#第十二条" class="headerlink" title="第十二条"></a>第十二条</h3><blockquote>
+<p>任何人的私生活、家庭、住宅和通信不得任意干涉，他的荣誉和名誉不得加以攻击。人人有权享受法律保护，以免受这种干涉或攻击。</p>
+</blockquote>
+<p>###第十三条###</p>
+<blockquote>
+<p>㈠ 人人在各国境内有权自由迁徙和居住。<br>㈡ 人人有权离开任何国家，包括其本国在内，并有权返回他的国家。<br>###第十四条###</p>
+</blockquote>
+<blockquote>
+<p>㈠ 人人有权在其他国家寻求和享受庇护以避免迫害。<br>㈡ 在真正由于非政治性的罪行或违背联合国的宗旨和原则的行为而被起诉的情况下，不得援用此种权利。<br>###第十五条###</p>
+</blockquote>
+<blockquote>
+<p>㈠ 人人有权享有国籍。<br>㈡ 任何人的国籍不得任意剥夺，亦不得否认其改变国籍的权利。<br>###第十六条###</p>
+</blockquote>
+<blockquote>
+<p>㈠ 成年男女，不受种族、国籍或宗教的任何限制有权婚嫁和成立家庭。他们在婚姻方面，在结婚期间和在解除婚约时，应有平等的权利。<br>㈡ 只有经男女双方的自由和完全的同意，才能缔婚。<br>㈢ 家庭是天然的和基本的社会单元，并应受社会和国家的保护。<br>###第十七条###</p>
+</blockquote>
+<blockquote>
+<p>㈠ 人人得有单独的财产所有权以及同他人合有的所有权。<br>㈡ 任何人的财产不得任意剥夺。<br>###第十八条###<br>人人有思想、良心和宗教自由的权利；此项权利包括改变他的宗教或信仰的自由，以及单独或集体、公开或秘密地以教义、实践、礼拜和戒律表示他的宗教或信仰的自由。<br>###第十九条###</p>
+</blockquote>
+<blockquote>
+<p>人人有权享有主张和发表意见的自由；此项权利包括持有主张而不受干涉的自由，和通过任何媒介和不论国界寻求、接受和传递消息和思想的自由。<br>###第二十条###</p>
+</blockquote>
+<blockquote>
+<p>㈠ 人人有权享有和平集会和结社的自由。<br>㈡ 任何人不得迫使隶属于某一团体。<br>###第二十一条###</p>
+</blockquote>
+<blockquote>
+<p>㈠ 人人有直接或通过自由选择的代表参与治理本国的权利。<br>㈡ 人人有平等机会参加本国公务的权利。<br>㈢ 人民的意志是政府权力的基础；这一意志应以定期的和真正的选举予以表现，而选举应依据普遍和平等的投票权，并以不记名投票或相当的自由投票程序进行。<br>###第二十二条###</p>
+</blockquote>
+<blockquote>
+<p>每个人，作为社会的一员，有权享受社会保障，并有权享受他的个人尊严和人格的自由发展所必需的经济、社会和文化方面各种权利的实现，这种实现是通过国家努力和国际合作并依照各国的组织和资源情况。<br>###第二十三条###</p>
+</blockquote>
+<blockquote>
+<p>㈠ 人人有权工作、自由选择职业、享受公正和合适的工作条件并享受免于失业的保障。<br>㈡ 人人有同工同酬的权利，不受任何歧视。<br>㈢ 每一个工作的人，有权享受公正和合适的报酬，保证使他本人和家属有一个符合人的尊严的生活条件，必要时并辅以其他方式的社会保障。<br>㈣ 人人有为维护其利益而组织和参加工会的权利。<br>###第二十四条###</p>
+</blockquote>
+<blockquote>
+<p>人人有享有休息和闲暇的权利，包括工作时间有合理限制和定期给薪休假的权利。<br>###第二十五条###</p>
+</blockquote>
+<blockquote>
+<p>㈠ 人人有权享受为维持他本人和家属的健康和福利所需的生活水准，包括食物、衣着、住房、医疗和必要的社会服务；在遭到失业、疾病、残废、守寡、衰老或在其他不能控制的情况下丧失谋生能力时，有权享受保障。<br>㈡ 母亲和儿童有权享受特别照顾和协助。一切儿童，无论婚生或非婚生，都应享受同样的社会保护。<br>###第二十六条###</p>
+</blockquote>
+<blockquote>
+<p>㈠ 人人都有受教育的权利，教育应当免费，至少在初级和基本阶段应如此。初级教育应属义务性质。技术和职业教育应普遍设立。高等教育应根据成绩而对一切人平等开放。<br>㈡ 教育的目的在于充分发展人的个性并加强对人权和基本自由的尊重。教育应促进各国、各种族或各宗教集团间的了解、容忍和友谊，并应促进联合国维护和平的各项活动。<br>㈢ 父母对其子女所应受的教育的种类，有优先选择的权利。<br>###第二十七条###</p>
+</blockquote>
+<blockquote>
+<p>㈠ 人人有权自由参加社会的文化生活，享受艺术，并分享科学进步及其产生的福利。<br>㈡ 人人对由于他所创作的任何科学、文学或美术作品而产生的精神的和物质的利益，有享受保护的权利。<br>###第二十八条###</p>
+</blockquote>
+<blockquote>
+<p>人人有权要求一种社会的和国际的秩序，在这种秩序中，本宣言所载的权利和自由能获得充分实现。<br>###第二十九条###</p>
+</blockquote>
+<blockquote>
+<p>㈠ 人人对社会负有义务，因为只有在社会中他的个性才可能得到自由和充分的发展。<br>㈡ 人人在行使他的权利和自由时，只受法律所确定的限制，确定此种限制的唯一目的在于保证对旁人的权利和自由给予应有的承认和尊重，并在一个民主的社会中适应道德、公共秩序和普遍福利的正当需要。<br>㈢ 这些权利和自由的行使，无论在任何情形下均不得违背联合国的宗旨和原则。<br>###第三十条###<br>本宣言的任何条文，不得解释为默许任何国家、集团或个人有权进行任何旨在破坏本宣言所载的任何权利和自由的活动或行为。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>随想</category>
+      </categories>
+      <tags>
+        <tag>随记</tag>
+        <tag>freedom</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>文艺</title>
+    <url>/2023/06/21/%E6%96%87%E8%89%BA/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>时间照例无情的向前走，光阴斑驳从树荫中更替，我在无人之地无声的死亡腐烂。为终将枯萎的花供养。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>Your time is limited, so don’t waste it living someone else’s life.</strong></em></p>
+</blockquote>
+<blockquote>
+<p style="text-align: right; font-style: italic; font-weight: bold;">Steve Jobs</p> 
+</blockquote>
+<blockquote>
+<p><em><strong>荒凉白日里，我被禁锢在陈朽的黑白梦境中，这里乌云蔽日，寸草不生，万物都荒芜。直到你从荒原中走过。你踏过之处，世界开始苏醒，我看见野花压满枝头沿途狂野生长，白雪滑落树梢寒梅怒放，我看见归鸟鸣蝉，烈日骄阳。我看见白日梦的尽头是你，从此天光大亮。你是我全部的渴望与幻想。</strong></em></p>
+</blockquote>
+<blockquote>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——《白日梦我》</p>
+</blockquote>
+<blockquote>
+<p><em><strong>岁月落下的苍白，落下的一份孤独，只能静坐在时光的角落，用文字去祭奠那些逝去的光阴，那千载难寻的梦境，早被傍晚的余辉扯成了彩色的幻觉，留在清静空灵世界上，寻一处灵魂的栖息地，诉说一段诗歌年华。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>如花似叶，岁岁年年，共占春风</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>飞光飞光，劝尔一杯酒，吾不识青天高，黄地厚，唯见月寒日暖，来煎人寿</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>孤独是一个人的狂欢，狂欢是一群人的孤独</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>也许我该追随黄昏而去，而不是期待明日的清晨</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>思念从不会如惊涛骇浪般汹涌而来，却也不妨碍它会像浪花一样从不间断一遍遍拍打着情绪</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>人活着就是有意义的，生而平凡，各有各路，我们总是把幸福定为终点，怎么说呢，当代人的欲望是无尽的，因为这样，我们很难满足，因为这样，幸福何谈？如果我们生下来时，物质就很困难，我们将很容易幸福，我穷其一生的敬，善，忠，义，使我这一遭没白走，希望以后也如此，我很渺小,你很平凡，愿芸芸众生，各有所安。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>你我目标本就不是罗马，何不期待今晚的风和月光。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>惟江上之清风，与山间之明月，耳得之而为声，目遇之而成色，取之无禁，用之不竭，是造物者之无尽藏也，而吾与子之所共适。</strong></em></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+      <tags>
+        <tag>文学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浪漫</title>
+    <url>/2022/04/13/%E6%B5%AA%E6%BC%AB/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>爱自己才是终身浪漫的开始。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>我天天打扰你，总是给你发消息，找你聊天，不是因为我无聊，而是我在乎你，我天天问你在做什么，也不是我闲的慌，而是我惦记你，我对你好呢，也不是我亏欠你什么，而是你在我心里占据了很重要的位置，现在想想可能是我太主动了，让我觉得我的感情很廉价，但是你不知道，其实我不是一个主动的人，我也不是对谁都这样，只是因为那个人是你。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>我愿在泥潭里摸爬滚打，也要把我爱的人高高举起。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>遇见你，我的心上开出漫山遍野的花。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>真正的爱一定不是瞬间的感动，而必然是一种恒久的委身，彼此牺牲，彼此成就，彼此追逐。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>两个人吵架，先低头的那个人不一定是错的，但是一定是最在乎的。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>爱一个人就像在海滩上捡贝壳，不要捡最大的，也不要捡最漂亮的，就捡你最喜欢的那一个，捡到了就永远不要再去海滩。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>如果喜欢有理由，那么这个喜欢就是不纯正的。假如说我喜欢你的长发，哪天你剪了短发，我就不喜欢你了？不，不是这样的，我喜欢你就是喜欢你，没有什么为什么。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>海鸟跟鱼相爱，云与海浪交怀。你我明明未隔空与海，何故将欢喜紧揣，慌于表白。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>有意义的人等再久都不算久，爱只会在没见面的日子里更加浓烈。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>值不值得有意义吗 做我所想 爱我所爱 何必顾及流言蜚语。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>浪漫的不一定是夏天，而是有你的夏天。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>可是我几乎不主动聊天，不主动约人。能让我主动的人，真的是我打心眼里喜欢到不行的人。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>她最大的吸引力，就是你的想像力吧。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>拖着疲惫不堪的身体回到租房，妻子低声数落着柴米油盐贵，不知何时能剩下钱买房，顽皮的孩子看着电视剧，被你责备撵去写功课，年迈的父母体力不及当年，在乡下守着二亩地望子成龙，可你知道，你只是芸芸众生中的一个普通人，此时你骤然想起小时的理想：不是房子、车子，是成为一个科学家、是一个宇航员…你拿起筷子，夹起菜，不出所料，妻子做的菜盐又放多了，嘴里咸，心中咸，可是你吐不出来，因为你知道来之不易，不能浪费，这咸了的菜如你的人生一样：咸苦，你皱着眉头咬着牙咽了下去，而后摸了摸孩子的头，把不多的肉夹给他，让他刻苦学习，你的余生如接棒一般传给了孩子，希望他不被经济压迫生活，可以肆意的追寻梦想，不用品尝那咸苦的菜。</strong></em></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>root</title>
+    <url>/2021/11/21/root/</url>
+    <content><![CDATA[<p><strong>Magisk</strong> : </p>
+<ul>
+<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
+<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
+
+<p>刷入boot</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
+<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Root</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安装ROS</title>
+    <url>/2023/10/21/%E5%AE%89%E8%A3%85ROS/</url>
+    <content><![CDATA[<h3 id="1-设置sources-list"><a href="#1-设置sources-list" class="headerlink" title="1.设置sources.list"></a>1.设置sources.list</h3><p>设置电脑添加以安装来自packages.ros.org的软件。  以下按照网络环境二选一即可，鉴于国内网络环境😓，推荐第二个清华源。</p>
+<p>终端输入：</p>
+<p>官方源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;echo &quot;deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>清华源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;. /etc/lsb-release &amp;&amp; echo &quot;deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-设置密钥"><a href="#2-设置密钥" class="headerlink" title="2.设置密钥"></a>2.设置密钥</h3><p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-key adv --keyserver <span class="string">&#x27;hkp://keyserver.ubuntu.com:80&#x27;</span> --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</span><br></pre></td></tr></table></figure>
+
+<p>若无法连接到密钥服务器，建议更换网络重试。</p>
+<h3 id="3-开始安装"><a href="#3-开始安装" class="headerlink" title="3.开始安装"></a>3.开始安装</h3><p>终端输入：</p>
+<ul>
+<li>更新软件索引apt</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+
+<p>本次安装ROS版本代号为<noetic>,此版本为最后一版ros1,官方将持续维护更新止2025年。</p>
+<ul>
+<li>安装完整桌面版</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-desktop-full</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装其他软件包</li>
+</ul>
+<p>在ROS中还有更多可用的软件包。你可以直接安装一个特定的软件包。  </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-包名</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-设置环境"><a href="#3-设置环境" class="headerlink" title="3.设置环境"></a>3.设置环境</h3><p> 命令可以在每次启动新的shell窗口时很方便地为你自动source一下这个脚本：  </p>
+<p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source /opt/ros/noetic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+
+
+<p>安装已进入尾声，在终端输入<code>rosversion -d</code>，看到输出为<code>noetic</code>,则表示安装顺利成功。😄</p>
+<p>end~</p>
+]]></content>
+      <categories>
+        <category>ROS</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ros</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>诗歌</title>
+    <url>/2022/10/10/%E8%AF%97%E6%AD%8C/</url>
+    <content><![CDATA[<p><em><strong>二八佳人体似酥，腰间仗剑斩凡夫。虽然不见人头落，暗里教君骨髓枯。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——吕岩«警世»</p>
+
+
+<p><em><strong>看水看山独坐，听风听雨高眠。客去客来日日，花开花落年年。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——徐贲«写意»</p>
+
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+      <tags>
+        <tag>随记</tag>
+        <tag>诗歌</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记录</title>
+    <url>/2023/09/23/%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p>​      喜欢一个人到底是喜欢什么呢？在遇到你之前，我主观地喜欢微胖、清纯、不化妆那种自然不需粉黛装饰的女生。但遇到你之后，与你接触了一段时间，你虽然瘦巧，也和其他爱美的女孩一样化妆，淡妆轻抹，既温柔又漂亮，我发现我原本的想法变得微不重要。我感觉可以包容并深深地喜欢你的一切，从你的每一个动作到每一个细节，只因为那个人是你，心之所向、爱之所往。</p>
+<span id="more"></span>
+
+<p>​      第一次见到你是在社团招新的那个晚上，我的心怦然而动。这到底是一见钟情还是见色起意呢？微风轻拂你的发丝，你的模样深深地印在我的脑海里，令我难以忘怀。那个晚上，我止不住地思念你，心里充满了期待。我在想，我是否会有更多的机会接触你，或者是否还要像以前一样胆小地只能默默地关注你？</p>
+<p>​      后来，社团活动的机会终于让我加上了你的QQ，偶然的机会也让我添加了你的微信，我开始变得大胆一些，小心翼翼地尝试与你聊天。有些时候，在我发完消息后，你会隔很长时间才回复，等待你的回复期间，我总是会胡思乱想，烦躁不安，因为你占据了我的思绪。</p>
+<p>​      你的生日刚好是在假期，为了庆祝你的生日，我经过朋友的指导，精心准备了一份生日礼物，并拉着你散了个步。从那一刻起，我下定决心一定要和你在一起，meet you,miss(想念) you and i can’t miss(错过) you。</p>
+<p>​      在我胃不舒服的时候，是你给我了药，让我有了一些好转。特别喜欢你坐在我身边，分享你的故事，在你说话的时候，我静静地看着你，如沐春风，默默地享受着倾听你的声音和故事。</p>
+<p>​      后来啊，我也尝试邀请你散步，你也欣然同意了。我忽然有了猜想，是否你也对我抱有一些兴趣。但我错了，那一天，你坦诚地告诉我，你不想谈恋爱，对我也没有特殊感觉。说实话，或许我的期望太高，那天回去我真的感到沮丧，但我仍然不想轻易放弃。我是一个内向的男生，我也从未谈过恋爱，心中想要表达的情感常常藏在内心，难以开口表达。因此，每一条消息我发给你，都希望能得到回应。我开始每天分享我的生活，渴望和你有更多话题可以聊。</p>
+<p>​      在你发烧的那几天，我知道你很不舒服，我渴望能陪在你身边。那天，偶然的机会让我陪你去输液，那位医生阿姨非常好，输完液，她将你的手交给我，让我帮你按着，我的心跳加速，我小心翼翼地轻轻按住，虽然没有完全握住你的手，但那一刻我感到非常幸福。</p>
+<p>​      有一天，那天也临近期末了，我的室友跟我提议不要只是简单地聊天，而是邀请你一起看电影，一起吃饭。最初，我觉得时机或许尚早，而且我们的关系似乎未有太多深入。然而，在某天上课时，他用我的手机邀请你看电影。我万没想到你会答应，我心中涌上了一股喜悦，但高兴地似乎有些过早。也许你只是出于不想让我伤心才同意的。等到期末考试后，再邀请你时，你一直未回应，我感到很伤心，中午也没吃什么东西，脑海充满疑虑，我躺在床上，眼泪如泉涌而出。直到你晚上最后回复我说你和朋友去看电影刚回来，我才领悟我真的好傻。</p>
+<p>​      当晚，我前去找你，你说我有些越界了，我也认为确实如此。我本来打算告诉你我想要放弃，因为我感觉看不到终点，没有好的结果。但是，在那个美好而宁静的夜晚，坐在湖边的椅子上，我们聊着天，湖面映照着月亮的倩影，我抛开了那念头，而是询问你对我有何感觉。当我听到你说仍没有恋爱的想法时，我明白了，没关系，慢慢来。</p>
+<p>​      爱情是一段充满深度和情感的旅程，需要耐心和真诚。随着我们相处的时间增加，我逐渐认识到，我不应该急于奔向爱情的终点，爱情是需要时间来培养的！</p>
+]]></content>
+      <categories>
+        <category>她</category>
+      </categories>
+      <tags>
+        <tag>love</tag>
+      </tags>
+  </entry>
+</search>
