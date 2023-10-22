@@ -1,250 +1,179 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang=zh>
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
-  <link rel="mask-icon" href="/favicon.png" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"lmzp.kryzin.eu.org","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
-
-  <meta name="description" content="本文对ROS架构的三个层级分别进行了说明，还介绍了常用的包管理指令，收集了几个学习ROS的网站。">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="本文对ROS架构的三个层级分别进行了说明，还介绍了常用的包管理指令，收集了几个学习ROS的网站。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ROS架构">
 <meta property="og:url" content="http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/index.html">
 <meta property="og:site_name" content="Pursue">
 <meta property="og:description" content="本文对ROS架构的三个层级分别进行了说明，还介绍了常用的包管理指令，收集了几个学习ROS的网站。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/39245418/1697719620986-b4dd615b-98c6-4c1a-b8ee-f09efb36cbd5.png">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/39245418/1697724218927-f290ae39-fd0c-4587-ab1e-85b86e6feed9.png">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/jpeg/39245418/1697720484029-c6579e3e-425a-44d3-84de-9b2a9c01b106.jpeg">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/39245418/1697724267340-969b318e-e12a-46c4-b153-c6c1b0672bb2.png">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/jpeg/39245418/1697724903492-910fdc34-aaf8-4d0a-9dcb-bb70541ca543.jpeg">
+<meta property="og:image" content="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41so1yzcj30ol0gd0vl.jpg">
+<meta property="og:image" content="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41v7h6t0j30y80d5goe.jpg">
+<meta property="og:image" content="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41w6tngyj31040jdgo0.jpg">
+<meta property="og:image" content="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41x2gk9ij30gs0a1ta6.jpg">
+<meta property="og:image" content="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41xyvci1j30y00vh411.jpg">
 <meta property="article:published_time" content="2023-10-20T14:03:36.000Z">
-<meta property="article:modified_time" content="2023-10-22T03:36:33.323Z">
+<meta property="article:modified_time" content="2023-10-22T07:03:43.604Z">
 <meta property="article:author" content="Levin">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="ros">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2023/png/39245418/1697719620986-b4dd615b-98c6-4c1a-b8ee-f09efb36cbd5.png">
+<meta name="twitter:image" content="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41so1yzcj30ol0gd0vl.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/favicon.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+        
+      
+    
+    <!-- title -->
+    <title>ROS架构</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
 
-<link rel="canonical" href="http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/">
+
+    <!-- Umami Analytics -->
 
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
 
-  <title>ROS架构 | Pursue</title>
-  
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
 
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2023/10/19/%E5%AE%89%E8%A3%85ROS/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&text=ROS架构"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&title=ROS架构"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&is_video=false&description=ROS架构"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ROS架构&body=Check out this article: http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&title=ROS架构"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&title=ROS架构"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&title=ROS架构"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&title=ROS架构"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&name=ROS架构&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&t=ROS架构"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
 
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
     </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Pursue</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
-
-  </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-ROS%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">1. ROS安装目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-ROS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BA%A7"><span class="toc-number">2.</span> <span class="toc-text">2. ROS文件系统级</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E4%BD%BF%E7%94%A8%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4"><span class="toc-number">2.1.</span> <span class="toc-text">2.1. 查看当前使用工作空间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-%E5%88%9B%E5%BB%BA%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4"><span class="toc-number">2.2.</span> <span class="toc-text">2.2. 创建工作空间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-%E7%BC%96%E8%AF%91%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4"><span class="toc-number">2.3.</span> <span class="toc-text">2.3. 编译工作空间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-%E6%8A%8A%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4%E6%B7%BB%E5%8A%A0%E5%88%B0ROS%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">2.4.</span> <span class="toc-text">2.4. 把工作空间添加到ROS环境变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-%E5%88%9B%E5%BB%BAROS%E5%8A%9F%E8%83%BD%E5%8C%85"><span class="toc-number">2.5.</span> <span class="toc-text">2.5. 创建ROS功能包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-6-%E7%BC%96%E8%AF%91ROS%E5%8A%9F%E8%83%BD%E5%8C%85"><span class="toc-number">2.6.</span> <span class="toc-text">2.6. 编译ROS功能包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ROS%E8%AE%A1%E7%AE%97%E5%9B%BE%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">3. ROS计算图级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-ROS%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E7%BA%A7"><span class="toc-number">4.</span> <span class="toc-text">4. ROS开源社区级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%B8%B8%E7%94%A8%E5%8C%85%E7%AE%A1%E7%90%86%E6%8C%87%E4%BB%A4"><span class="toc-number">5.</span> <span class="toc-text">5. 常用包管理指令</span></a></li></ol>
+      </div>
+    
   </span>
 </div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
 
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        ROS架构
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Levin</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-10-20T14:03:36.000Z" class="dt-published" itemprop="datePublished">2023-10-20</time>
+        
+      
     </div>
-  </div>
 
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Levin">
-      <meta itemprop="description" content="像风一样自由！">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pursue">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          ROS架构
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-10-20 22:03:36" itemprop="dateCreated datePublished" datetime="2023-10-20T22:03:36+08:00">2023-10-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-            <div class="post-description">本文对ROS架构的三个层级分别进行了说明，还介绍了常用的包管理指令，收集了几个学习ROS的网站。</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-ROS安装目录"><a href="#1-ROS安装目录" class="headerlink" title="1. ROS安装目录"></a>1. ROS安装目录</h3><p><em>ROS默认安装在</em><code>*/opt/ros/noetic*</code><em>路径下。</em></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/39245418/1697719620986-b4dd615b-98c6-4c1a-b8ee-f09efb36cbd5.png" alt="5415"></p>
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/ROS/">ROS</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/linux/" rel="tag">linux</a>, <a class="p-category" href="/tags/ros/" rel="tag">ros</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h3 id="1-ROS安装目录"><a href="#1-ROS安装目录" class="headerlink" title="1. ROS安装目录"></a>1. ROS安装目录</h3><p><em>ROS默认安装在</em><code>/opt/ros/noetic</code><em>路径下。</em></p>
+<p><img src="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41so1yzcj30ol0gd0vl.jpg" alt="5415"></p>
 <table>
 <thead>
 <tr>
@@ -269,8 +198,8 @@
 <td>cmake的配置文件、话题消息的具体格式、服务的接口信息等</td>
 </tr>
 </tbody></table>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/39245418/1697724218927-f290ae39-fd0c-4587-ab1e-85b86e6feed9.png" alt="img"></p>
-<h3 id="2-ROS文件系统级"><a href="#2-ROS文件系统级" class="headerlink" title="2. ROS文件系统级"></a>2. ROS文件系统级</h3><p><img src="https://cdn.nlark.com/yuque/0/2023/jpeg/39245418/1697720484029-c6579e3e-425a-44d3-84de-9b2a9c01b106.jpeg" alt="img"></p>
+<p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41v7h6t0j30y80d5goe.jpg" alt="img"></p>
+<h3 id="2-ROS文件系统级"><a href="#2-ROS文件系统级" class="headerlink" title="2. ROS文件系统级"></a>2. ROS文件系统级</h3><p><img src="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41w6tngyj31040jdgo0.jpg" alt="img"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">WorkSpace --- 自定义的工作空间</span><br><span class="line"></span><br><span class="line">    |--- build:编译空间，用于存放CMake和catkin的缓存信息、配置信息和其他中间文件。</span><br><span class="line"></span><br><span class="line">    |--- devel:开发空间，用于存放编译后生成的目标文件，包括头文件、动态&amp;静态链接库、可执行文件等。</span><br><span class="line"></span><br><span class="line">    |--- src: 源码</span><br><span class="line"></span><br><span class="line">        |-- package：功能包(ROS基本单元)包含多个节点、库与配置文件，包名所有字母小写，只能由字母、数字与下划线组成</span><br><span class="line"></span><br><span class="line">            |-- CMakeLists.txt 配置编译规则，比如源文件、依赖项、目标文件</span><br><span class="line"></span><br><span class="line">            |-- package.xml 包信息，比如:包名、版本、作者、依赖项...(以前版本是 manifest.xml)</span><br><span class="line"></span><br><span class="line">            |-- scripts 存储python文件</span><br><span class="line"></span><br><span class="line">            |-- src 存储C++源文件</span><br><span class="line"></span><br><span class="line">            |-- include 头文件</span><br><span class="line"></span><br><span class="line">            |-- msg 消息通信格式文件</span><br><span class="line"></span><br><span class="line">            |-- srv 服务通信格式文件</span><br><span class="line"></span><br><span class="line">            |-- action 动作格式文件</span><br><span class="line"></span><br><span class="line">            |-- launch 可一次性运行多个节点 </span><br><span class="line"></span><br><span class="line">            |-- config 配置信息</span><br><span class="line"></span><br><span class="line">        |-- CMakeLists.txt: 编译的基本配置</span><br></pre></td></tr></table></figure>
 
 <h4 id="2-1-查看当前使用工作空间"><a href="#2-1-查看当前使用工作空间" class="headerlink" title="2.1. 查看当前使用工作空间"></a>2.1. 查看当前使用工作空间</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$ROS_PACKAGE_PATH</span></span><br></pre></td></tr></table></figure>
@@ -289,9 +218,9 @@
 <p>使用<code>catkin_create_pkg</code>指令在src文件夹下创建一个名称为test的功能包，依赖于std_msgs rospy roscpp。</p>
 <h4 id="2-6-编译ROS功能包"><a href="#2-6-编译ROS功能包" class="headerlink" title="2.6. 编译ROS功能包"></a>2.6. 编译ROS功能包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/							<span class="comment">#回到工作空间，编译必须在此文件夹下</span></span><br><span class="line">catkin_make                 <span class="comment">#进行编译</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="3-ROS计算图级"><a href="#3-ROS计算图级" class="headerlink" title="3. ROS计算图级"></a>3. ROS计算图级</h3><p><img src="https://cdn.nlark.com/yuque/0/2023/png/39245418/1697724267340-969b318e-e12a-46c4-b153-c6c1b0672bb2.png" alt="img"></p>
+<h3 id="3-ROS计算图级"><a href="#3-ROS计算图级" class="headerlink" title="3. ROS计算图级"></a>3. ROS计算图级</h3><p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41x2gk9ij30gs0a1ta6.jpg" alt="img"></p>
 <p>rqt_graph能够创建一个显示当前系统运行情况的动态图形。ROS 分布式系统中不同进程需要进行数据交互，计算图可以以点对点的网络形式表现数据交互过程。rqt_graph是rqt程序包中的一部分。  </p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/jpeg/39245418/1697724903492-910fdc34-aaf8-4d0a-9dcb-bb70541ca543.jpeg" alt="img"></p>
+<p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41xyvci1j30y00vh411.jpg" alt="img"></p>
 <h3 id="4-ROS开源社区级"><a href="#4-ROS开源社区级" class="headerlink" title="4. ROS开源社区级"></a>4. ROS开源社区级</h3><p>通过独立的网络社区，用户可以共享和获取知识、算法和代码。开源社区的大力支持使ROS得以快速成长。</p>
 <ul>
 <li><strong>发行版（Distribution）</strong> ROS发行版是可以独立安装、带有版本号的一系列综合功能包。ROS发行版像Linux发行版一样发挥类似的作用。这使得ROS软件安装更加容易，而且能够通过一个软件集合维持一致的版本。 </li>
@@ -313,244 +242,170 @@
 <li><strong>rospack</strong></li>
 </ol>
 <p>查看某个 pkg 的地址：<code>rospack fand [package_name]</code></p>
-<ol>
+<ol start="2">
 <li><strong>roscd</strong></li>
 </ol>
 <p>跳转到某个 pkg 路径下：<code>roscd [package_name]</code></p>
-<ol>
+<ol start="3">
 <li><strong>rosls</strong></li>
 </ol>
 <p>列举某个 pkg 下的文件信息：<code>rosls [package_name]</code></p>
-<ol>
+<ol start="4">
 <li><strong>rosed</strong></li>
 </ol>
 <p>编辑 pkg 中的文件：<code>rosed [package_name] [file_name]</code></p>
-<ol>
+<ol start="5">
 <li><strong>catkin_create_pkg</strong></li>
 </ol>
 <p>创建一个 pkg：<code>catkin_create_pkg [package_name] [deps]</code></p>
-<ol>
+<ol start="6">
 <li><strong>rosdep</strong></li>
 </ol>
 <p>安装某个功能包所需依赖：<code>rosdep install [package_name]</code></p>
 
-    </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/linux/" rel="tag"># linux</a>
-              <a href="/tags/ros/" rel="tag"># ros</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2023/10/15/%E6%80%8E%E4%B9%88%E5%8A%9E/" rel="prev" title="怎么办">
-      <i class="fa fa-chevron-left"></i> 怎么办
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/10/21/%E5%AE%89%E8%A3%85ROS/" rel="next" title="安装ROS">
-      安装ROS <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
   </div>
+</article>
 
-  <aside class="sidebar">
-    <div class="sidebar-inner">
 
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
       </ul>
+    </div>
 
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-ROS%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">1. ROS安装目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-ROS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BA%A7"><span class="nav-number">2.</span> <span class="nav-text">2. ROS文件系统级</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E4%BD%BF%E7%94%A8%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 查看当前使用工作空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E5%88%9B%E5%BB%BA%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 创建工作空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-%E7%BC%96%E8%AF%91%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. 编译工作空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-%E6%8A%8A%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4%E6%B7%BB%E5%8A%A0%E5%88%B0ROS%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">2.4.</span> <span class="nav-text">2.4. 把工作空间添加到ROS环境变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-%E5%88%9B%E5%BB%BAROS%E5%8A%9F%E8%83%BD%E5%8C%85"><span class="nav-number">2.5.</span> <span class="nav-text">2.5. 创建ROS功能包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-%E7%BC%96%E8%AF%91ROS%E5%8A%9F%E8%83%BD%E5%8C%85"><span class="nav-number">2.6.</span> <span class="nav-text">2.6. 编译ROS功能包</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-ROS%E8%AE%A1%E7%AE%97%E5%9B%BE%E7%BA%A7"><span class="nav-number">3.</span> <span class="nav-text">3. ROS计算图级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-ROS%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E7%BA%A7"><span class="nav-number">4.</span> <span class="nav-text">4. ROS开源社区级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%B8%B8%E7%94%A8%E5%8C%85%E7%AE%A1%E7%90%86%E6%8C%87%E4%BB%A4"><span class="nav-number">5.</span> <span class="nav-text">5. 常用包管理指令</span></a></li></ol></div>
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-ROS%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">1. ROS安装目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-ROS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BA%A7"><span class="toc-number">2.</span> <span class="toc-text">2. ROS文件系统级</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E4%BD%BF%E7%94%A8%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4"><span class="toc-number">2.1.</span> <span class="toc-text">2.1. 查看当前使用工作空间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-%E5%88%9B%E5%BB%BA%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4"><span class="toc-number">2.2.</span> <span class="toc-text">2.2. 创建工作空间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-%E7%BC%96%E8%AF%91%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4"><span class="toc-number">2.3.</span> <span class="toc-text">2.3. 编译工作空间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-%E6%8A%8A%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4%E6%B7%BB%E5%8A%A0%E5%88%B0ROS%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">2.4.</span> <span class="toc-text">2.4. 把工作空间添加到ROS环境变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-%E5%88%9B%E5%BB%BAROS%E5%8A%9F%E8%83%BD%E5%8C%85"><span class="toc-number">2.5.</span> <span class="toc-text">2.5. 创建ROS功能包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-6-%E7%BC%96%E8%AF%91ROS%E5%8A%9F%E8%83%BD%E5%8C%85"><span class="toc-number">2.6.</span> <span class="toc-text">2.6. 编译ROS功能包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ROS%E8%AE%A1%E7%AE%97%E5%9B%BE%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">3. ROS计算图级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-ROS%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E7%BA%A7"><span class="toc-number">4.</span> <span class="toc-text">4. ROS开源社区级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%B8%B8%E7%94%A8%E5%8C%85%E7%AE%A1%E7%90%86%E6%8C%87%E4%BB%A4"><span class="toc-number">5.</span> <span class="toc-text">5. 常用包管理指令</span></a></li></ol>
       </div>
-      <!--/noindex-->
+    
 
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Levin"
-      src="/images/avatar.png">
-  <p class="site-author-name" itemprop="name">Levin</p>
-  <div class="site-description" itemprop="description">像风一样自由！</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">12</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">7</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">13</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/lmzp" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lmzp" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:nma02098@gmail.com" title="E-Mail → mailto:nma02098@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="https://twitter.com/@lh00321" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;@lh00321" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
-      </span>
-  </div>
-
-
-
-      </div>
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&text=ROS架构"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&title=ROS架构"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&is_video=false&description=ROS架构"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ROS架构&body=Check out this article: http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&title=ROS架构"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&title=ROS架构"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&title=ROS架构"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&title=ROS架构"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&name=ROS架构&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lmzp.kryzin.eu.org/2023/10/20/ROS%E6%9E%B6%E6%9E%84/&t=ROS架构"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
 
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
 
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
         
-
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
         
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
 
-<div class="copyright">
-  
-  &copy; 2021 – 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Levin</span>
+  </div>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
-  </div>
 
         
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2023
+    Levin
   </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-  <script defer src="/lib/three/three.min.js"></script>
-    <script defer src="/lib/three/three-waves.min.js"></script>
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
   
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
 
 
+<script src="/js/main.js"></script>
 
+<!-- search -->
 
-  
-<script src="/js/local-search.js"></script>
+<!-- Baidu Analytics -->
 
+<!-- Cloudflare Analytics -->
 
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "0dabb6e21848405483a237e6a7b6ed04"}'></script>
 
+<!-- Disqus Comments -->
 
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-  
+<!-- utterances Comments -->
 
 </body>
 </html>
