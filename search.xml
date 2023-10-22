@@ -4,7 +4,7 @@
     <title>ROS架构</title>
     <url>/2023/10/20/ROS%E6%9E%B6%E6%9E%84/</url>
     <content><![CDATA[<h3 id="1-ROS安装目录"><a href="#1-ROS安装目录" class="headerlink" title="1. ROS安装目录"></a>1. ROS安装目录</h3><p><em>ROS默认安装在</em><code>*/opt/ros/noetic*</code><em>路径下。</em></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/39245418/1697719620986-b4dd615b-98c6-4c1a-b8ee-f09efb36cbd5.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/39245418/1697719620986-b4dd615b-98c6-4c1a-b8ee-f09efb36cbd5.png" alt="5415"></p>
 <table>
 <thead>
 <tr>
@@ -100,6 +100,31 @@
       <tags>
         <tag>linux</tag>
         <tag>ros</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>root</title>
+    <url>/2021/11/21/root/</url>
+    <content><![CDATA[<p><strong>Magisk</strong> : </p>
+<ul>
+<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
+<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
+
+<p>刷入boot</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
+<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Root</tag>
       </tags>
   </entry>
   <entry>
@@ -201,52 +226,6 @@
       </tags>
   </entry>
   <entry>
-    <title>思想</title>
-    <url>/2021/09/01/%E6%80%9D%E6%83%B3/</url>
-    <content><![CDATA[<blockquote>
-<p><em><strong>有亡国，有亡天下。亡国与亡天下奚辨？曰：易姓改号，谓之亡国。仁义充塞，而至率兽食人，人将相食，谓之亡天下。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——《日知录·正始》</p>
-</blockquote>
-<blockquote>
-<p><em><strong>少年自有少年志，当论天下不平事，若至小人当道时，拔剑三尺敢换日</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>爱国很容易，只需要付出口水，爱别人太难，那是要付出行动的。</strong></em></p>
-</blockquote>
-<blockquote>
-<p>***愚昧才是一切的根源，愚昧是因为一直拒绝被启蒙，如果帝国主义的侵略想一把匕首，那么愚昧封建就是民族的毒药 ***</p>
-</blockquote>
-<blockquote>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——胡适</p> 
-</blockquote>
-<blockquote>
-<p><em><strong>今日若我冷眼旁观，他日祸临己身，则无人为我摇旗呐喊</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>战争结束后，政治家握手言和，资本家赚的盆满钵满，只有母亲含泪埋葬自己的孩子</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>迟来的阳光救不了枯萎的向日葵</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>如果孩子的出生是为了继承自己的劳碌，恐慌，贫困，那么，不生也是善良</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>世界上最无耻、最阴险、最歹毒的赞美，就是用穷人的艰辛和苦难，当做励志故事愚弄底层人。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>想要毁掉一个民族，抽调男人身上的脊梁和血气，拿掉女人身上的善良和廉耻</strong></em></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>摘录</category>
-      </categories>
-      <tags>
-        <tag>随记</tag>
-        <tag>freedom</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>怎么办</title>
     <url>/2023/10/15/%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
     <content><![CDATA[<p>​      今天已经是第15天，我又忍不住想要找你聊天，我心里好矛盾，明明那么想，又要强忍着不找你。心里好难受，我好想好想找你，好想站在你面前对你说，我爱你，我好喜欢你<span id="more"></span>，可我没有那个勇气，我特别怕你反感。</p>
@@ -258,56 +237,6 @@
       </categories>
       <tags>
         <tag>love</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安装ROS</title>
-    <url>/2023/10/21/%E5%AE%89%E8%A3%85ROS/</url>
-    <content><![CDATA[<h3 id="1-设置sources-list"><a href="#1-设置sources-list" class="headerlink" title="1.设置sources.list"></a>1.设置sources.list</h3><p>设置电脑添加以安装来自packages.ros.org的软件。  以下按照网络环境二选一即可，鉴于国内网络环境😓，推荐第二个清华源。</p>
-<p>终端输入：</p>
-<p>官方源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;echo &quot;deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>清华源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;. /etc/lsb-release &amp;&amp; echo &quot;deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-设置密钥"><a href="#2-设置密钥" class="headerlink" title="2.设置密钥"></a>2.设置密钥</h3><p>终端输入：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-key adv --keyserver <span class="string">&#x27;hkp://keyserver.ubuntu.com:80&#x27;</span> --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</span><br></pre></td></tr></table></figure>
-
-<p>若无法连接到密钥服务器，建议更换网络重试。</p>
-<h3 id="3-开始安装"><a href="#3-开始安装" class="headerlink" title="3.开始安装"></a>3.开始安装</h3><p>终端输入：</p>
-<ul>
-<li>更新软件索引apt</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
-
-<p>本次安装ROS版本代号为<noetic>,此版本为最后一版ros1,官方将持续维护更新止2025年。</p>
-<ul>
-<li>安装完整桌面版</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-desktop-full</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>安装其他软件包</li>
-</ul>
-<p>在ROS中还有更多可用的软件包。你可以直接安装一个特定的软件包。  </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-包名</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-设置环境"><a href="#3-设置环境" class="headerlink" title="3.设置环境"></a>3.设置环境</h3><p> 命令可以在每次启动新的shell窗口时很方便地为你自动source一下这个脚本：  </p>
-<p>终端输入：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source /opt/ros/noetic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-
-
-
-<p>安装已进入尾声，在终端输入<code>rosversion -d</code>，看到输出为<code>noetic</code>,则表示安装顺利成功。😄</p>
-<p>end~</p>
-]]></content>
-      <categories>
-        <category>ROS</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>ros</tag>
       </tags>
   </entry>
   <entry>
@@ -434,8 +363,104 @@
         <category>随想</category>
       </categories>
       <tags>
-        <tag>随记</tag>
         <tag>freedom</tag>
+        <tag>随记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>思想</title>
+    <url>/2021/09/01/%E6%80%9D%E6%83%B3/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>有亡国，有亡天下。亡国与亡天下奚辨？曰：易姓改号，谓之亡国。仁义充塞，而至率兽食人，人将相食，谓之亡天下。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——《日知录·正始》</p>
+</blockquote>
+<blockquote>
+<p><em><strong>少年自有少年志，当论天下不平事，若至小人当道时，拔剑三尺敢换日</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>爱国很容易，只需要付出口水，爱别人太难，那是要付出行动的。</strong></em></p>
+</blockquote>
+<blockquote>
+<p>***愚昧才是一切的根源，愚昧是因为一直拒绝被启蒙，如果帝国主义的侵略想一把匕首，那么愚昧封建就是民族的毒药 ***</p>
+</blockquote>
+<blockquote>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——胡适</p> 
+</blockquote>
+<blockquote>
+<p><em><strong>今日若我冷眼旁观，他日祸临己身，则无人为我摇旗呐喊</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>战争结束后，政治家握手言和，资本家赚的盆满钵满，只有母亲含泪埋葬自己的孩子</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>迟来的阳光救不了枯萎的向日葵</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>如果孩子的出生是为了继承自己的劳碌，恐慌，贫困，那么，不生也是善良</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>世界上最无耻、最阴险、最歹毒的赞美，就是用穷人的艰辛和苦难，当做励志故事愚弄底层人。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>想要毁掉一个民族，抽调男人身上的脊梁和血气，拿掉女人身上的善良和廉耻</strong></em></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+      <tags>
+        <tag>freedom</tag>
+        <tag>随记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安装ROS</title>
+    <url>/2023/10/21/%E5%AE%89%E8%A3%85ROS/</url>
+    <content><![CDATA[<h3 id="1-设置sources-list"><a href="#1-设置sources-list" class="headerlink" title="1.设置sources.list"></a>1.设置sources.list</h3><p>设置电脑添加以安装来自packages.ros.org的软件。  以下按照网络环境二选一即可，鉴于国内网络环境😓，推荐第二个清华源。</p>
+<p>终端输入：</p>
+<p>官方源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;echo &quot;deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>清华源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;. /etc/lsb-release &amp;&amp; echo &quot;deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-设置密钥"><a href="#2-设置密钥" class="headerlink" title="2.设置密钥"></a>2.设置密钥</h3><p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-key adv --keyserver <span class="string">&#x27;hkp://keyserver.ubuntu.com:80&#x27;</span> --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</span><br></pre></td></tr></table></figure>
+
+<p>若无法连接到密钥服务器，建议更换网络重试。</p>
+<h3 id="3-开始安装"><a href="#3-开始安装" class="headerlink" title="3.开始安装"></a>3.开始安装</h3><p>终端输入：</p>
+<ul>
+<li>更新软件索引apt</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+
+<p>本次安装ROS版本代号为<noetic>,此版本为最后一版ros1,官方将持续维护更新止2025年。</p>
+<ul>
+<li>安装完整桌面版</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-desktop-full</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装其他软件包</li>
+</ul>
+<p>在ROS中还有更多可用的软件包。你可以直接安装一个特定的软件包。  </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-包名</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-设置环境"><a href="#3-设置环境" class="headerlink" title="3.设置环境"></a>3.设置环境</h3><p> 命令可以在每次启动新的shell窗口时很方便地为你自动source一下这个脚本：  </p>
+<p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source /opt/ros/noetic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+
+
+<p>安装已进入尾声，在终端输入<code>rosversion -d</code>，看到输出为<code>noetic</code>,则表示安装顺利成功。😄</p>
+<p>end~</p>
+]]></content>
+      <categories>
+        <category>ROS</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ros</tag>
       </tags>
   </entry>
   <entry>
@@ -489,6 +514,57 @@
       </categories>
       <tags>
         <tag>文学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>短信轰炸</title>
+    <url>/2022/09/21/%E7%9F%AD%E4%BF%A1%E8%BD%B0%E7%82%B8/</url>
+    <content><![CDATA[<blockquote>
+<p>smsboom是一个短信轰炸程序,由于国内大多数网站为提高注册率及用户注册效率，并没有设置安全验证，因此它通过调用这些网站验证码接口，实现短时间内向目标手机号发送大量短信验证码，以此实现轰炸。<span id="more"></span></p>
+</blockquote>
+<ul>
+<li>SMSBoom项目地址:<a href="https://github.com/OpenEthan/SMSBoom">Github</a>;</li>
+</ul>
+<h2 id="Linux使用方法"><a href="#Linux使用方法" class="headerlink" title="Linux使用方法"></a>Linux使用方法</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><ol>
+<li>可以直接去Github下载。</li>
+<li>使用git<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/AdminWhaleFall/SMSBoom.git/</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h3><ul>
+<li>需要python3.8以上</li>
+</ul>
+<ol>
+<li>安装所需库<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure></li>
+<li>运行smsboom.py<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 smsboom.py</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><ol>
+<li>第一次使用前，一定要更新接口</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 smsboom.py update</span><br></pre></td></tr></table></figure>
+<p>**ps:**更新失败的话，可以直接到GitHub仓库下载api.json文件，替换就可以了。</p>
+<ol start="2">
+<li>使用轰炸</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 smsboom.py run -t 64 -p 198xxxxxxxx </span><br></pre></td></tr></table></figure>
+<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><h3 id="下载-1"><a href="#下载-1" class="headerlink" title="下载"></a>下载</h3><p><a href="https://zhanghe666.lanzouy.com/iLZc50l4kfsj">smsboom.exe</a><br>密码:6neu</p>
+<h3 id="在文件路径下输入cmd，回车"><a href="#在文件路径下输入cmd，回车" class="headerlink" title="在文件路径下输入cmd，回车"></a>在文件路径下输入cmd，回车</h3><p><img src="C:\Users\Pursue\Pictures\typecho\008BeftEly1hj3ab8ez4qj30kg04qq3h.jpg" alt="图片"></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ul>
+<li>更新接口<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe update</span><br></pre></td></tr></table></figure>
+启动64个线程,轰炸一个人的手机号(198xxxxxxxx),只轰炸一波。<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx</span><br></pre></td></tr></table></figure>
+启动64个线程,轰炸一个人的手机号(19xxxxxxx),启动循环轰炸, 轮番轰炸60次<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx -f 60</span><br></pre></td></tr></table></figure>
+启动64个线程,轰炸一个人的手机号(19xxxxxxx),启动循环轰炸, 轮番轰炸60次, 每次间隔30秒<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx -f 60 -i 30</span><br></pre></td></tr></table></figure>
+启动64个线程,轰炸一个人的手机号(19xxxxxxx),启动循环轰炸, 轮番轰炸60次, 每次间隔30秒, 开启代理列表进行轰炸<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx -f 60 -i 30 -e</span><br></pre></td></tr></table></figure>
+启动64个线程,轰炸多个人的手机号(138xxx,139xxxx),启动循环轰炸, 轮番轰炸60次, 每次间隔30秒, 开启代理列表进行轰炸<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 138xxxxxxxx -p 139xxxxxxxx -f 60 -i 30 -e</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>如果方法不成功，建议去项目地址看比较详细的教程</strong></p>
+</blockquote>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -584,82 +660,6 @@
       <tags>
         <tag>随记</tag>
         <tag>诗歌</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>root</title>
-    <url>/2021/11/21/root/</url>
-    <content><![CDATA[<p><strong>Magisk</strong> : </p>
-<ul>
-<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
-<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
-
-<p>刷入boot</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
-<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>Root</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>短信轰炸</title>
-    <url>/2022/09/21/%E7%9F%AD%E4%BF%A1%E8%BD%B0%E7%82%B8/</url>
-    <content><![CDATA[<blockquote>
-<p>smsboom是一个短信轰炸程序,由于国内大多数网站为提高注册率及用户注册效率，并没有设置安全验证，因此它通过调用这些网站验证码接口，实现短时间内向目标手机号发送大量短信验证码，以此实现轰炸。<span id="more"></span></p>
-</blockquote>
-<ul>
-<li>SMSBoom项目地址:<a href="https://github.com/OpenEthan/SMSBoom">Github</a>;</li>
-</ul>
-<h2 id="Linux使用方法"><a href="#Linux使用方法" class="headerlink" title="Linux使用方法"></a>Linux使用方法</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><ol>
-<li>可以直接去Github下载。</li>
-<li>使用git<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/AdminWhaleFall/SMSBoom.git/</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h3><ul>
-<li>需要python3.8以上</li>
-</ul>
-<ol>
-<li>安装所需库<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure></li>
-<li>运行smsboom.py<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 smsboom.py</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><ol>
-<li>第一次使用前，一定要更新接口</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 smsboom.py update</span><br></pre></td></tr></table></figure>
-<p>**ps:**更新失败的话，可以直接到GitHub仓库下载api.json文件，替换就可以了。</p>
-<ol start="2">
-<li>使用轰炸</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 smsboom.py run -t 64 -p 198xxxxxxxx </span><br></pre></td></tr></table></figure>
-<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><h3 id="下载-1"><a href="#下载-1" class="headerlink" title="下载"></a>下载</h3><p><a href="https://zhanghe666.lanzouy.com/iLZc50l4kfsj">smsboom.exe</a><br>密码:6neu</p>
-<h3 id="在文件路径下输入cmd，回车"><a href="#在文件路径下输入cmd，回车" class="headerlink" title="在文件路径下输入cmd，回车"></a>在文件路径下输入cmd，回车</h3><p><img src="C:\Users\Pursue\Pictures\typecho\008BeftEly1hj3ab8ez4qj30kg04qq3h.jpg" alt="图片"></p>
-<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ul>
-<li>更新接口<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe update</span><br></pre></td></tr></table></figure>
-启动64个线程,轰炸一个人的手机号(198xxxxxxxx),只轰炸一波。<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx</span><br></pre></td></tr></table></figure>
-启动64个线程,轰炸一个人的手机号(19xxxxxxx),启动循环轰炸, 轮番轰炸60次<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx -f 60</span><br></pre></td></tr></table></figure>
-启动64个线程,轰炸一个人的手机号(19xxxxxxx),启动循环轰炸, 轮番轰炸60次, 每次间隔30秒<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx -f 60 -i 30</span><br></pre></td></tr></table></figure>
-启动64个线程,轰炸一个人的手机号(19xxxxxxx),启动循环轰炸, 轮番轰炸60次, 每次间隔30秒, 开启代理列表进行轰炸<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx -f 60 -i 30 -e</span><br></pre></td></tr></table></figure>
-启动64个线程,轰炸多个人的手机号(138xxx,139xxxx),启动循环轰炸, 轮番轰炸60次, 每次间隔30秒, 开启代理列表进行轰炸<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 138xxxxxxxx -p 139xxxxxxxx -f 60 -i 30 -e</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>如果方法不成功，建议去项目地址看比较详细的教程</strong></p>
-</blockquote>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
       </tags>
   </entry>
 </search>
