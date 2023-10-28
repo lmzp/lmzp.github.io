@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>安装ROS</title>
+    <url>/2023/10/19/%E5%AE%89%E8%A3%85ROS/</url>
+    <content><![CDATA[<h3 id="1-设置sources-list"><a href="#1-设置sources-list" class="headerlink" title="1.设置sources.list"></a>1.设置sources.list</h3><p>设置电脑添加以安装来自packages.ros.org的软件。  以下按照网络环境二选一即可，鉴于国内网络环境😓，推荐第二个清华源。</p>
+<p>终端输入：</p>
+<p>官方源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;echo &quot;deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>清华源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;. /etc/lsb-release &amp;&amp; echo &quot;deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-设置密钥"><a href="#2-设置密钥" class="headerlink" title="2.设置密钥"></a>2.设置密钥</h3><p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-key adv --keyserver <span class="string">&#x27;hkp://keyserver.ubuntu.com:80&#x27;</span> --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</span><br></pre></td></tr></table></figure>
+
+<p>若无法连接到密钥服务器，建议更换网络重试。</p>
+<h3 id="3-开始安装"><a href="#3-开始安装" class="headerlink" title="3.开始安装"></a>3.开始安装</h3><p>终端输入：</p>
+<ul>
+<li>更新软件索引apt</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+
+<p>本次安装ROS版本代号为<noetic>,此版本为最后一版ros1,官方将持续维护更新止2025年。</p>
+<ul>
+<li>安装完整桌面版</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-desktop-full</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装其他软件包</li>
+</ul>
+<p>在ROS中还有更多可用的软件包。你可以直接安装一个特定的软件包。  </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-包名</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-设置环境"><a href="#3-设置环境" class="headerlink" title="3.设置环境"></a>3.设置环境</h3><p> 命令可以在每次启动新的shell窗口时很方便地为你自动source一下这个脚本：  </p>
+<p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source /opt/ros/noetic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+
+
+<p>安装已进入尾声，在终端输入<code>rosversion -d</code>，看到输出为<code>noetic</code>,则表示安装顺利成功。😄</p>
+<p>end~</p>
+]]></content>
+      <categories>
+        <category>ROS</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ros</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ROS架构</title>
     <url>/2023/10/20/ROS%E6%9E%B6%E6%9E%84/</url>
     <content><![CDATA[<h3 id="1-ROS安装目录"><a href="#1-ROS安装目录" class="headerlink" title="1. ROS安装目录"></a>1. ROS安装目录</h3><p><em>ROS默认安装在</em><code>/opt/ros/noetic</code><em>路径下。</em></p>
@@ -201,28 +251,17 @@
       </tags>
   </entry>
   <entry>
-    <title>root</title>
-    <url>/2021/11/21/root/</url>
-    <content><![CDATA[<p><strong>Magisk</strong> : </p>
-<ul>
-<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
-<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
-
-<p>刷入boot</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
-<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
+    <title>怎么办</title>
+    <url>/2023/10/15/%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
+    <content><![CDATA[<p>​      今天已经是第15天，我又忍不住想要找你聊天，我心里好矛盾，明明那么想，又要强忍着不找你。心里好难受，我好想好想找你，好想站在你面前对你说，我爱你，我好喜欢你<span id="more"></span>，可我没有那个勇气，我特别怕你反感。</p>
+<p>​      这些天，我每天都会想到你，为此，我想让自己忙碌起来，终究无济于事，不知梦到多少次和你在一起，早上醒来，心中突来一阵落寞。可那天你的对回答不回我消息的态度真的好伤我心，如果我回头找你，我的爱是不是特别廉价…哎，矛盾，纠结真的好纠结。</p>
+<p>​      你会在意我吗？(｡•́__ก̀｡)</p>
 ]]></content>
       <categories>
-        <category>Android</category>
+        <category>她</category>
       </categories>
       <tags>
-        <tag>Android</tag>
-        <tag>Root</tag>
+        <tag>love</tag>
       </tags>
   </entry>
   <entry>
@@ -351,174 +390,6 @@
       </tags>
   </entry>
   <entry>
-    <title>安装ROS</title>
-    <url>/2023/10/19/%E5%AE%89%E8%A3%85ROS/</url>
-    <content><![CDATA[<h3 id="1-设置sources-list"><a href="#1-设置sources-list" class="headerlink" title="1.设置sources.list"></a>1.设置sources.list</h3><p>设置电脑添加以安装来自packages.ros.org的软件。  以下按照网络环境二选一即可，鉴于国内网络环境😓，推荐第二个清华源。</p>
-<p>终端输入：</p>
-<p>官方源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;echo &quot;deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>清华源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;. /etc/lsb-release &amp;&amp; echo &quot;deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-设置密钥"><a href="#2-设置密钥" class="headerlink" title="2.设置密钥"></a>2.设置密钥</h3><p>终端输入：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-key adv --keyserver <span class="string">&#x27;hkp://keyserver.ubuntu.com:80&#x27;</span> --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</span><br></pre></td></tr></table></figure>
-
-<p>若无法连接到密钥服务器，建议更换网络重试。</p>
-<h3 id="3-开始安装"><a href="#3-开始安装" class="headerlink" title="3.开始安装"></a>3.开始安装</h3><p>终端输入：</p>
-<ul>
-<li>更新软件索引apt</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
-
-<p>本次安装ROS版本代号为<noetic>,此版本为最后一版ros1,官方将持续维护更新止2025年。</p>
-<ul>
-<li>安装完整桌面版</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-desktop-full</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>安装其他软件包</li>
-</ul>
-<p>在ROS中还有更多可用的软件包。你可以直接安装一个特定的软件包。  </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-包名</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-设置环境"><a href="#3-设置环境" class="headerlink" title="3.设置环境"></a>3.设置环境</h3><p> 命令可以在每次启动新的shell窗口时很方便地为你自动source一下这个脚本：  </p>
-<p>终端输入：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source /opt/ros/noetic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-
-
-
-<p>安装已进入尾声，在终端输入<code>rosversion -d</code>，看到输出为<code>noetic</code>,则表示安装顺利成功。😄</p>
-<p>end~</p>
-]]></content>
-      <categories>
-        <category>ROS</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>ros</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>怎么办</title>
-    <url>/2023/10/15/%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
-    <content><![CDATA[<p>​      今天已经是第15天，我又忍不住想要找你聊天，我心里好矛盾，明明那么想，又要强忍着不找你。心里好难受，我好想好想找你，好想站在你面前对你说，我爱你，我好喜欢你<span id="more"></span>，可我没有那个勇气，我特别怕你反感。</p>
-<p>​      这些天，我每天都会想到你，为此，我想让自己忙碌起来，终究无济于事，不知梦到多少次和你在一起，早上醒来，心中突来一阵落寞。可那天你的对回答不回我消息的态度真的好伤我心，如果我回头找你，我的爱是不是特别廉价…哎，矛盾，纠结真的好纠结。</p>
-<p>​      你会在意我吗？(｡•́__ก̀｡)</p>
-]]></content>
-      <categories>
-        <category>她</category>
-      </categories>
-      <tags>
-        <tag>love</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>短信轰炸</title>
-    <url>/2022/09/21/%E7%9F%AD%E4%BF%A1%E8%BD%B0%E7%82%B8/</url>
-    <content><![CDATA[<blockquote>
-<p>smsboom是一个短信轰炸程序,由于国内大多数网站为提高注册率及用户注册效率，并没有设置安全验证，因此它通过调用这些网站验证码接口，实现短时间内向目标手机号发送大量短信验证码，以此实现轰炸。<span id="more"></span></p>
-</blockquote>
-<ul>
-<li>SMSBoom项目地址:<a href="https://github.com/OpenEthan/SMSBoom">Github</a>;</li>
-</ul>
-<h2 id="Linux使用方法"><a href="#Linux使用方法" class="headerlink" title="Linux使用方法"></a>Linux使用方法</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><ol>
-<li>可以直接去Github下载。</li>
-<li>使用git<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/AdminWhaleFall/SMSBoom.git/</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h3><ul>
-<li>需要python3.8以上</li>
-</ul>
-<ol>
-<li>安装所需库<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure></li>
-<li>运行smsboom.py<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 smsboom.py</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><ol>
-<li>第一次使用前，一定要更新接口</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 smsboom.py update</span><br></pre></td></tr></table></figure>
-<p>**ps:**更新失败的话，可以直接到GitHub仓库下载api.json文件，替换就可以了。</p>
-<ol start="2">
-<li>使用轰炸</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 smsboom.py run -t 64 -p 198xxxxxxxx </span><br></pre></td></tr></table></figure>
-<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><h3 id="下载-1"><a href="#下载-1" class="headerlink" title="下载"></a>下载</h3><p><a href="https://zhanghe666.lanzouy.com/iLZc50l4kfsj">smsboom.exe</a><br>密码:6neu</p>
-<h3 id="在文件路径下输入cmd，回车"><a href="#在文件路径下输入cmd，回车" class="headerlink" title="在文件路径下输入cmd，回车"></a>在文件路径下输入cmd，回车</h3><p><img src="C:\Users\Pursue\Pictures\typecho\008BeftEly1hj3ab8ez4qj30kg04qq3h.jpg" alt="图片"></p>
-<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ul>
-<li>更新接口<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe update</span><br></pre></td></tr></table></figure>
-启动64个线程,轰炸一个人的手机号(198xxxxxxxx),只轰炸一波。<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx</span><br></pre></td></tr></table></figure>
-启动64个线程,轰炸一个人的手机号(19xxxxxxx),启动循环轰炸, 轮番轰炸60次<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx -f 60</span><br></pre></td></tr></table></figure>
-启动64个线程,轰炸一个人的手机号(19xxxxxxx),启动循环轰炸, 轮番轰炸60次, 每次间隔30秒<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx -f 60 -i 30</span><br></pre></td></tr></table></figure>
-启动64个线程,轰炸一个人的手机号(19xxxxxxx),启动循环轰炸, 轮番轰炸60次, 每次间隔30秒, 开启代理列表进行轰炸<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx -f 60 -i 30 -e</span><br></pre></td></tr></table></figure>
-启动64个线程,轰炸多个人的手机号(138xxx,139xxxx),启动循环轰炸, 轮番轰炸60次, 每次间隔30秒, 开启代理列表进行轰炸<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 138xxxxxxxx -p 139xxxxxxxx -f 60 -i 30 -e</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>如果方法不成功，建议去项目地址看比较详细的教程</strong></p>
-</blockquote>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>浪漫</title>
-    <url>/2022/04/13/%E6%B5%AA%E6%BC%AB/</url>
-    <content><![CDATA[<blockquote>
-<p><em><strong>爱自己才是终身浪漫的开始。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>我天天打扰你，总是给你发消息，找你聊天，不是因为我无聊，而是我在乎你，我天天问你在做什么，也不是我闲的慌，而是我惦记你，我对你好呢，也不是我亏欠你什么，而是你在我心里占据了很重要的位置，现在想想可能是我太主动了，让我觉得我的感情很廉价，但是你不知道，其实我不是一个主动的人，我也不是对谁都这样，只是因为那个人是你。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>我愿在泥潭里摸爬滚打，也要把我爱的人高高举起。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>遇见你，我的心上开出漫山遍野的花。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>真正的爱一定不是瞬间的感动，而必然是一种恒久的委身，彼此牺牲，彼此成就，彼此追逐。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>两个人吵架，先低头的那个人不一定是错的，但是一定是最在乎的。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>爱一个人就像在海滩上捡贝壳，不要捡最大的，也不要捡最漂亮的，就捡你最喜欢的那一个，捡到了就永远不要再去海滩。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>如果喜欢有理由，那么这个喜欢就是不纯正的。假如说我喜欢你的长发，哪天你剪了短发，我就不喜欢你了？不，不是这样的，我喜欢你就是喜欢你，没有什么为什么。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>海鸟跟鱼相爱，云与海浪交怀。你我明明未隔空与海，何故将欢喜紧揣，慌于表白。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>有意义的人等再久都不算久，爱只会在没见面的日子里更加浓烈。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>值不值得有意义吗 做我所想 爱我所爱 何必顾及流言蜚语。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>浪漫的不一定是夏天，而是有你的夏天。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>可是我几乎不主动聊天，不主动约人。能让我主动的人，真的是我打心眼里喜欢到不行的人。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>她最大的吸引力，就是你的想像力吧。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>拖着疲惫不堪的身体回到租房，妻子低声数落着柴米油盐贵，不知何时能剩下钱买房，顽皮的孩子看着电视剧，被你责备撵去写功课，年迈的父母体力不及当年，在乡下守着二亩地望子成龙，可你知道，你只是芸芸众生中的一个普通人，此时你骤然想起小时的理想：不是房子、车子，是成为一个科学家、是一个宇航员…你拿起筷子，夹起菜，不出所料，妻子做的菜盐又放多了，嘴里咸，心中咸，可是你吐不出来，因为你知道来之不易，不能浪费，这咸了的菜如你的人生一样：咸苦，你皱着眉头咬着牙咽了下去，而后摸了摸孩子的头，把不多的肉夹给他，让他刻苦学习，你的余生如接棒一般传给了孩子，希望他不被经济压迫生活，可以肆意的追寻梦想，不用品尝那咸苦的菜。</strong></em></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>摘录</category>
-      </categories>
-  </entry>
-  <entry>
     <title>文艺</title>
     <url>/2023/06/21/%E6%96%87%E8%89%BA/</url>
     <content><![CDATA[<blockquote>
@@ -579,42 +450,28 @@
       </tags>
   </entry>
   <entry>
-    <title>记录</title>
-    <url>/2023/10/24/%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<p>​      我清楚的记得我们第一次见面的时候，那天，是在社团招新的晚上，我第一次看到你的时候，心里想哇好漂亮，但心里对你又有看到其他漂亮女生不一样的感觉，心里就想，糟糕是心动的感觉，你问我，你是不是xxx.你以为我是跟你一起的部员，我说，不是，我是xxx.这是我们第一次搭话，结束之后，我回寝室还在想要不要加你qq啥的，考虑了半天，觉得自己不可能，我没有谈过恋爱，我长得虽然不帅但也不算丑吧，长得挺高但有点瘦，而且我还比较内向，跟女生说话都紧张个不行😓，心想还是算了。后来还是因为社团某些事你加的我。当然，我还是挺高兴的，加上我也不怎么会聊，想来我真废物啊😂，在社团活动的那几天，我和你搭上话了，挺好的，社长估计也看出来了，有意撮合我们，我感觉你似乎也对我有点意思，可能是错觉吧，之后就在网上聊啊聊，中间你回消息回的可真慢啊，😑可怜我思来想去，心里难受。再就到你生日吧，五一假期，你那几天在家和朋友过，我在学校，给你发消息呢，一开始回，后来就干脆不回了，我还想着是不是在忙没看见，结果(<del>.</del>💧) 朋友圈都发了，给我难受啊。就想着你生日给你买点好吃的吧，买了，我把这事也告诉我舍友了，他俩非要和我一起，后来我就约你出来走了一圈，我还问你为啥不回我消息，你说你没看见╭(╯^╰)╮🤣，我这个人啊，别人给我一点好，我就马上忘了其他，当时心里也没想啥。再往后啊，有个机器人比赛咱一队，能和你一起我觉得很不错☺️，那两天我挺开心的，不单是因为比赛，而大多都是因为你吧，😄。有天上课，咱两个班一起上，我说我坐你旁边吧，你也没拒绝，坐了，但好像有点尴尬🥲。过了几天，我约你散步，你同意了，到最后，你也对我这几天的行为有所察觉，你跟我说你不想谈恋爱🙄，当时你跟我说了挺多，也不想让我太伤心吧估计，幻觉都是幻觉，幻想的世界有什么不好😭，我当时💔，什么呀，这才刚开始😭😭，那天说了很多，回宿舍已经晚上10点多了。我也想了一会，在微信给你说了几句，大概就是我们可以慢慢来(´･_･&#96;)，你很会关心人很温柔，真的，我是这么认为的，我还记得有几天我可能吃错啥，脾胃本来就不好，吃不下一点，你给我点药，虽然都快过期了🤣，但还是挺有效果的，那天下午还一起在餐厅坐会儿来着，心理估计也对病有效果🤔。我就继续和你聊啊聊，到我去洛阳见习那几天，听你说你二阳了，一直发烧，我挺担心你的，我说你赶紧吃点药，要是不行就去输输液消消炎，你说你买药了也去输液了。我见习完回学校之后，那天你刚好要去输液，我就想着陪你去吧，你说不用不用，我说没事没事，厚着脸皮跟你去了😂，打针的时候跟你聊会天，诊所人也比较多，那个医生阿姨让我给你换瓶，我就注意着瓶里的液面准备给你换😂，到最后，我没想到，阿姨让我帮你按着手，估计把咱俩当情侣了，我说那我帮你按着吧，你说好，我就轻轻地握着你手，也没完全握🤣，但还是很开心。我觉得我们间的关系更进一步啦🤗。我就与你保持着联系，与你分享我的生活。之后的某天，我舍友让我试着约你看电影，我想着就有点早。没有听他的意见，那天上课的时候他玩我手机就背着我给你发要你看电影之类的话，我没想到你会同意，更印证我之前的想法，可能你真对我有所改观。后来就聊啊聊，说等期末考试完了一起，你也说，好，到最后考试完了，我问你，你不回信息，我知道已经没戏了，我💔，你之前也不回绝我，我那天中午饭也不想吃，下午就一直在床上躺着，时不时流流泪，很伤心，到晚上了你才回我消息说你跟朋友出去玩看电影了，😢😢😢，行吧我说你晚上回来给我发消息，我找你。晚上我寝室还剩4个人，想着一起去餐厅点几个菜一起吃，刚吃上，你给我发消息说你回来了，我立马放下筷子去找你，那天啊我们也聊了很多，问你为啥这样做，你说我有些越界了😵‍💫，我对这份感情已上头，情绪已完全被你拿捏👌，我其实一开始想说放弃，总感觉你忽冷忽热，让我没有方向。可见到你那一刻我就已经知道放弃对我来说有点难。我问你对我的感觉，你说没感觉，我想着还是慢慢来吧，我是真的喜欢，不想留下遗憾。暑假我们也报了两个学科竞赛，我拉你，是因为可以一起，我想和你一起时间多些，可是去河大那个比赛你来不了，全队就我单枪匹马过去了，还好成绩不错进了国赛，9月份，就想着还有国赛也可以一起，结果刚好教资又得我单枪匹马，我怕孤单就让我那个室友陪我去了。8月份的电赛你说你得上课，我说那你在家吧，你没来。🥲。开学，聊着聊着，我问你要不要帮你拿行李，人又玩消失，我想着你不想为什么不直接拒绝。后来又聊啊聊，我已经忘了烦心事。到国庆回家时，我上午给你发了那么多，你也没回，车也晚点，我孤单，我以为你没看见，你之前也说你不经常看手机，下午1点半你回我了，我想接着聊，你人又不见，就这样一次一次一次让我自己内耗自己，我晚上给你发，为啥不愿意理我，等啊等，没有消息，第二天早上也没等到，我就发我感觉自己像个小丑，你就简简单单发个问号🙄，我💔💔💔💔💔，我问了几句，你说你对所有人都一样，不喜欢网上聊，对我也没啥感觉，我说那我不烦你了，你说好。</p>
-<p>​      你高兴我因你高兴，你伤心我也难过，你生气我同你一起口伐让你生气的人，我很喜欢在你身边听你讲述你的故事，我可以在你身边静静的看着你。另外，你笑起来真好看。</p>
-<p>​      我还是忍不住想你，喜欢啊，我喜欢你啊😶‍🌫️</p>
-<p>​      爱意随风起，风止意难平。今天是霜降，秋意已暮，爱意何时能迎来它的初春呢？</p>
+    <title>root</title>
+    <url>/2021/11/21/root/</url>
+    <content><![CDATA[<p><strong>Magisk</strong> : </p>
+<ul>
+<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
+<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
+
+<p>刷入boot</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
+<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
 ]]></content>
       <categories>
-        <category>她</category>
+        <category>Android</category>
       </categories>
       <tags>
-        <tag>love</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>诗歌</title>
-    <url>/2022/10/10/%E8%AF%97%E6%AD%8C/</url>
-    <content><![CDATA[<blockquote>
-<p><em><strong>二八佳人体似酥，腰间仗剑斩凡夫。虽然不见人头落，暗里教君骨髓枯。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——吕岩«警世»</p>
-</blockquote>
-<blockquote>
-<p><em><strong>看水看山独坐，听风听雨高眠。客去客来日日，花开花落年年。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——徐贲«写意»</p>
-</blockquote>
-<blockquote>
-<p><em><strong>孩儿立志出乡关，学不成名誓不还。埋骨何须桑梓地，人生无处不青山。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——毛泽东«七绝·改诗赠父亲»</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>摘录</category>
-      </categories>
-      <tags>
-        <tag>随记</tag>
-        <tag>诗歌</tag>
+        <tag>Android</tag>
+        <tag>Root</tag>
       </tags>
   </entry>
   <entry>
@@ -661,6 +518,149 @@
       <tags>
         <tag>freedom</tag>
         <tag>随记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浪漫</title>
+    <url>/2022/04/13/%E6%B5%AA%E6%BC%AB/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>爱自己才是终身浪漫的开始。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>我天天打扰你，总是给你发消息，找你聊天，不是因为我无聊，而是我在乎你，我天天问你在做什么，也不是我闲的慌，而是我惦记你，我对你好呢，也不是我亏欠你什么，而是你在我心里占据了很重要的位置，现在想想可能是我太主动了，让我觉得我的感情很廉价，但是你不知道，其实我不是一个主动的人，我也不是对谁都这样，只是因为那个人是你。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>我愿在泥潭里摸爬滚打，也要把我爱的人高高举起。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>遇见你，我的心上开出漫山遍野的花。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>真正的爱一定不是瞬间的感动，而必然是一种恒久的委身，彼此牺牲，彼此成就，彼此追逐。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>两个人吵架，先低头的那个人不一定是错的，但是一定是最在乎的。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>爱一个人就像在海滩上捡贝壳，不要捡最大的，也不要捡最漂亮的，就捡你最喜欢的那一个，捡到了就永远不要再去海滩。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>如果喜欢有理由，那么这个喜欢就是不纯正的。假如说我喜欢你的长发，哪天你剪了短发，我就不喜欢你了？不，不是这样的，我喜欢你就是喜欢你，没有什么为什么。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>海鸟跟鱼相爱，云与海浪交怀。你我明明未隔空与海，何故将欢喜紧揣，慌于表白。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>有意义的人等再久都不算久，爱只会在没见面的日子里更加浓烈。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>值不值得有意义吗 做我所想 爱我所爱 何必顾及流言蜚语。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>浪漫的不一定是夏天，而是有你的夏天。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>可是我几乎不主动聊天，不主动约人。能让我主动的人，真的是我打心眼里喜欢到不行的人。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>她最大的吸引力，就是你的想像力吧。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>拖着疲惫不堪的身体回到租房，妻子低声数落着柴米油盐贵，不知何时能剩下钱买房，顽皮的孩子看着电视剧，被你责备撵去写功课，年迈的父母体力不及当年，在乡下守着二亩地望子成龙，可你知道，你只是芸芸众生中的一个普通人，此时你骤然想起小时的理想：不是房子、车子，是成为一个科学家、是一个宇航员…你拿起筷子，夹起菜，不出所料，妻子做的菜盐又放多了，嘴里咸，心中咸，可是你吐不出来，因为你知道来之不易，不能浪费，这咸了的菜如你的人生一样：咸苦，你皱着眉头咬着牙咽了下去，而后摸了摸孩子的头，把不多的肉夹给他，让他刻苦学习，你的余生如接棒一般传给了孩子，希望他不被经济压迫生活，可以肆意的追寻梦想，不用品尝那咸苦的菜。</strong></em></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>短信轰炸</title>
+    <url>/2022/09/21/%E7%9F%AD%E4%BF%A1%E8%BD%B0%E7%82%B8/</url>
+    <content><![CDATA[<blockquote>
+<p>smsboom是一个短信轰炸程序,由于国内大多数网站为提高注册率及用户注册效率，并没有设置安全验证，因此它通过调用这些网站验证码接口，实现短时间内向目标手机号发送大量短信验证码，以此实现轰炸。<span id="more"></span></p>
+</blockquote>
+<ul>
+<li>SMSBoom项目地址:<a href="https://github.com/OpenEthan/SMSBoom">Github</a>;</li>
+</ul>
+<h2 id="Linux使用方法"><a href="#Linux使用方法" class="headerlink" title="Linux使用方法"></a>Linux使用方法</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><ol>
+<li>可以直接去Github下载。</li>
+<li>使用git<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/AdminWhaleFall/SMSBoom.git/</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h3><ul>
+<li>需要python3.8以上</li>
+</ul>
+<ol>
+<li>安装所需库<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure></li>
+<li>运行smsboom.py<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 smsboom.py</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><ol>
+<li>第一次使用前，一定要更新接口</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 smsboom.py update</span><br></pre></td></tr></table></figure>
+<p>**ps:**更新失败的话，可以直接到GitHub仓库下载api.json文件，替换就可以了。</p>
+<ol start="2">
+<li>使用轰炸</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 smsboom.py run -t 64 -p 198xxxxxxxx </span><br></pre></td></tr></table></figure>
+<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><h3 id="下载-1"><a href="#下载-1" class="headerlink" title="下载"></a>下载</h3><p><a href="https://zhanghe666.lanzouy.com/iLZc50l4kfsj">smsboom.exe</a><br>密码:6neu</p>
+<h3 id="在文件路径下输入cmd，回车"><a href="#在文件路径下输入cmd，回车" class="headerlink" title="在文件路径下输入cmd，回车"></a>在文件路径下输入cmd，回车</h3><p><img src="C:\Users\Pursue\Pictures\typecho\008BeftEly1hj3ab8ez4qj30kg04qq3h.jpg" alt="图片"></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ul>
+<li>更新接口<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe update</span><br></pre></td></tr></table></figure>
+启动64个线程,轰炸一个人的手机号(198xxxxxxxx),只轰炸一波。<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx</span><br></pre></td></tr></table></figure>
+启动64个线程,轰炸一个人的手机号(19xxxxxxx),启动循环轰炸, 轮番轰炸60次<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx -f 60</span><br></pre></td></tr></table></figure>
+启动64个线程,轰炸一个人的手机号(19xxxxxxx),启动循环轰炸, 轮番轰炸60次, 每次间隔30秒<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx -f 60 -i 30</span><br></pre></td></tr></table></figure>
+启动64个线程,轰炸一个人的手机号(19xxxxxxx),启动循环轰炸, 轮番轰炸60次, 每次间隔30秒, 开启代理列表进行轰炸<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 198xxxxxxxxx -f 60 -i 30 -e</span><br></pre></td></tr></table></figure>
+启动64个线程,轰炸多个人的手机号(138xxx,139xxxx),启动循环轰炸, 轮番轰炸60次, 每次间隔30秒, 开启代理列表进行轰炸<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">smsboom.exe run -t 64 -p 138xxxxxxxx -p 139xxxxxxxx -f 60 -i 30 -e</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>如果方法不成功，建议去项目地址看比较详细的教程</strong></p>
+</blockquote>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记录</title>
+    <url>/2023/10/24/%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p>​      我清楚的记得我们第一次见面的时候，那天，是在社团招新的晚上，我第一次看到你的时候，心里想哇好漂亮，但心里对你又有看到其他漂亮女生不一样的感觉，心里就想，糟糕是心动的感觉<span id="more"></span>，你问我，你是不是xxx.你以为我是跟你一起的部员，我说，不是，我是xxx.这是我们第一次搭话，结束之后，我回寝室还在想要不要加你qq啥的，考虑了半天，觉得自己不可能，我没有谈过恋爱，我长得虽然不帅但也不算丑吧，长得挺高但有点瘦，而且我还比较内向，跟女生说话都紧张个不行😓，心想还是算了。后来还是因为社团某些事你加的我。当然，我还是挺高兴的，加上我也不怎么会聊，想来我真废物啊😂，在社团活动的那几天，我和你搭上话了，挺好的，社长估计也看出来了，有意撮合我们，我感觉你似乎也对我有点意思，可能是错觉吧，之后就在网上聊啊聊，中间你回消息回的可真慢啊，😑可怜我思来想去，心里难受。再就到你生日吧，五一假期，你那几天在家和朋友过，我在学校，给你发消息呢，一开始回，后来就干脆不回了，我还想着是不是在忙没看见，结果(<del>.</del>💧) 朋友圈都发了，给我难受啊。就想着你生日给你买点好吃的吧，买了，我把这事也告诉我舍友了，他俩非要和我一起，后来我就约你出来走了一圈，我还问你为啥不回我消息，你说你没看见╭(╯^╰)╮🤣，我这个人啊，别人给我一点好，我就马上忘了其他，当时心里也没想啥。再往后啊，有个机器人比赛咱一队，能和你一起我觉得很不错☺️，那两天我挺开心的，不单是因为比赛，而大多都是因为你吧，😄。有天上课，咱两个班一起上，我说我坐你旁边吧，你也没拒绝，坐了，但好像有点尴尬🥲。过了几天，我约你散步，你同意了，到最后，你也对我这几天的行为有所察觉，你跟我说你不想谈恋爱🙄，当时你跟我说了挺多，也不想让我太伤心吧估计，幻觉都是幻觉，幻想的世界有什么不好😭，我当时💔，什么呀，这才刚开始😭😭，那天说了很多，回宿舍已经晚上10点多了。我也想了一会，在微信给你说了几句，大概就是我们可以慢慢来(´･_･&#96;)，你很会关心人很温柔，真的，我是这么认为的，我还记得有几天我可能吃错啥，脾胃本来就不好，吃不下一点，你给我点药，虽然都快过期了🤣，但还是挺有效果的，那天下午还一起在餐厅坐会儿来着，心理估计也对病有效果🤔。我就继续和你聊啊聊，到我去洛阳见习那几天，听你说你二阳了，一直发烧，我挺担心你的，我说你赶紧吃点药，要是不行就去输输液消消炎，你说你买药了也去输液了。我见习完回学校之后，那天你刚好要去输液，我就想着陪你去吧，你说不用不用，我说没事没事，厚着脸皮跟你去了😂，打针的时候跟你聊会天，诊所人也比较多，那个医生阿姨让我给你换瓶，我就注意着瓶里的液面准备给你换😂，到最后，我没想到，阿姨让我帮你按着手，估计把咱俩当情侣了，我说那我帮你按着吧，你说好，我就轻轻地握着你手，也没完全握🤣，但还是很开心。我觉得我们间的关系更进一步啦🤗。我就与你保持着联系，与你分享我的生活。之后的某天，我舍友让我试着约你看电影，我想着就有点早。没有听他的意见，那天上课的时候他玩我手机就背着我给你发要你看电影之类的话，我没想到你会同意，更印证我之前的想法，可能你真对我有所改观。后来就聊啊聊，说等期末考试完了一起，你也说，好，到最后考试完了，我问你，你不回信息，我知道已经没戏了，我💔，你之前也不回绝我，我那天中午饭也不想吃，下午就一直在床上躺着，时不时流流泪，很伤心，到晚上了你才回我消息说你跟朋友出去玩看电影了，😢😢😢，行吧我说你晚上回来给我发消息，我找你。晚上我寝室还剩4个人，想着一起去餐厅点几个菜一起吃，刚吃上，你给我发消息说你回来了，我立马放下筷子去找你，那天啊我们也聊了很多，问你为啥这样做，你说我有些越界了😵‍💫，我对这份感情已上头，情绪已完全被你拿捏👌，我其实一开始想说放弃，总感觉你忽冷忽热，让我没有方向。可见到你那一刻我就已经知道放弃对我来说有点难。我问你对我的感觉，你说没感觉，我想着还是慢慢来吧，我是真的喜欢，不想留下遗憾。暑假我们也报了两个学科竞赛，我拉你，是因为可以一起，我想和你一起时间多些，可是去河大那个比赛你来不了，全队就我单枪匹马过去了，还好成绩不错进了国赛，9月份，就想着还有国赛也可以一起，结果刚好教资又得我单枪匹马，我怕孤单就让我那个室友陪我去了。8月份的电赛你说你得上课，我说那你在家吧，你没来。🥲。开学，聊着聊着，我问你要不要帮你拿行李，人又玩消失，我想着你不想为什么不直接拒绝。后来又聊啊聊，我已经忘了烦心事。到国庆回家时，我上午给你发了那么多，你也没回，车也晚点，我孤单，我以为你没看见，你之前也说你不经常看手机，下午1点半你回我了，我想接着聊，你人又不见，就这样一次一次一次让我自己内耗自己，我晚上给你发，为啥不愿意理我，等啊等，没有消息，第二天早上也没等到，我就发我感觉自己像个小丑，你就简简单单发个问号🙄，我💔💔💔💔💔，我问了几句，你说你对所有人都一样，不喜欢网上聊，对我也没啥感觉，我说那我不烦你了，你说好。</p>
+<p>​      你高兴我因你高兴，你伤心我也难过，你生气我同你一起口伐让你生气的人，我很喜欢在你身边听你讲述你的故事，我可以在你身边静静的看着你。另外，你笑起来真好看。</p>
+<p>​      我还是忍不住想你，喜欢啊，我喜欢你啊😶‍🌫️</p>
+<p>​      爱意随风起，风止意难平。今天是霜降，秋意已暮，爱意何时能迎来它的初春呢？</p>
+]]></content>
+      <categories>
+        <category>她</category>
+      </categories>
+      <tags>
+        <tag>love</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>诗歌</title>
+    <url>/2022/10/10/%E8%AF%97%E6%AD%8C/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>二八佳人体似酥，腰间仗剑斩凡夫。虽然不见人头落，暗里教君骨髓枯。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——吕岩«警世»</p>
+</blockquote>
+<blockquote>
+<p><em><strong>看水看山独坐，听风听雨高眠。客去客来日日，花开花落年年。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——徐贲«写意»</p>
+</blockquote>
+<blockquote>
+<p><em><strong>孩儿立志出乡关，学不成名誓不还。埋骨何须桑梓地，人生无处不青山。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——毛泽东«七绝·改诗赠父亲»</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+      <tags>
+        <tag>随记</tag>
+        <tag>诗歌</tag>
       </tags>
   </entry>
 </search>
