@@ -1,148 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>安装ROS</title>
-    <url>/2023/10/19/%E5%AE%89%E8%A3%85ROS/</url>
-    <content><![CDATA[<h3 id="1-设置sources-list"><a href="#1-设置sources-list" class="headerlink" title="1.设置sources.list"></a>1.设置sources.list</h3><p>设置电脑添加以安装来自packages.ros.org的软件。  以下按照网络环境二选一即可，鉴于国内网络环境😓，推荐第二个清华源。</p>
-<p>终端输入：</p>
-<p>官方源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;echo &quot;deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>清华源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;. /etc/lsb-release &amp;&amp; echo &quot;deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-设置密钥"><a href="#2-设置密钥" class="headerlink" title="2.设置密钥"></a>2.设置密钥</h3><p>终端输入：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-key adv --keyserver <span class="string">&#x27;hkp://keyserver.ubuntu.com:80&#x27;</span> --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</span><br></pre></td></tr></table></figure>
-
-<p>若无法连接到密钥服务器，建议更换网络重试。</p>
-<h3 id="3-开始安装"><a href="#3-开始安装" class="headerlink" title="3.开始安装"></a>3.开始安装</h3><p>终端输入：</p>
-<ul>
-<li>更新软件索引apt</li>
+    <title>SLAM 之 cartographer 安装</title>
+    <url>/2023/11/03/SLAM-%E4%B9%8B-cartographer-%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<ul>
+<li><strong>安装环境</strong>：Ubuntu20.04-&gt;ROS-&lt;noetic&gt;</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><h4 id="1-基本的"><a href="#1-基本的" class="headerlink" title="1. 基本的"></a>1. 基本的</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install -y \</span><br><span class="line">    cmake \</span><br><span class="line">    g++ \</span><br><span class="line">    git \</span><br><span class="line">    google-mock \</span><br><span class="line">    libboost-all-dev \</span><br><span class="line">    libcairo2-dev \</span><br><span class="line">    libeigen3-dev \</span><br><span class="line">    libgflags-dev \</span><br><span class="line">    libgoogle-glog-dev \</span><br><span class="line">    liblua5.2-dev \</span><br><span class="line">    libsuitesparse-dev \</span><br><span class="line">    libwebp-dev \</span><br><span class="line">    ninja-build \</span><br><span class="line">    protobuf-compiler \</span><br><span class="line">    python3-sphinx</span><br></pre></td></tr></table></figure>
 
-<p>本次安装ROS版本代号为<noetic>,此版本为最后一版ros1,官方将持续维护更新止2025年。</p>
-<ul>
-<li>安装完整桌面版</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-desktop-full</span><br></pre></td></tr></table></figure>
+<h4 id="2-对于cartographer环境安装脚本"><a href="#2-对于cartographer环境安装脚本" class="headerlink" title="2. 对于cartographer环境安装脚本"></a>2. 对于cartographer环境安装脚本</h4><p>下载压缩包<a href="https://www.123pan.com/s/00f0Vv-AVHq.html">carto脚本</a></p>
+<p>解压缩，进入文件夹，右键空白在终端打开。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x auto-carto-build.sh		<span class="comment">#赋予执行权限</span></span><br><span class="line">./auto-carto-build.sh				<span class="comment">#运行脚本</span></span><br></pre></td></tr></table></figure>
+
+<p>等待编译完成，时间较长，耐心等待。</p>
+<h3 id="下载cartographer"><a href="#下载cartographer" class="headerlink" title="下载cartographer"></a>下载cartographer</h3><h4 id="1-下载"><a href="#1-下载" class="headerlink" title="1. 下载"></a>1. 下载</h4><p><code>Ctrl+Alt+t</code>打开终端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#下载项目</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/xiangli0608/cartographer_detailed_comments_ws.git</span><br></pre></td></tr></table></figure>
+
+<p>将下载好的文件夹重命名为<code>cartographer_ws</code></p>
+<h4 id="2-编译-cartographer"><a href="#2-编译-cartographer" class="headerlink" title="2. 编译 cartographer"></a>2. <strong>编译 cartographer</strong></h4><p> 运行工作空间下的 <code>catkin_make.sh</code> 脚本。脚本中的内容其实就是<code>catkin_make_isolated --install --use-ninja</code>，外加s<code>ource install_isolated/setup.bash</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/cartographer_ws		<span class="comment">#进入目录</span></span><br><span class="line">./catkin_make.sh			<span class="comment">#进行编译</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：每修改一次源码，就要重新删除之前编译的文件，重新编译。若要测试，请先完成<a href="#test">测试</a>，修改完路径再编译，省点时间。</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./rm_build.sh			<span class="comment">#删除编译生成的文件</span></span><br><span class="line">./catkin_make.sh		<span class="comment">#进行重新编译</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>安装其他软件包</li>
+<li>时间很长~~~~</li>
 </ul>
-<p>在ROS中还有更多可用的软件包。你可以直接安装一个特定的软件包。  </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-包名</span><br></pre></td></tr></table></figure>
+<p>当没有出现报错，基本已经成功。</p>
+<div id="test"></div>
 
-<h3 id="3-设置环境"><a href="#3-设置环境" class="headerlink" title="3.设置环境"></a>3.设置环境</h3><p> 命令可以在每次启动新的shell窗口时很方便地为你自动source一下这个脚本：  </p>
-<p>终端输入：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source /opt/ros/noetic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-
-
-
-<p>安装已进入尾声，在终端输入<code>rosversion -d</code>，看到输出为<code>noetic</code>,则表示安装顺利成功。😄</p>
-<p>end~</p>
-]]></content>
-      <categories>
-        <category>ROS</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>ros</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ROS架构</title>
-    <url>/2023/10/20/ROS%E6%9E%B6%E6%9E%84/</url>
-    <content><![CDATA[<h3 id="1-ROS安装目录"><a href="#1-ROS安装目录" class="headerlink" title="1. ROS安装目录"></a>1. ROS安装目录</h3><p><em>ROS默认安装在</em><code>/opt/ros/noetic</code><em>路径下。</em></p>
-<p><img src="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41so1yzcj30ol0gd0vl.jpg" alt="5415"></p>
-<table>
-<thead>
-<tr>
-<th>bin文件夹</th>
-<th>放置的是一些在终端可执行的命令</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>etc文件夹</td>
-<td>存放ros和catkin配置文件</td>
-</tr>
-<tr>
-<td>include文件夹</td>
-<td>通过终端安装的功能包代码的头文件</td>
-</tr>
-<tr>
-<td>lib文件夹</td>
-<td>通过终端安装的一些可执行功能包的节点</td>
-</tr>
-<tr>
-<td>share文件夹</td>
-<td>cmake的配置文件、话题消息的具体格式、服务的接口信息等</td>
-</tr>
-</tbody></table>
-<p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41v7h6t0j30y80d5goe.jpg" alt="img"></p>
-<h3 id="2-ROS文件系统级"><a href="#2-ROS文件系统级" class="headerlink" title="2. ROS文件系统级"></a>2. ROS文件系统级</h3><p><img src="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41w6tngyj31040jdgo0.jpg" alt="img"></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">WorkSpace --- 自定义的工作空间</span><br><span class="line"></span><br><span class="line">    |--- build:编译空间，用于存放CMake和catkin的缓存信息、配置信息和其他中间文件。</span><br><span class="line"></span><br><span class="line">    |--- devel:开发空间，用于存放编译后生成的目标文件，包括头文件、动态&amp;静态链接库、可执行文件等。</span><br><span class="line"></span><br><span class="line">    |--- src: 源码</span><br><span class="line"></span><br><span class="line">        |-- package：功能包(ROS基本单元)包含多个节点、库与配置文件，包名所有字母小写，只能由字母、数字与下划线组成</span><br><span class="line"></span><br><span class="line">            |-- CMakeLists.txt 配置编译规则，比如源文件、依赖项、目标文件</span><br><span class="line"></span><br><span class="line">            |-- package.xml 包信息，比如:包名、版本、作者、依赖项...(以前版本是 manifest.xml)</span><br><span class="line"></span><br><span class="line">            |-- scripts 存储python文件</span><br><span class="line"></span><br><span class="line">            |-- src 存储C++源文件</span><br><span class="line"></span><br><span class="line">            |-- include 头文件</span><br><span class="line"></span><br><span class="line">            |-- msg 消息通信格式文件</span><br><span class="line"></span><br><span class="line">            |-- srv 服务通信格式文件</span><br><span class="line"></span><br><span class="line">            |-- action 动作格式文件</span><br><span class="line"></span><br><span class="line">            |-- launch 可一次性运行多个节点 </span><br><span class="line"></span><br><span class="line">            |-- config 配置信息</span><br><span class="line"></span><br><span class="line">        |-- CMakeLists.txt: 编译的基本配置</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-1-查看当前使用工作空间"><a href="#2-1-查看当前使用工作空间" class="headerlink" title="2.1. 查看当前使用工作空间"></a>2.1. 查看当前使用工作空间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$ROS_PACKAGE_PATH</span></span><br></pre></td></tr></table></figure>
-
-<p>显示：&#x2F;opt&#x2F;ros&#x2F;noetic&#x2F;share</p>
-<h4 id="2-2-创建工作空间"><a href="#2-2-创建工作空间" class="headerlink" title="2.2. 创建工作空间"></a>2.2. 创建工作空间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p ~/catkin_ws/src		<span class="comment">#在主文件夹下创建空文件夹</span></span><br><span class="line"><span class="built_in">cd</span> ~/catkin_ws/src          <span class="comment">#进入src文件夹</span></span><br><span class="line">catkin_init_workspace       <span class="comment">#初始化工作空间</span></span><br></pre></td></tr></table></figure>
-
-<p>此时 src 文件夹下将生成一个 CMakeLists.txt 文件。</p>
-<h4 id="2-3-编译工作空间"><a href="#2-3-编译工作空间" class="headerlink" title="2.3. 编译工作空间"></a>2.3. 编译工作空间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/							<span class="comment">#回到工作空间，编译必须在此文件夹下</span></span><br><span class="line">catkin_make                 <span class="comment">#进行编译</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="2-4-把工作空间添加到ROS环境变量"><a href="#2-4-把工作空间添加到ROS环境变量" class="headerlink" title="2.4. 把工作空间添加到ROS环境变量"></a>2.4. 把工作空间添加到ROS环境变量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source ~/catkin_ws/devel/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-
-<p>在每次编译之后要使用<code>source ~/catkin_ws/devel/setup.bash</code>指令刷新 devel 目录下的setup.bash文件，将生成的文件手动刷新到系统环境中，将此指令加入~&#x2F;.bashrc文件中，在终端启动时都会自动执行这个文件的命令，所以就不必在手动刷新环境。😅</p>
-<h4 id="2-5-创建ROS功能包"><a href="#2-5-创建ROS功能包" class="headerlink" title="2.5. 创建ROS功能包"></a>2.5. 创建ROS功能包</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/src</span><br><span class="line">catkin_create_pkg <span class="built_in">test</span> std_msgs rospy roscpp</span><br></pre></td></tr></table></figure>
-
-<p>使用<code>catkin_create_pkg</code>指令在src文件夹下创建一个名称为test的功能包，依赖于std_msgs rospy roscpp。</p>
-<h4 id="2-6-编译ROS功能包"><a href="#2-6-编译ROS功能包" class="headerlink" title="2.6. 编译ROS功能包"></a>2.6. 编译ROS功能包</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/							<span class="comment">#回到工作空间，编译必须在此文件夹下</span></span><br><span class="line">catkin_make                 <span class="comment">#进行编译</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-ROS计算图级"><a href="#3-ROS计算图级" class="headerlink" title="3. ROS计算图级"></a>3. ROS计算图级</h3><p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41x2gk9ij30gs0a1ta6.jpg" alt="img"></p>
-<p>rqt_graph能够创建一个显示当前系统运行情况的动态图形。ROS 分布式系统中不同进程需要进行数据交互，计算图可以以点对点的网络形式表现数据交互过程。rqt_graph是rqt程序包中的一部分。  </p>
-<p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41xyvci1j30y00vh411.jpg" alt="img"></p>
-<h3 id="4-ROS开源社区级"><a href="#4-ROS开源社区级" class="headerlink" title="4. ROS开源社区级"></a>4. ROS开源社区级</h3><p>通过独立的网络社区，用户可以共享和获取知识、算法和代码。开源社区的大力支持使ROS得以快速成长。</p>
+<h4 id="3-测试"><a href="#3-测试" class="headerlink" title="3. 测试"></a>3. 测试</h4><h5 id="3-1-下载bagfiles"><a href="#3-1-下载bagfiles" class="headerlink" title="3.1. 下载bagfiles"></a>3.1. 下载bagfiles</h5><p><a href="https://www.123pan.com/s/00f0Vv-QVHq.html">bagfiles下载链接</a></p>
+<p>这里都将使用李想大佬修改过的launch文件，进行建图。因为launch文件将会自动播放bagfile包，所以我们需要修改launch文件中的bagfile存在的路径，具体如下  </p>
+<h5 id="3-2-修改路径"><a href="#3-2-修改路径" class="headerlink" title="3.2. 修改路径"></a>3.2. 修改路径</h5><p>例如，我的路径是<code>/home/&lt;user name&gt;/Downloads/rslidar-outdoor-gps-notf.bag</code><img src="https://i0.wp.com/tvax1.sinaimg.cn/large/008BeftEly1hjht929vhfj30or0ghtbo.jpg" alt="img"></p>
+<p>在<code>~/cartographer_ws/src/cartographer_ros/cartographer_ros/launch/lx_rs16_2d_outdoor.launch</code>文件中，修改下图所选路径为你文件所的路径。</p>
+<p><img src="https://i0.wp.com/tvax4.sinaimg.cn/large/008BeftEly1hjhtafz64sj30ot0kh14u.jpg" alt="img"></p>
 <ul>
-<li><strong>发行版（Distribution）</strong> ROS发行版是可以独立安装、带有版本号的一系列综合功能包。ROS发行版像Linux发行版一样发挥类似的作用。这使得ROS软件安装更加容易，而且能够通过一个软件集合维持一致的版本。 </li>
-<li><strong>软件库（Repository）</strong> ROS依赖于共享开源代码与软件库的网站或主机服务，在这里不同的机构能够发布和分享各自的机器人软件与程序。 </li>
-<li><strong>ROS维基（ROS Wiki）</strong> ROS Wiki是用于记录有关ROS系统信息的主要论坛。任何人都可以注册账户、贡献自己的文件、提供更正或更新、编写教程以及其他行为。网址是<a href="https://link.zhihu.com/?target=http://wiki.ros.org/">http://wiki.ros.org/</a>。 </li>
-<li><strong>Bug提交系统（Bug Ticket System）</strong> 如果你发现问题或者想提出一个新功能，ROS提供这个资源去做这些。 </li>
-<li><strong>邮件列表（Mailing list）</strong> ROS用户邮件列表是关于ROS的主要交流渠道，能够像论坛一样交流从ROS软件更新到ROS软件使用中的各种疑问或信息。网址是<a href="https://link.zhihu.com/?target=http://lists.ros.org/">http://lists.ros.org/</a>。 </li>
-<li><strong>ROS问答（ROS Answer）</strong> 用户可以使用这个资源去提问题。网址是<a href="https://link.zhihu.com/?target=https://answers.ros.org/questions/">https://answers.ros.org/questions/</a>。</li>
-<li><strong>博客（Blog）</strong> 你可以看到定期更新、照片和新闻。网址是<a href="https://link.zhihu.com/?target=https://www.ros.org/news/">https://www.ros.org/news/</a>，不过博客系统已经退休，ROS社区取而代之，网址是<a href="https://link.zhihu.com/?target=https://discourse.ros.org/">https://discourse.ros.org/</a>。 为了便于理解，下图给出了ROS资源社区的组织形式。</li>
+<li><strong>修改完请重新编译。</strong></li>
 </ul>
-<hr>
-<p>几个学习网站</p>
-<ul>
-<li><a href="http://www.autolabor.com.cn/book/ROSTutorials/">Autolabor</a></li>
-<li><a href="https://www.guyuehome.com/">古月居</a></li>
-</ul>
-<hr>
-<h3 id="5-常用包管理指令"><a href="#5-常用包管理指令" class="headerlink" title="5. 常用包管理指令"></a>5. 常用包管理指令</h3><ol>
-<li><strong>rospack</strong></li>
-</ol>
-<p>查看某个 pkg 的地址：<code>rospack fand [package_name]</code></p>
-<ol start="2">
-<li><strong>roscd</strong></li>
-</ol>
-<p>跳转到某个 pkg 路径下：<code>roscd [package_name]</code></p>
-<ol start="3">
-<li><strong>rosls</strong></li>
-</ol>
-<p>列举某个 pkg 下的文件信息：<code>rosls [package_name]</code></p>
-<ol start="4">
-<li><strong>rosed</strong></li>
-</ol>
-<p>编辑 pkg 中的文件：<code>rosed [package_name] [file_name]</code></p>
-<ol start="5">
-<li><strong>catkin_create_pkg</strong></li>
-</ol>
-<p>创建一个 pkg：<code>catkin_create_pkg [package_name] [deps]</code></p>
-<ol start="6">
-<li><strong>rosdep</strong></li>
-</ol>
-<p>安装某个功能包所需依赖：<code>rosdep install [package_name]</code></p>
+<h5 id="3-3-测试"><a href="#3-3-测试" class="headerlink" title="3.3. 测试"></a>3.3. <strong>测试</strong></h5><p>我们通过play对应的bagfile可以模拟对应的传感器的数据，而不需要连接传感器硬件，非常方便。这里我们也将使用到别人已经录制好的bagfile。  </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/cartographer_ws		<span class="comment">#进入对应工作空间</span></span><br><span class="line"><span class="built_in">source</span> ./devel_isolated/setup.bash</span><br><span class="line">roslaunch cartographer_ros lx_rs16_2d_outdoor.launch</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://i0.wp.com/tvax4.sinaimg.cn/large/008BeftEly1hjhtbib1eaj30q10fj7cd.jpg" alt="img"></p>
+<p>参考链接</p>
+<p><a href="https://zhuanlan.zhihu.com/p/557101474?utm_id=0&utm_source=wechat_session&utm_medium=social&s_r=0">Cartographer 环境极速配置 + 2D 3D建图测试</a></p>
+<p><a href="https://github.com/xiangli0608/cartographer_detailed_comments_ws">cartographer 超详细注释代码</a></p>
 ]]></content>
       <categories>
         <category>ROS</category>
@@ -251,17 +154,130 @@
       </tags>
   </entry>
   <entry>
-    <title>怎么办</title>
-    <url>/2023/10/15/%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
-    <content><![CDATA[<p>​      今天已经是第15天，我又忍不住想要找你聊天，我心里好矛盾，明明那么想，又要强忍着不找你。心里好难受，我好想好想找你，好想站在你面前对你说，我爱你，我好喜欢你<span id="more"></span>，可我没有那个勇气，我特别怕你反感。</p>
-<p>​      这些天，我每天都会想到你，为此，我想让自己忙碌起来，终究无济于事，不知梦到多少次和你在一起，早上醒来，心中突来一阵落寞。可那天你的对回答不回我消息的态度真的好伤我心，如果我回头找你，我的爱是不是特别廉价…哎，矛盾，纠结真的好纠结。</p>
-<p>​      你会在意我吗？(｡•́__ก̀｡)</p>
+    <title>ROS架构</title>
+    <url>/2023/10/20/ROS%E6%9E%B6%E6%9E%84/</url>
+    <content><![CDATA[<h3 id="1-ROS安装目录"><a href="#1-ROS安装目录" class="headerlink" title="1. ROS安装目录"></a>1. ROS安装目录</h3><p><em>ROS默认安装在</em><code>/opt/ros/noetic</code><em>路径下。</em></p>
+<p><img src="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41so1yzcj30ol0gd0vl.jpg" alt="5415"></p>
+<table>
+<thead>
+<tr>
+<th>bin文件夹</th>
+<th>放置的是一些在终端可执行的命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>etc文件夹</td>
+<td>存放ros和catkin配置文件</td>
+</tr>
+<tr>
+<td>include文件夹</td>
+<td>通过终端安装的功能包代码的头文件</td>
+</tr>
+<tr>
+<td>lib文件夹</td>
+<td>通过终端安装的一些可执行功能包的节点</td>
+</tr>
+<tr>
+<td>share文件夹</td>
+<td>cmake的配置文件、话题消息的具体格式、服务的接口信息等</td>
+</tr>
+</tbody></table>
+<p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41v7h6t0j30y80d5goe.jpg" alt="img"></p>
+<h3 id="2-ROS文件系统级"><a href="#2-ROS文件系统级" class="headerlink" title="2. ROS文件系统级"></a>2. ROS文件系统级</h3><p><img src="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41w6tngyj31040jdgo0.jpg" alt="img"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">WorkSpace --- 自定义的工作空间</span><br><span class="line"></span><br><span class="line">    |--- build:编译空间，用于存放CMake和catkin的缓存信息、配置信息和其他中间文件。</span><br><span class="line"></span><br><span class="line">    |--- devel:开发空间，用于存放编译后生成的目标文件，包括头文件、动态&amp;静态链接库、可执行文件等。</span><br><span class="line"></span><br><span class="line">    |--- src: 源码</span><br><span class="line"></span><br><span class="line">        |-- package：功能包(ROS基本单元)包含多个节点、库与配置文件，包名所有字母小写，只能由字母、数字与下划线组成</span><br><span class="line"></span><br><span class="line">            |-- CMakeLists.txt 配置编译规则，比如源文件、依赖项、目标文件</span><br><span class="line"></span><br><span class="line">            |-- package.xml 包信息，比如:包名、版本、作者、依赖项...(以前版本是 manifest.xml)</span><br><span class="line"></span><br><span class="line">            |-- scripts 存储python文件</span><br><span class="line"></span><br><span class="line">            |-- src 存储C++源文件</span><br><span class="line"></span><br><span class="line">            |-- include 头文件</span><br><span class="line"></span><br><span class="line">            |-- msg 消息通信格式文件</span><br><span class="line"></span><br><span class="line">            |-- srv 服务通信格式文件</span><br><span class="line"></span><br><span class="line">            |-- action 动作格式文件</span><br><span class="line"></span><br><span class="line">            |-- launch 可一次性运行多个节点 </span><br><span class="line"></span><br><span class="line">            |-- config 配置信息</span><br><span class="line"></span><br><span class="line">        |-- CMakeLists.txt: 编译的基本配置</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-1-查看当前使用工作空间"><a href="#2-1-查看当前使用工作空间" class="headerlink" title="2.1. 查看当前使用工作空间"></a>2.1. 查看当前使用工作空间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$ROS_PACKAGE_PATH</span></span><br></pre></td></tr></table></figure>
+
+<p>显示：&#x2F;opt&#x2F;ros&#x2F;noetic&#x2F;share</p>
+<h4 id="2-2-创建工作空间"><a href="#2-2-创建工作空间" class="headerlink" title="2.2. 创建工作空间"></a>2.2. 创建工作空间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p ~/catkin_ws/src		<span class="comment">#在主文件夹下创建空文件夹</span></span><br><span class="line"><span class="built_in">cd</span> ~/catkin_ws/src          <span class="comment">#进入src文件夹</span></span><br><span class="line">catkin_init_workspace       <span class="comment">#初始化工作空间</span></span><br></pre></td></tr></table></figure>
+
+<p>此时 src 文件夹下将生成一个 CMakeLists.txt 文件。</p>
+<h4 id="2-3-编译工作空间"><a href="#2-3-编译工作空间" class="headerlink" title="2.3. 编译工作空间"></a>2.3. 编译工作空间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/				<span class="comment">#回到工作空间，编译必须在此文件夹下</span></span><br><span class="line">catkin_make                 <span class="comment">#进行编译</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-把工作空间添加到ROS环境变量"><a href="#2-4-把工作空间添加到ROS环境变量" class="headerlink" title="2.4. 把工作空间添加到ROS环境变量"></a>2.4. 把工作空间添加到ROS环境变量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source ~/catkin_ws/devel/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>在每次编译之后要使用<code>source ~/catkin_ws/devel/setup.bash</code>指令刷新 devel 目录下的setup.bash文件，将生成的文件手动刷新到系统环境中，将此指令加入~&#x2F;.bashrc文件中，在终端启动时都会自动执行这个文件的命令，所以就不必在手动刷新环境。😅</p>
+<h4 id="2-5-创建ROS功能包"><a href="#2-5-创建ROS功能包" class="headerlink" title="2.5. 创建ROS功能包"></a>2.5. 创建ROS功能包</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/src</span><br><span class="line">catkin_create_pkg <span class="built_in">test</span> std_msgs rospy roscpp</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>catkin_create_pkg</code>指令在src文件夹下创建一个名称为test的功能包，依赖于std_msgs rospy roscpp。</p>
+<h4 id="2-6-编译ROS功能包"><a href="#2-6-编译ROS功能包" class="headerlink" title="2.6. 编译ROS功能包"></a>2.6. 编译ROS功能包</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/				<span class="comment">#回到工作空间，编译必须在此文件夹下</span></span><br><span class="line">catkin_make                 <span class="comment">#进行编译</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-ROS计算图级"><a href="#3-ROS计算图级" class="headerlink" title="3. ROS计算图级"></a>3. ROS计算图级</h3><p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41x2gk9ij30gs0a1ta6.jpg" alt="img"></p>
+<p>rqt_graph能够创建一个显示当前系统运行情况的动态图形。ROS 分布式系统中不同进程需要进行数据交互，计算图可以以点对点的网络形式表现数据交互过程。rqt_graph是rqt程序包中的一部分。  </p>
+<p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41xyvci1j30y00vh411.jpg" alt="img"></p>
+<h3 id="4-ROS开源社区级"><a href="#4-ROS开源社区级" class="headerlink" title="4. ROS开源社区级"></a>4. ROS开源社区级</h3><p>通过独立的网络社区，用户可以共享和获取知识、算法和代码。开源社区的大力支持使ROS得以快速成长。</p>
+<ul>
+<li><strong>发行版（Distribution）</strong> ROS发行版是可以独立安装、带有版本号的一系列综合功能包。ROS发行版像Linux发行版一样发挥类似的作用。这使得ROS软件安装更加容易，而且能够通过一个软件集合维持一致的版本。 </li>
+<li><strong>软件库（Repository）</strong> ROS依赖于共享开源代码与软件库的网站或主机服务，在这里不同的机构能够发布和分享各自的机器人软件与程序。 </li>
+<li><strong>ROS维基（ROS Wiki）</strong> ROS Wiki是用于记录有关ROS系统信息的主要论坛。任何人都可以注册账户、贡献自己的文件、提供更正或更新、编写教程以及其他行为。网址是<a href="https://link.zhihu.com/?target=http://wiki.ros.org/">http://wiki.ros.org/</a>。 </li>
+<li><strong>Bug提交系统（Bug Ticket System）</strong> 如果你发现问题或者想提出一个新功能，ROS提供这个资源去做这些。 </li>
+<li><strong>邮件列表（Mailing list）</strong> ROS用户邮件列表是关于ROS的主要交流渠道，能够像论坛一样交流从ROS软件更新到ROS软件使用中的各种疑问或信息。网址是<a href="https://link.zhihu.com/?target=http://lists.ros.org/">http://lists.ros.org/</a>。 </li>
+<li><strong>ROS问答（ROS Answer）</strong> 用户可以使用这个资源去提问题。网址是<a href="https://link.zhihu.com/?target=https://answers.ros.org/questions/">https://answers.ros.org/questions/</a>。</li>
+<li><strong>博客（Blog）</strong> 你可以看到定期更新、照片和新闻。网址是<a href="https://link.zhihu.com/?target=https://www.ros.org/news/">https://www.ros.org/news/</a>，不过博客系统已经退休，ROS社区取而代之，网址是<a href="https://link.zhihu.com/?target=https://discourse.ros.org/">https://discourse.ros.org/</a>。 为了便于理解，下图给出了ROS资源社区的组织形式。</li>
+</ul>
+<hr>
+<p>几个学习网站</p>
+<ul>
+<li><a href="http://www.autolabor.com.cn/book/ROSTutorials/">Autolabor</a></li>
+<li><a href="https://www.guyuehome.com/">古月居</a></li>
+</ul>
+<hr>
+<h3 id="5-常用包管理指令"><a href="#5-常用包管理指令" class="headerlink" title="5. 常用包管理指令"></a>5. 常用包管理指令</h3><ol>
+<li><strong>rospack</strong></li>
+</ol>
+<p>查看某个 pkg 的地址：<code>rospack fand [package_name]</code></p>
+<ol start="2">
+<li><strong>roscd</strong></li>
+</ol>
+<p>跳转到某个 pkg 路径下：<code>roscd [package_name]</code></p>
+<ol start="3">
+<li><strong>rosls</strong></li>
+</ol>
+<p>列举某个 pkg 下的文件信息：<code>rosls [package_name]</code></p>
+<ol start="4">
+<li><strong>rosed</strong></li>
+</ol>
+<p>编辑 pkg 中的文件：<code>rosed [package_name] [file_name]</code></p>
+<ol start="5">
+<li><strong>catkin_create_pkg</strong></li>
+</ol>
+<p>创建一个 pkg：<code>catkin_create_pkg [package_name] [deps]</code></p>
+<ol start="6">
+<li><strong>rosdep</strong></li>
+</ol>
+<p>安装某个功能包所需依赖：<code>rosdep install [package_name]</code></p>
 ]]></content>
       <categories>
-        <category>她</category>
+        <category>ROS</category>
       </categories>
       <tags>
-        <tag>love</tag>
+        <tag>linux</tag>
+        <tag>ros</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>root</title>
+    <url>/2021/11/21/root/</url>
+    <content><![CDATA[<p><strong>Magisk</strong> : </p>
+<ul>
+<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
+<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
+
+<p>刷入boot</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
+<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Root</tag>
       </tags>
   </entry>
   <entry>
@@ -390,6 +406,123 @@
       </tags>
   </entry>
   <entry>
+    <title>浪漫</title>
+    <url>/2022/04/13/%E6%B5%AA%E6%BC%AB/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>爱自己才是终身浪漫的开始。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>我天天打扰你，总是给你发消息，找你聊天，不是因为我无聊，而是我在乎你，我天天问你在做什么，也不是我闲的慌，而是我惦记你，我对你好呢，也不是我亏欠你什么，而是你在我心里占据了很重要的位置，现在想想可能是我太主动了，让我觉得我的感情很廉价，但是你不知道，其实我不是一个主动的人，我也不是对谁都这样，只是因为那个人是你。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>我愿在泥潭里摸爬滚打，也要把我爱的人高高举起。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>遇见你，我的心上开出漫山遍野的花。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>真正的爱一定不是瞬间的感动，而必然是一种恒久的委身，彼此牺牲，彼此成就，彼此追逐。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>两个人吵架，先低头的那个人不一定是错的，但是一定是最在乎的。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>爱一个人就像在海滩上捡贝壳，不要捡最大的，也不要捡最漂亮的，就捡你最喜欢的那一个，捡到了就永远不要再去海滩。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>如果喜欢有理由，那么这个喜欢就是不纯正的。假如说我喜欢你的长发，哪天你剪了短发，我就不喜欢你了？不，不是这样的，我喜欢你就是喜欢你，没有什么为什么。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>海鸟跟鱼相爱，云与海浪交怀。你我明明未隔空与海，何故将欢喜紧揣，慌于表白。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>有意义的人等再久都不算久，爱只会在没见面的日子里更加浓烈。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>值不值得有意义吗 做我所想 爱我所爱 何必顾及流言蜚语。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>浪漫的不一定是夏天，而是有你的夏天。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>可是我几乎不主动聊天，不主动约人。能让我主动的人，真的是我打心眼里喜欢到不行的人。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>她最大的吸引力，就是你的想像力吧。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>拖着疲惫不堪的身体回到租房，妻子低声数落着柴米油盐贵，不知何时能剩下钱买房，顽皮的孩子看着电视剧，被你责备撵去写功课，年迈的父母体力不及当年，在乡下守着二亩地望子成龙，可你知道，你只是芸芸众生中的一个普通人，此时你骤然想起小时的理想：不是房子、车子，是成为一个科学家、是一个宇航员…你拿起筷子，夹起菜，不出所料，妻子做的菜盐又放多了，嘴里咸，心中咸，可是你吐不出来，因为你知道来之不易，不能浪费，这咸了的菜如你的人生一样：咸苦，你皱着眉头咬着牙咽了下去，而后摸了摸孩子的头，把不多的肉夹给他，让他刻苦学习，你的余生如接棒一般传给了孩子，希望他不被经济压迫生活，可以肆意的追寻梦想，不用品尝那咸苦的菜。</strong></em></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>安装ROS</title>
+    <url>/2023/10/19/%E5%AE%89%E8%A3%85ROS/</url>
+    <content><![CDATA[<h3 id="1-设置sources-list"><a href="#1-设置sources-list" class="headerlink" title="1.设置sources.list"></a>1.设置sources.list</h3><p>设置电脑添加以安装来自packages.ros.org的软件。  以下按照网络环境二选一即可，鉴于国内网络环境😓，推荐第二个清华源。</p>
+<p>终端输入：</p>
+<p>官方源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;echo &quot;deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>清华源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;. /etc/lsb-release &amp;&amp; echo &quot;deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-设置密钥"><a href="#2-设置密钥" class="headerlink" title="2.设置密钥"></a>2.设置密钥</h3><p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-key adv --keyserver <span class="string">&#x27;hkp://keyserver.ubuntu.com:80&#x27;</span> --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</span><br></pre></td></tr></table></figure>
+
+<p>若无法连接到密钥服务器，建议更换网络重试。</p>
+<h3 id="3-开始安装"><a href="#3-开始安装" class="headerlink" title="3.开始安装"></a>3.开始安装</h3><p>终端输入：</p>
+<ul>
+<li>更新软件索引apt</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+
+<p>本次安装ROS版本代号为<noetic>,此版本为最后一版ros1,官方将持续维护更新止2025年。</p>
+<ul>
+<li>安装完整桌面版</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-desktop-full</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装其他软件包</li>
+</ul>
+<p>在ROS中还有更多可用的软件包。你可以直接安装一个特定的软件包。  </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-包名</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-设置环境"><a href="#3-设置环境" class="headerlink" title="3.设置环境"></a>3.设置环境</h3><p> 命令可以在每次启动新的shell窗口时很方便地为你自动source一下这个脚本：  </p>
+<p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source /opt/ros/noetic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+
+
+<p>安装已进入尾声，在终端输入<code>rosversion -d</code>，看到输出为<code>noetic</code>,则表示安装顺利成功。😄</p>
+<p>end~</p>
+]]></content>
+      <categories>
+        <category>ROS</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ros</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>怎么办</title>
+    <url>/2023/10/15/%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
+    <content><![CDATA[<p>​      今天已经是第15天，我又忍不住想要找你聊天，我心里好矛盾，明明那么想，又要强忍着不找你。心里好难受，我好想好想找你，好想站在你面前对你说，我爱你，我好喜欢你<span id="more"></span>，可我没有那个勇气，我特别怕你反感。</p>
+<p>​      这些天，我每天都会想到你，为此，我想让自己忙碌起来，终究无济于事，不知梦到多少次和你在一起，早上醒来，心中突来一阵落寞。可那天你的对回答不回我消息的态度真的好伤我心，如果我回头找你，我的爱是不是特别廉价…哎，矛盾，纠结真的好纠结。</p>
+<p>​      你会在意我吗？(｡•́__ก̀｡)</p>
+]]></content>
+      <categories>
+        <category>她</category>
+      </categories>
+      <tags>
+        <tag>love</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>文艺</title>
     <url>/2023/06/21/%E6%96%87%E8%89%BA/</url>
     <content><![CDATA[<blockquote>
@@ -448,130 +581,6 @@
       <tags>
         <tag>文学</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>root</title>
-    <url>/2021/11/21/root/</url>
-    <content><![CDATA[<p><strong>Magisk</strong> : </p>
-<ul>
-<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
-<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
-
-<p>刷入boot</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
-<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>Root</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>思想</title>
-    <url>/2021/09/01/%E6%80%9D%E6%83%B3/</url>
-    <content><![CDATA[<blockquote>
-<p><em><strong>有亡国，有亡天下。亡国与亡天下奚辨？曰：易姓改号，谓之亡国。仁义充塞，而至率兽食人，人将相食，谓之亡天下。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——《日知录·正始》</p>
-</blockquote>
-<blockquote>
-<p><em><strong>少年自有少年志，当论天下不平事，若至小人当道时，拔剑三尺敢换日</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>爱国很容易，只需要付出口水，爱别人太难，那是要付出行动的。</strong></em></p>
-</blockquote>
-<blockquote>
-<p>***愚昧才是一切的根源，愚昧是因为一直拒绝被启蒙，如果帝国主义的侵略想一把匕首，那么愚昧封建就是民族的毒药 ***</p>
-</blockquote>
-<blockquote>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——胡适</p> 
-</blockquote>
-<blockquote>
-<p><em><strong>今日若我冷眼旁观，他日祸临己身，则无人为我摇旗呐喊</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>战争结束后，政治家握手言和，资本家赚的盆满钵满，只有母亲含泪埋葬自己的孩子</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>迟来的阳光救不了枯萎的向日葵</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>如果孩子的出生是为了继承自己的劳碌，恐慌，贫困，那么，不生也是善良</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>世界上最无耻、最阴险、最歹毒的赞美，就是用穷人的艰辛和苦难，当做励志故事愚弄底层人。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>想要毁掉一个民族，抽调男人身上的脊梁和血气，拿掉女人身上的善良和廉耻</strong></em></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>摘录</category>
-      </categories>
-      <tags>
-        <tag>freedom</tag>
-        <tag>随记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>浪漫</title>
-    <url>/2022/04/13/%E6%B5%AA%E6%BC%AB/</url>
-    <content><![CDATA[<blockquote>
-<p><em><strong>爱自己才是终身浪漫的开始。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>我天天打扰你，总是给你发消息，找你聊天，不是因为我无聊，而是我在乎你，我天天问你在做什么，也不是我闲的慌，而是我惦记你，我对你好呢，也不是我亏欠你什么，而是你在我心里占据了很重要的位置，现在想想可能是我太主动了，让我觉得我的感情很廉价，但是你不知道，其实我不是一个主动的人，我也不是对谁都这样，只是因为那个人是你。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>我愿在泥潭里摸爬滚打，也要把我爱的人高高举起。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>遇见你，我的心上开出漫山遍野的花。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>真正的爱一定不是瞬间的感动，而必然是一种恒久的委身，彼此牺牲，彼此成就，彼此追逐。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>两个人吵架，先低头的那个人不一定是错的，但是一定是最在乎的。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>爱一个人就像在海滩上捡贝壳，不要捡最大的，也不要捡最漂亮的，就捡你最喜欢的那一个，捡到了就永远不要再去海滩。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>如果喜欢有理由，那么这个喜欢就是不纯正的。假如说我喜欢你的长发，哪天你剪了短发，我就不喜欢你了？不，不是这样的，我喜欢你就是喜欢你，没有什么为什么。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>海鸟跟鱼相爱，云与海浪交怀。你我明明未隔空与海，何故将欢喜紧揣，慌于表白。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>有意义的人等再久都不算久，爱只会在没见面的日子里更加浓烈。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>值不值得有意义吗 做我所想 爱我所爱 何必顾及流言蜚语。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>浪漫的不一定是夏天，而是有你的夏天。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>可是我几乎不主动聊天，不主动约人。能让我主动的人，真的是我打心眼里喜欢到不行的人。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>她最大的吸引力，就是你的想像力吧。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>拖着疲惫不堪的身体回到租房，妻子低声数落着柴米油盐贵，不知何时能剩下钱买房，顽皮的孩子看着电视剧，被你责备撵去写功课，年迈的父母体力不及当年，在乡下守着二亩地望子成龙，可你知道，你只是芸芸众生中的一个普通人，此时你骤然想起小时的理想：不是房子、车子，是成为一个科学家、是一个宇航员…你拿起筷子，夹起菜，不出所料，妻子做的菜盐又放多了，嘴里咸，心中咸，可是你吐不出来，因为你知道来之不易，不能浪费，这咸了的菜如你的人生一样：咸苦，你皱着眉头咬着牙咽了下去，而后摸了摸孩子的头，把不多的肉夹给他，让他刻苦学习，你的余生如接棒一般传给了孩子，希望他不被经济压迫生活，可以肆意的追寻梦想，不用品尝那咸苦的菜。</strong></em></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>摘录</category>
-      </categories>
   </entry>
   <entry>
     <title>短信轰炸</title>
@@ -637,6 +646,52 @@
       </categories>
       <tags>
         <tag>love</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>思想</title>
+    <url>/2021/09/01/%E6%80%9D%E6%83%B3/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>有亡国，有亡天下。亡国与亡天下奚辨？曰：易姓改号，谓之亡国。仁义充塞，而至率兽食人，人将相食，谓之亡天下。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——《日知录·正始》</p>
+</blockquote>
+<blockquote>
+<p><em><strong>少年自有少年志，当论天下不平事，若至小人当道时，拔剑三尺敢换日</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>爱国很容易，只需要付出口水，爱别人太难，那是要付出行动的。</strong></em></p>
+</blockquote>
+<blockquote>
+<p>***愚昧才是一切的根源，愚昧是因为一直拒绝被启蒙，如果帝国主义的侵略想一把匕首，那么愚昧封建就是民族的毒药 ***</p>
+</blockquote>
+<blockquote>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——胡适</p> 
+</blockquote>
+<blockquote>
+<p><em><strong>今日若我冷眼旁观，他日祸临己身，则无人为我摇旗呐喊</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>战争结束后，政治家握手言和，资本家赚的盆满钵满，只有母亲含泪埋葬自己的孩子</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>迟来的阳光救不了枯萎的向日葵</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>如果孩子的出生是为了继承自己的劳碌，恐慌，贫困，那么，不生也是善良</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>世界上最无耻、最阴险、最歹毒的赞美，就是用穷人的艰辛和苦难，当做励志故事愚弄底层人。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>想要毁掉一个民族，抽调男人身上的脊梁和血气，拿掉女人身上的善良和廉耻</strong></em></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+      <tags>
+        <tag>freedom</tag>
+        <tag>随记</tag>
       </tags>
   </entry>
   <entry>
