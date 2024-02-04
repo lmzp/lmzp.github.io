@@ -1,6 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>root</title>
+    <url>/2021/11/21/root/</url>
+    <content><![CDATA[<p><strong>Magisk</strong> : </p>
+<ul>
+<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
+<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
+
+<p>刷入boot</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
+<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Root</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SLAM 之 cartographer 安装</title>
+    <url>/2023/11/03/SLAM-%E4%B9%8B-cartographer-%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<ul>
+<li><strong>安装环境</strong>：Ubuntu20.04-&gt;ROS-&lt;noetic&gt;</li>
+</ul>
+<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><h4 id="1-基本的"><a href="#1-基本的" class="headerlink" title="1. 基本的"></a>1. 基本的</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install -y \</span><br><span class="line">    cmake \</span><br><span class="line">    g++ \</span><br><span class="line">    git \</span><br><span class="line">    google-mock \</span><br><span class="line">    libboost-all-dev \</span><br><span class="line">    libcairo2-dev \</span><br><span class="line">    libeigen3-dev \</span><br><span class="line">    libgflags-dev \</span><br><span class="line">    libgoogle-glog-dev \</span><br><span class="line">    liblua5.2-dev \</span><br><span class="line">    libsuitesparse-dev \</span><br><span class="line">    libwebp-dev \</span><br><span class="line">    ninja-build \</span><br><span class="line">    protobuf-compiler \</span><br><span class="line">    python3-sphinx</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-对于cartographer环境安装脚本"><a href="#2-对于cartographer环境安装脚本" class="headerlink" title="2. 对于cartographer环境安装脚本"></a>2. 对于cartographer环境安装脚本</h4><p>下载压缩包<a href="https://www.123pan.com/s/00f0Vv-AVHq.html">carto脚本</a></p>
+<p>解压缩，进入文件夹，右键空白在终端打开。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x auto-carto-build.sh		<span class="comment">#赋予执行权限</span></span><br><span class="line">./auto-carto-build.sh				<span class="comment">#运行脚本</span></span><br></pre></td></tr></table></figure>
+
+<p>等待编译完成，时间较长，耐心等待。</p>
+<h3 id="下载cartographer"><a href="#下载cartographer" class="headerlink" title="下载cartographer"></a>下载cartographer</h3><h4 id="1-下载"><a href="#1-下载" class="headerlink" title="1. 下载"></a>1. 下载</h4><p><code>Ctrl+Alt+t</code>打开终端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#下载项目</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/xiangli0608/cartographer_detailed_comments_ws.git</span><br></pre></td></tr></table></figure>
+
+<p>将下载好的文件夹重命名为<code>cartographer_ws</code></p>
+<h4 id="2-编译-cartographer"><a href="#2-编译-cartographer" class="headerlink" title="2. 编译 cartographer"></a>2. <strong>编译 cartographer</strong></h4><p> 运行工作空间下的 <code>catkin_make.sh</code> 脚本。脚本中的内容其实就是<code>catkin_make_isolated --install --use-ninja</code>，外加s<code>ource install_isolated/setup.bash</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/cartographer_ws		<span class="comment">#进入目录</span></span><br><span class="line">./catkin_make.sh			<span class="comment">#进行编译</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：每修改一次源码，就要重新删除之前编译的文件，重新编译。若要测试，请先完成<a href="#test">测试</a>，修改完路径再编译，省点时间。</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./rm_build.sh			<span class="comment">#删除编译生成的文件</span></span><br><span class="line">./catkin_make.sh		<span class="comment">#进行重新编译</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>时间很长~~~~</li>
+</ul>
+<p>当没有出现报错，基本已经成功。</p>
+<div id="test"></div>
+
+<h4 id="3-测试"><a href="#3-测试" class="headerlink" title="3. 测试"></a>3. 测试</h4><h5 id="3-1-下载bagfiles"><a href="#3-1-下载bagfiles" class="headerlink" title="3.1. 下载bagfiles"></a>3.1. 下载bagfiles</h5><p><a href="https://www.123pan.com/s/00f0Vv-QVHq.html">bagfiles下载链接</a></p>
+<p>这里都将使用李想大佬修改过的launch文件，进行建图。因为launch文件将会自动播放bagfile包，所以我们需要修改launch文件中的bagfile存在的路径，具体如下  </p>
+<h5 id="3-2-修改路径"><a href="#3-2-修改路径" class="headerlink" title="3.2. 修改路径"></a>3.2. 修改路径</h5><p>例如，我的路径是<code>/home/&lt;user name&gt;/Downloads/rslidar-outdoor-gps-notf.bag</code><img src="https://i0.wp.com/tvax1.sinaimg.cn/large/008BeftEly1hjht929vhfj30or0ghtbo.jpg" alt="img"></p>
+<p>在<code>~/cartographer_ws/src/cartographer_ros/cartographer_ros/launch/lx_rs16_2d_outdoor.launch</code>文件中，修改下图所选路径为你文件所的路径。</p>
+<p><img src="https://i0.wp.com/tvax4.sinaimg.cn/large/008BeftEly1hjhtafz64sj30ot0kh14u.jpg" alt="img"></p>
+<ul>
+<li><strong>修改完请重新编译。</strong></li>
+</ul>
+<h5 id="3-3-测试"><a href="#3-3-测试" class="headerlink" title="3.3. 测试"></a>3.3. <strong>测试</strong></h5><p>我们通过play对应的bagfile可以模拟对应的传感器的数据，而不需要连接传感器硬件，非常方便。这里我们也将使用到别人已经录制好的bagfile。  </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/cartographer_ws		<span class="comment">#进入对应工作空间</span></span><br><span class="line"><span class="built_in">source</span> ./devel_isolated/setup.bash</span><br><span class="line">roslaunch cartographer_ros lx_rs16_2d_outdoor.launch</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://i0.wp.com/tvax4.sinaimg.cn/large/008BeftEly1hjhtbib1eaj30q10fj7cd.jpg" alt="img"></p>
+<p>参考链接</p>
+<p><a href="https://zhuanlan.zhihu.com/p/557101474?utm_id=0&utm_source=wechat_session&utm_medium=social&s_r=0">Cartographer 环境极速配置 + 2D 3D建图测试</a></p>
+<p><a href="https://github.com/xiangli0608/cartographer_detailed_comments_ws">cartographer 超详细注释代码</a></p>
+]]></content>
+      <categories>
+        <category>ROS</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ros</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ROS与stm32通信</title>
     <url>/2023/12/14/ROS%E4%B8%8Estm32%E9%80%9A%E4%BF%A1/</url>
     <content><![CDATA[<h3 id="rosserial"><a href="#rosserial" class="headerlink" title="rosserial"></a>rosserial</h3><h4 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h4><p>ROS提供的一种嵌入式节点和运行在主控PC上的ros master通信的方式，使得在嵌入式节点上编写、运行ros节点成为可能，主要用于转接IO和各类传感器，运行底层控制算法。要使用rosserial，需要分别在嵌入式板卡和主控PC上部署。</p>
@@ -58,28 +138,77 @@
       </tags>
   </entry>
   <entry>
-    <title>root</title>
-    <url>/2021/11/21/root/</url>
-    <content><![CDATA[<p><strong>Magisk</strong> : </p>
-<ul>
-<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
-<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
-
-<p>刷入boot</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
-<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
-]]></content>
+    <title>函数指针与回调函数</title>
+    <url>/2024/01/18/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E4%B8%8E%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h3 id="函数指针-Function-Pointer"><a href="#函数指针-Function-Pointer" class="headerlink" title="函数指针(Function Pointer):"></a>函数指针(Function Pointer):</h3><blockquote>
+<p>函数指针是指向函数的指针变量。它们允许你将函数的地址存储在一个指针变量中，从而可以通过该指针调用该函数。函数指针的声明类似于函数声明，但需要在前面加上一个指针声明符(*)。</p>
+</blockquote>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个函数原型</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 声明一个函数指针，与 add 函数具有相同的签名</span></span><br><span class="line">    <span class="type">int</span> (*ptr)(<span class="type">int</span>, <span class="type">int</span>);</span><br><span class="line">    <span class="comment">// 将 add 函数的地址赋给指针变量</span></span><br><span class="line">    ptr = add;</span><br><span class="line">    <span class="comment">// 通过函数指针调用函数</span></span><br><span class="line">    <span class="type">int</span> result = ptr(<span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Result: %d\n&quot;</span>, result);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="回调函数-Callback-Function"><a href="#回调函数-Callback-Function" class="headerlink" title="回调函数(Callback Function):"></a>回调函数(Callback Function):</h3><blockquote>
+<p>回调函数是一种在程序执行期间通过函数指针调用的函数。通常，你将函数的地址传递给另一个函数，并在需要的时候由另一个函数调用。回调函数允许你在某些事件发生时执行特定的操作，从而增强程序的灵活性。</p>
+</blockquote>
+<p>函数指针变量可以作为某个函数的参数来使用的。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//回调函数，求和</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    接受回调函数作为参数的函数</span></span><br><span class="line"><span class="comment">    int (*b)(int,int)：函数指针变量，将函数作为变量插入新的函数中调用。例如此示例中的&quot;sum&quot;函数作为变量。</span></span><br><span class="line"><span class="comment">    Process(sum,3,4)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">Process</span><span class="params">(<span class="type">int</span> (*b)(<span class="type">int</span>,<span class="type">int</span>),<span class="type">int</span> x,<span class="type">int</span> y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d + a\n&quot;</span>,b(x,y));</span><br><span class="line">    <span class="keyword">return</span> b(x,y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> num = <span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> den = <span class="number">2</span>;</span><br><span class="line">    <span class="comment">//定义函数指针变量，指针指向函数地址；</span></span><br><span class="line">    <span class="type">int</span> (*p)(<span class="type">int</span>,<span class="type">int</span>);</span><br><span class="line">    p=sum;</span><br><span class="line">    <span class="type">int</span> c = p(num,den);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,c);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,Process(p,<span class="number">3</span>,<span class="number">4</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">7</span> + a</span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>Android</category>
+        <category>单片机</category>
       </categories>
       <tags>
-        <tag>Android</tag>
-        <tag>Root</tag>
+        <tag>stm32</tag>
+        <tag>嵌入式</tag>
+        <tag>c/c++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安装ROS</title>
+    <url>/2023/10/19/%E5%AE%89%E8%A3%85ROS/</url>
+    <content><![CDATA[<h3 id="1-设置sources-list"><a href="#1-设置sources-list" class="headerlink" title="1.设置sources.list"></a>1.设置sources.list</h3><p>设置电脑添加以安装来自packages.ros.org的软件。  以下按照网络环境二选一即可，鉴于国内网络环境😓，推荐第二个清华源。</p>
+<p>终端输入：</p>
+<p>官方源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;echo &quot;deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>清华源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;. /etc/lsb-release &amp;&amp; echo &quot;deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-设置密钥"><a href="#2-设置密钥" class="headerlink" title="2.设置密钥"></a>2.设置密钥</h3><p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-key adv --keyserver <span class="string">&#x27;hkp://keyserver.ubuntu.com:80&#x27;</span> --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</span><br></pre></td></tr></table></figure>
+
+<p>若无法连接到密钥服务器，建议更换网络重试。</p>
+<h3 id="3-开始安装"><a href="#3-开始安装" class="headerlink" title="3.开始安装"></a>3.开始安装</h3><p>终端输入：</p>
+<ul>
+<li>更新软件索引apt</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+
+<p>本次安装ROS版本代号为<noetic>,此版本为最后一版ros1,官方将持续维护更新止2025年。</p>
+<ul>
+<li>安装完整桌面版</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-desktop-full</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装其他软件包</li>
+</ul>
+<p>在ROS中还有更多可用的软件包。你可以直接安装一个特定的软件包。  </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-包名</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-设置环境"><a href="#3-设置环境" class="headerlink" title="3.设置环境"></a>3.设置环境</h3><p> 命令可以在每次启动新的shell窗口时很方便地为你自动source一下这个脚本：  </p>
+<p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source /opt/ros/noetic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+
+
+<p>安装已进入尾声，在终端输入<code>rosversion -d</code>，看到输出为<code>noetic</code>,则表示安装顺利成功。😄</p>
+<p>end~</p>
+]]></content>
+      <categories>
+        <category>ROS</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ros</tag>
       </tags>
   </entry>
   <entry>
@@ -185,6 +314,52 @@
       </tags>
   </entry>
   <entry>
+    <title>思想</title>
+    <url>/2021/09/01/%E6%80%9D%E6%83%B3/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>有亡国，有亡天下。亡国与亡天下奚辨？曰：易姓改号，谓之亡国。仁义充塞，而至率兽食人，人将相食，谓之亡天下。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——《日知录·正始》</p>
+</blockquote>
+<blockquote>
+<p><em><strong>少年自有少年志，当论天下不平事，若至小人当道时，拔剑三尺敢换日</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>爱国很容易，只需要付出口水，爱别人太难，那是要付出行动的。</strong></em></p>
+</blockquote>
+<blockquote>
+<p>***愚昧才是一切的根源，愚昧是因为一直拒绝被启蒙，如果帝国主义的侵略想一把匕首，那么愚昧封建就是民族的毒药 ***</p>
+</blockquote>
+<blockquote>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——胡适</p> 
+</blockquote>
+<blockquote>
+<p><em><strong>今日若我冷眼旁观，他日祸临己身，则无人为我摇旗呐喊</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>战争结束后，政治家握手言和，资本家赚的盆满钵满，只有母亲含泪埋葬自己的孩子</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>迟来的阳光救不了枯萎的向日葵</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>如果孩子的出生是为了继承自己的劳碌，恐慌，贫困，那么，不生也是善良</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>世界上最无耻、最阴险、最歹毒的赞美，就是用穷人的艰辛和苦难，当做励志故事愚弄底层人。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>想要毁掉一个民族，抽调男人身上的脊梁和血气，拿掉女人身上的善良和廉耻</strong></em></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+      <tags>
+        <tag>随记</tag>
+        <tag>freedom</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>STM32与NBIOT智慧农业</title>
     <url>/2023/07/21/STM32%E4%B8%8ENBIOT%E6%99%BA%E6%85%A7%E5%86%9C%E4%B8%9A/</url>
     <content><![CDATA[<h2 id="整体介绍"><a href="#整体介绍" class="headerlink" title="整体介绍"></a>整体介绍</h2><p> <strong>1. 主控</strong><br>&emsp;&emsp;采用搭载STM32L4R5ZI低功耗芯片的ST官方NUCLEO-L4R5ZI开发板，使用stm32cubeMX配置，HAL库开发。<br><img src="https://i0.wp.com/tvax4.sinaimg.cn/large/008BeftEly1hj3a2ybyvpj30i90hrgtl.jpg" alt="l4r5zi"></p>
@@ -280,6 +455,140 @@
         <tag>stm32</tag>
         <tag>嵌入式</tag>
         <tag>物联网</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浪漫</title>
+    <url>/2022/04/13/%E6%B5%AA%E6%BC%AB/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>风吹哪页读哪页，谁人爱我我爱谁。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>大家都说我性子很慢，其实我也可以很快的，比如后面有狗在追，或者你在前面等。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>人终将被少年不可得之物而困惑一生。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>天在将黑未黑时最美，人在将爱未爱时最真。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>夜里有腐烂的梦，梦里有重复的人。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>爱自己才是终身浪漫的开始。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>我天天打扰你，总是给你发消息，找你聊天，不是因为我无聊，而是我在乎你，我天天问你在做什么，也不是我闲的慌，而是我惦记你，我对你好呢，也不是我亏欠你什么，而是你在我心里占据了很重要的位置，现在想想可能是我太主动了，让我觉得我的感情很廉价，但是你不知道，其实我不是一个主动的人，我也不是对谁都这样，只是因为那个人是你。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>我愿在泥潭里摸爬滚打，也要把我爱的人高高举起。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>遇见你，我的心上开出漫山遍野的花。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>真正的爱一定不是瞬间的感动，而必然是一种恒久的委身，彼此牺牲，彼此成就，彼此追逐。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>两个人吵架，先低头的那个人不一定是错的，但是一定是最在乎的。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>爱一个人就像在海滩上捡贝壳，不要捡最大的，也不要捡最漂亮的，就捡你最喜欢的那一个，捡到了就永远不要再去海滩。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>如果喜欢有理由，那么这个喜欢就是不纯正的。假如说我喜欢你的长发，哪天你剪了短发，我就不喜欢你了？不，不是这样的，我喜欢你就是喜欢你，没有什么为什么。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>海鸟跟鱼相爱，云与海浪交怀。你我明明未隔空与海，何故将欢喜紧揣，慌于表白。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>有意义的人等再久都不算久，爱只会在没见面的日子里更加浓烈。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>值不值得有意义吗 做我所想 爱我所爱 何必顾及流言蜚语。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>浪漫的不一定是夏天，而是有你的夏天。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>可是我几乎不主动聊天，不主动约人。能让我主动的人，真的是我打心眼里喜欢到不行的人。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>她最大的吸引力，就是你的想像力吧。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>拖着疲惫不堪的身体回到租房，妻子低声数落着柴米油盐贵，不知何时能剩下钱买房，顽皮的孩子看着电视剧，被你责备撵去写功课，年迈的父母体力不及当年，在乡下守着二亩地望子成龙，可你知道，你只是芸芸众生中的一个普通人，此时你骤然想起小时的理想：不是房子、车子，是成为一个科学家、是一个宇航员…你拿起筷子，夹起菜，不出所料，妻子做的菜盐又放多了，嘴里咸，心中咸，可是你吐不出来，因为你知道来之不易，不能浪费，这咸了的菜如你的人生一样：咸苦，你皱着眉头咬着牙咽了下去，而后摸了摸孩子的头，把不多的肉夹给他，让他刻苦学习，你的余生如接棒一般传给了孩子，希望他不被经济压迫生活，可以肆意的追寻梦想，不用品尝那咸苦的菜。</strong></em></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>文艺</title>
+    <url>/2023/06/21/%E6%96%87%E8%89%BA/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>人间甚好，无我亦是，此生尽此时，来世不来生。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>昨日看花花灼灼，今朝看花花欲落。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>时间照例无情的向前走，光阴斑驳从树荫中更替，我在无人之地无声的死亡腐烂。为终将枯萎的花供养。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>落泪是有原因的，眼里是你的力量，不是弱点。</strong></em></p>
+</blockquote>
+<blockquote>
+<p>**<em>人真是奇怪的动物，群居就有矛盾，独处就会寂寞孤单。</em> **</p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——电影《寂寞的哨所》</p> 
+</blockquote>
+<blockquote>
+<p><em><strong>Your time is limited, so don’t waste it living someone else’s life.</strong></em></p>
+</blockquote>
+<blockquote>
+<p style="text-align: right; font-style: italic; font-weight: bold;">Steve Jobs</p> 
+</blockquote>
+<blockquote>
+<p><em><strong>荒凉白日里，我被禁锢在陈朽的黑白梦境中，这里乌云蔽日，寸草不生，万物都荒芜。直到你从荒原中走过。你踏过之处，世界开始苏醒，我看见野花压满枝头沿途狂野生长，白雪滑落树梢寒梅怒放，我看见归鸟鸣蝉，烈日骄阳。我看见白日梦的尽头是你，从此天光大亮。你是我全部的渴望与幻想。</strong></em></p>
+</blockquote>
+<blockquote>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——《白日梦我》</p>
+</blockquote>
+<blockquote>
+<p><em><strong>岁月落下的苍白，落下的一份孤独，只能静坐在时光的角落，用文字去祭奠那些逝去的光阴，那千载难寻的梦境，早被傍晚的余辉扯成了彩色的幻觉，留在清静空灵世界上，寻一处灵魂的栖息地，诉说一段诗歌年华。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>如花似叶，岁岁年年，共占春风</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>飞光飞光，劝尔一杯酒，吾不识青天高，黄地厚，唯见月寒日暖，来煎人寿</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>孤独是一个人的狂欢，狂欢是一群人的孤独</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>也许我该追随黄昏而去，而不是期待明日的清晨</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>思念从不会如惊涛骇浪般汹涌而来，却也不妨碍它会像浪花一样从不间断一遍遍拍打着情绪</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>人活着就是有意义的，生而平凡，各有各路，我们总是把幸福定为终点，怎么说呢，当代人的欲望是无尽的，因为这样，我们很难满足，因为这样，幸福何谈？如果我们生下来时，物质就很困难，我们将很容易幸福，我穷其一生的敬，善，忠，义，使我这一遭没白走，希望以后也如此，我很渺小,你很平凡，愿芸芸众生，各有所安。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>你我目标本就不是罗马，何不期待今晚的风和月光。</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>惟江上之清风，与山间之明月，耳得之而为声，目遇之而成色，取之无禁，用之不竭，是造物者之无尽藏也，而吾与子之所共适。</strong></em></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+      <tags>
+        <tag>文学</tag>
       </tags>
   </entry>
   <entry>
@@ -403,243 +712,51 @@
         <category>随想</category>
       </categories>
       <tags>
-        <tag>freedom</tag>
         <tag>随记</tag>
+        <tag>freedom</tag>
       </tags>
   </entry>
   <entry>
-    <title>SLAM 之 cartographer 安装</title>
-    <url>/2023/11/03/SLAM-%E4%B9%8B-cartographer-%E5%AE%89%E8%A3%85/</url>
-    <content><![CDATA[<ul>
-<li><strong>安装环境</strong>：Ubuntu20.04-&gt;ROS-&lt;noetic&gt;</li>
-</ul>
-<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><h4 id="1-基本的"><a href="#1-基本的" class="headerlink" title="1. 基本的"></a>1. 基本的</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install -y \</span><br><span class="line">    cmake \</span><br><span class="line">    g++ \</span><br><span class="line">    git \</span><br><span class="line">    google-mock \</span><br><span class="line">    libboost-all-dev \</span><br><span class="line">    libcairo2-dev \</span><br><span class="line">    libeigen3-dev \</span><br><span class="line">    libgflags-dev \</span><br><span class="line">    libgoogle-glog-dev \</span><br><span class="line">    liblua5.2-dev \</span><br><span class="line">    libsuitesparse-dev \</span><br><span class="line">    libwebp-dev \</span><br><span class="line">    ninja-build \</span><br><span class="line">    protobuf-compiler \</span><br><span class="line">    python3-sphinx</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-对于cartographer环境安装脚本"><a href="#2-对于cartographer环境安装脚本" class="headerlink" title="2. 对于cartographer环境安装脚本"></a>2. 对于cartographer环境安装脚本</h4><p>下载压缩包<a href="https://www.123pan.com/s/00f0Vv-AVHq.html">carto脚本</a></p>
-<p>解压缩，进入文件夹，右键空白在终端打开。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x auto-carto-build.sh		<span class="comment">#赋予执行权限</span></span><br><span class="line">./auto-carto-build.sh				<span class="comment">#运行脚本</span></span><br></pre></td></tr></table></figure>
-
-<p>等待编译完成，时间较长，耐心等待。</p>
-<h3 id="下载cartographer"><a href="#下载cartographer" class="headerlink" title="下载cartographer"></a>下载cartographer</h3><h4 id="1-下载"><a href="#1-下载" class="headerlink" title="1. 下载"></a>1. 下载</h4><p><code>Ctrl+Alt+t</code>打开终端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#下载项目</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/xiangli0608/cartographer_detailed_comments_ws.git</span><br></pre></td></tr></table></figure>
-
-<p>将下载好的文件夹重命名为<code>cartographer_ws</code></p>
-<h4 id="2-编译-cartographer"><a href="#2-编译-cartographer" class="headerlink" title="2. 编译 cartographer"></a>2. <strong>编译 cartographer</strong></h4><p> 运行工作空间下的 <code>catkin_make.sh</code> 脚本。脚本中的内容其实就是<code>catkin_make_isolated --install --use-ninja</code>，外加s<code>ource install_isolated/setup.bash</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/cartographer_ws		<span class="comment">#进入目录</span></span><br><span class="line">./catkin_make.sh			<span class="comment">#进行编译</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：每修改一次源码，就要重新删除之前编译的文件，重新编译。若要测试，请先完成<a href="#test">测试</a>，修改完路径再编译，省点时间。</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./rm_build.sh			<span class="comment">#删除编译生成的文件</span></span><br><span class="line">./catkin_make.sh		<span class="comment">#进行重新编译</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>时间很长~~~~</li>
-</ul>
-<p>当没有出现报错，基本已经成功。</p>
-<div id="test"></div>
-
-<h4 id="3-测试"><a href="#3-测试" class="headerlink" title="3. 测试"></a>3. 测试</h4><h5 id="3-1-下载bagfiles"><a href="#3-1-下载bagfiles" class="headerlink" title="3.1. 下载bagfiles"></a>3.1. 下载bagfiles</h5><p><a href="https://www.123pan.com/s/00f0Vv-QVHq.html">bagfiles下载链接</a></p>
-<p>这里都将使用李想大佬修改过的launch文件，进行建图。因为launch文件将会自动播放bagfile包，所以我们需要修改launch文件中的bagfile存在的路径，具体如下  </p>
-<h5 id="3-2-修改路径"><a href="#3-2-修改路径" class="headerlink" title="3.2. 修改路径"></a>3.2. 修改路径</h5><p>例如，我的路径是<code>/home/&lt;user name&gt;/Downloads/rslidar-outdoor-gps-notf.bag</code><img src="https://i0.wp.com/tvax1.sinaimg.cn/large/008BeftEly1hjht929vhfj30or0ghtbo.jpg" alt="img"></p>
-<p>在<code>~/cartographer_ws/src/cartographer_ros/cartographer_ros/launch/lx_rs16_2d_outdoor.launch</code>文件中，修改下图所选路径为你文件所的路径。</p>
-<p><img src="https://i0.wp.com/tvax4.sinaimg.cn/large/008BeftEly1hjhtafz64sj30ot0kh14u.jpg" alt="img"></p>
-<ul>
-<li><strong>修改完请重新编译。</strong></li>
-</ul>
-<h5 id="3-3-测试"><a href="#3-3-测试" class="headerlink" title="3.3. 测试"></a>3.3. <strong>测试</strong></h5><p>我们通过play对应的bagfile可以模拟对应的传感器的数据，而不需要连接传感器硬件，非常方便。这里我们也将使用到别人已经录制好的bagfile。  </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/cartographer_ws		<span class="comment">#进入对应工作空间</span></span><br><span class="line"><span class="built_in">source</span> ./devel_isolated/setup.bash</span><br><span class="line">roslaunch cartographer_ros lx_rs16_2d_outdoor.launch</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="https://i0.wp.com/tvax4.sinaimg.cn/large/008BeftEly1hjhtbib1eaj30q10fj7cd.jpg" alt="img"></p>
-<p>参考链接</p>
-<p><a href="https://zhuanlan.zhihu.com/p/557101474?utm_id=0&utm_source=wechat_session&utm_medium=social&s_r=0">Cartographer 环境极速配置 + 2D 3D建图测试</a></p>
-<p><a href="https://github.com/xiangli0608/cartographer_detailed_comments_ws">cartographer 超详细注释代码</a></p>
-]]></content>
-      <categories>
-        <category>ROS</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>ros</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>函数指针与回调函数</title>
-    <url>/2024/01/18/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E4%B8%8E%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h3 id="函数指针-Function-Pointer"><a href="#函数指针-Function-Pointer" class="headerlink" title="函数指针(Function Pointer):"></a>函数指针(Function Pointer):</h3><blockquote>
-<p>函数指针是指向函数的指针变量。它们允许你将函数的地址存储在一个指针变量中，从而可以通过该指针调用该函数。函数指针的声明类似于函数声明，但需要在前面加上一个指针声明符(*)。</p>
-</blockquote>
-<p>例如：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个函数原型</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 声明一个函数指针，与 add 函数具有相同的签名</span></span><br><span class="line">    <span class="type">int</span> (*ptr)(<span class="type">int</span>, <span class="type">int</span>);</span><br><span class="line">    <span class="comment">// 将 add 函数的地址赋给指针变量</span></span><br><span class="line">    ptr = add;</span><br><span class="line">    <span class="comment">// 通过函数指针调用函数</span></span><br><span class="line">    <span class="type">int</span> result = ptr(<span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Result: %d\n&quot;</span>, result);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="回调函数-Callback-Function"><a href="#回调函数-Callback-Function" class="headerlink" title="回调函数(Callback Function):"></a>回调函数(Callback Function):</h3><blockquote>
-<p>回调函数是一种在程序执行期间通过函数指针调用的函数。通常，你将函数的地址传递给另一个函数，并在需要的时候由另一个函数调用。回调函数允许你在某些事件发生时执行特定的操作，从而增强程序的灵活性。</p>
-</blockquote>
-<p>函数指针变量可以作为某个函数的参数来使用的。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//回调函数，求和</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    接受回调函数作为参数的函数</span></span><br><span class="line"><span class="comment">    int (*b)(int,int)：函数指针变量，将函数作为变量插入新的函数中调用。例如此示例中的&quot;sum&quot;函数作为变量。</span></span><br><span class="line"><span class="comment">    Process(sum,3,4)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">Process</span><span class="params">(<span class="type">int</span> (*b)(<span class="type">int</span>,<span class="type">int</span>),<span class="type">int</span> x,<span class="type">int</span> y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d + a\n&quot;</span>,b(x,y));</span><br><span class="line">    <span class="keyword">return</span> b(x,y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> num = <span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> den = <span class="number">2</span>;</span><br><span class="line">    <span class="comment">//定义函数指针变量，指针指向函数地址；</span></span><br><span class="line">    <span class="type">int</span> (*p)(<span class="type">int</span>,<span class="type">int</span>);</span><br><span class="line">    p=sum;</span><br><span class="line">    <span class="type">int</span> c = p(num,den);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,c);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,Process(p,<span class="number">3</span>,<span class="number">4</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">7</span> + a</span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>单片机</category>
-      </categories>
-      <tags>
-        <tag>stm32</tag>
-        <tag>嵌入式</tag>
-        <tag>c/c++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安装ROS</title>
-    <url>/2023/10/19/%E5%AE%89%E8%A3%85ROS/</url>
-    <content><![CDATA[<h3 id="1-设置sources-list"><a href="#1-设置sources-list" class="headerlink" title="1.设置sources.list"></a>1.设置sources.list</h3><p>设置电脑添加以安装来自packages.ros.org的软件。  以下按照网络环境二选一即可，鉴于国内网络环境😓，推荐第二个清华源。</p>
-<p>终端输入：</p>
-<p>官方源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;echo &quot;deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>清华源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh -c <span class="string">&#x27;. /etc/lsb-release &amp;&amp; echo &quot;deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-设置密钥"><a href="#2-设置密钥" class="headerlink" title="2.设置密钥"></a>2.设置密钥</h3><p>终端输入：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-key adv --keyserver <span class="string">&#x27;hkp://keyserver.ubuntu.com:80&#x27;</span> --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</span><br></pre></td></tr></table></figure>
-
-<p>若无法连接到密钥服务器，建议更换网络重试。</p>
-<h3 id="3-开始安装"><a href="#3-开始安装" class="headerlink" title="3.开始安装"></a>3.开始安装</h3><p>终端输入：</p>
-<ul>
-<li>更新软件索引apt</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
-
-<p>本次安装ROS版本代号为<noetic>,此版本为最后一版ros1,官方将持续维护更新止2025年。</p>
-<ul>
-<li>安装完整桌面版</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-desktop-full</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>安装其他软件包</li>
-</ul>
-<p>在ROS中还有更多可用的软件包。你可以直接安装一个特定的软件包。  </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-noetic-包名</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-设置环境"><a href="#3-设置环境" class="headerlink" title="3.设置环境"></a>3.设置环境</h3><p> 命令可以在每次启动新的shell窗口时很方便地为你自动source一下这个脚本：  </p>
-<p>终端输入：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source /opt/ros/noetic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-
-
-
-<p>安装已进入尾声，在终端输入<code>rosversion -d</code>，看到输出为<code>noetic</code>,则表示安装顺利成功。😄</p>
-<p>end~</p>
-]]></content>
-      <categories>
-        <category>ROS</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>ros</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>思想</title>
-    <url>/2021/09/01/%E6%80%9D%E6%83%B3/</url>
+    <title>诗歌</title>
+    <url>/2022/10/10/%E8%AF%97%E6%AD%8C/</url>
     <content><![CDATA[<blockquote>
-<p><em><strong>有亡国，有亡天下。亡国与亡天下奚辨？曰：易姓改号，谓之亡国。仁义充塞，而至率兽食人，人将相食，谓之亡天下。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——《日知录·正始》</p>
+<p><em><strong>二八佳人体似酥，腰间仗剑斩凡夫。虽然不见人头落，暗里教君骨髓枯。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——吕岩«警世»</p>
 </blockquote>
 <blockquote>
-<p><em><strong>少年自有少年志，当论天下不平事，若至小人当道时，拔剑三尺敢换日</strong></em></p>
+<p><em><strong>看水看山独坐，听风听雨高眠。客去客来日日，花开花落年年。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——徐贲«写意»</p>
 </blockquote>
 <blockquote>
-<p><em><strong>爱国很容易，只需要付出口水，爱别人太难，那是要付出行动的。</strong></em></p>
-</blockquote>
-<blockquote>
-<p>***愚昧才是一切的根源，愚昧是因为一直拒绝被启蒙，如果帝国主义的侵略想一把匕首，那么愚昧封建就是民族的毒药 ***</p>
-</blockquote>
-<blockquote>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——胡适</p> 
-</blockquote>
-<blockquote>
-<p><em><strong>今日若我冷眼旁观，他日祸临己身，则无人为我摇旗呐喊</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>战争结束后，政治家握手言和，资本家赚的盆满钵满，只有母亲含泪埋葬自己的孩子</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>迟来的阳光救不了枯萎的向日葵</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>如果孩子的出生是为了继承自己的劳碌，恐慌，贫困，那么，不生也是善良</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>世界上最无耻、最阴险、最歹毒的赞美，就是用穷人的艰辛和苦难，当做励志故事愚弄底层人。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>想要毁掉一个民族，抽调男人身上的脊梁和血气，拿掉女人身上的善良和廉耻</strong></em></p>
+<p><em><strong>孩儿立志出乡关，学不成名誓不还。埋骨何须桑梓地，人生无处不青山。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——毛泽东«七绝·改诗赠父亲»</p>
 </blockquote>
 ]]></content>
       <categories>
         <category>摘录</category>
       </categories>
       <tags>
-        <tag>freedom</tag>
         <tag>随记</tag>
+        <tag>诗歌</tag>
       </tags>
   </entry>
   <entry>
-    <title>文艺</title>
-    <url>/2023/06/21/%E6%96%87%E8%89%BA/</url>
-    <content><![CDATA[<blockquote>
-<p><em><strong>时间照例无情的向前走，光阴斑驳从树荫中更替，我在无人之地无声的死亡腐烂。为终将枯萎的花供养。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>落泪是有原因的，眼里是你的力量，不是弱点。</strong></em></p>
-</blockquote>
-<blockquote>
-<p>**<em>人真是奇怪的动物，群居就有矛盾，独处就会寂寞孤单。</em> **</p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——电影《寂寞的哨所》</p> 
-</blockquote>
-<blockquote>
-<p><em><strong>Your time is limited, so don’t waste it living someone else’s life.</strong></em></p>
-</blockquote>
-<blockquote>
-<p style="text-align: right; font-style: italic; font-weight: bold;">Steve Jobs</p> 
-</blockquote>
-<blockquote>
-<p><em><strong>荒凉白日里，我被禁锢在陈朽的黑白梦境中，这里乌云蔽日，寸草不生，万物都荒芜。直到你从荒原中走过。你踏过之处，世界开始苏醒，我看见野花压满枝头沿途狂野生长，白雪滑落树梢寒梅怒放，我看见归鸟鸣蝉，烈日骄阳。我看见白日梦的尽头是你，从此天光大亮。你是我全部的渴望与幻想。</strong></em></p>
-</blockquote>
-<blockquote>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——《白日梦我》</p>
-</blockquote>
-<blockquote>
-<p><em><strong>岁月落下的苍白，落下的一份孤独，只能静坐在时光的角落，用文字去祭奠那些逝去的光阴，那千载难寻的梦境，早被傍晚的余辉扯成了彩色的幻觉，留在清静空灵世界上，寻一处灵魂的栖息地，诉说一段诗歌年华。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>如花似叶，岁岁年年，共占春风</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>飞光飞光，劝尔一杯酒，吾不识青天高，黄地厚，唯见月寒日暖，来煎人寿</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>孤独是一个人的狂欢，狂欢是一群人的孤独</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>也许我该追随黄昏而去，而不是期待明日的清晨</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>思念从不会如惊涛骇浪般汹涌而来，却也不妨碍它会像浪花一样从不间断一遍遍拍打着情绪</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>人活着就是有意义的，生而平凡，各有各路，我们总是把幸福定为终点，怎么说呢，当代人的欲望是无尽的，因为这样，我们很难满足，因为这样，幸福何谈？如果我们生下来时，物质就很困难，我们将很容易幸福，我穷其一生的敬，善，忠，义，使我这一遭没白走，希望以后也如此，我很渺小,你很平凡，愿芸芸众生，各有所安。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>你我目标本就不是罗马，何不期待今晚的风和月光。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>惟江上之清风，与山间之明月，耳得之而为声，目遇之而成色，取之无禁，用之不竭，是造物者之无尽藏也，而吾与子之所共适。</strong></em></p>
-</blockquote>
+    <title>独自</title>
+    <url>/2024/02/04/%E7%8B%AC%E8%87%AA/</url>
+    <content><![CDATA[<p>寒假放假回家，我已经在家一个月了。这段时间，我没有参与任何社交活动。虽然我时常感到孤独，但当别人找我聊天时，我又感到厌倦。内心变得矛盾起来。</p>
+<p>在家的这一个月，我发现自己越来越喜欢独处。在宁静的环境中，我可以尽情沉浸在自己的世界里。没有人打扰，我可以尽情思考、阅读、写作，这些平时因为繁忙的生活而被搁置的事情，我可以一一完成。</p>
+<p>然而，随着时间的推移，孤独也开始蔓延。在家的每一天，我只能与自己对话，与自己的思绪为伴。生活的单调让我开始怀念起校园里热闹的氛围，怀念起与朋友们一起度过的时光。我开始想念那些愉快的聚会和充满笑声的时刻。</p>
+<p>然而，当有人找我聊天时，我却又感到烦躁。或许是因为长时间的独处让我习惯了自己的世界，突然被打扰让我感到不适应。我开始逃避社交，逃避与他人的交流，仿佛这是一种负担，而不是一种乐趣。</p>
+<p>或许，这种矛盾的心境源于我内心的挣扎。我渴望着与他人建立联系，分享彼此的喜怒哀乐，但又害怕被社交的压力所束缚。我希望能够找到一种平衡，既能享受独处的美好，又能与他人建立深厚的情感联系。</p>
+<p>或许，独自并不意味着孤独。在这段寒假的独自时光里，我会倾听自己的内心，同时发现了独处的乐趣。或许，它是一种修行，是一种探索内心世界的方式。</p>
+<p>独自，是一种状态，而我，正在学会与之相处。</p>
 ]]></content>
       <categories>
-        <category>摘录</category>
+        <category>随想</category>
       </categories>
       <tags>
-        <tag>文学</tag>
+        <tag>随记</tag>
+        <tag>lonely</tag>
       </tags>
   </entry>
   <entry>
@@ -692,82 +809,5 @@
       <tags>
         <tag>python</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>诗歌</title>
-    <url>/2022/10/10/%E8%AF%97%E6%AD%8C/</url>
-    <content><![CDATA[<blockquote>
-<p><em><strong>二八佳人体似酥，腰间仗剑斩凡夫。虽然不见人头落，暗里教君骨髓枯。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——吕岩«警世»</p>
-</blockquote>
-<blockquote>
-<p><em><strong>看水看山独坐，听风听雨高眠。客去客来日日，花开花落年年。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——徐贲«写意»</p>
-</blockquote>
-<blockquote>
-<p><em><strong>孩儿立志出乡关，学不成名誓不还。埋骨何须桑梓地，人生无处不青山。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——毛泽东«七绝·改诗赠父亲»</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>摘录</category>
-      </categories>
-      <tags>
-        <tag>随记</tag>
-        <tag>诗歌</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>浪漫</title>
-    <url>/2022/04/13/%E6%B5%AA%E6%BC%AB/</url>
-    <content><![CDATA[<blockquote>
-<p><em><strong>爱自己才是终身浪漫的开始。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>我天天打扰你，总是给你发消息，找你聊天，不是因为我无聊，而是我在乎你，我天天问你在做什么，也不是我闲的慌，而是我惦记你，我对你好呢，也不是我亏欠你什么，而是你在我心里占据了很重要的位置，现在想想可能是我太主动了，让我觉得我的感情很廉价，但是你不知道，其实我不是一个主动的人，我也不是对谁都这样，只是因为那个人是你。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>我愿在泥潭里摸爬滚打，也要把我爱的人高高举起。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>遇见你，我的心上开出漫山遍野的花。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>真正的爱一定不是瞬间的感动，而必然是一种恒久的委身，彼此牺牲，彼此成就，彼此追逐。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>两个人吵架，先低头的那个人不一定是错的，但是一定是最在乎的。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>爱一个人就像在海滩上捡贝壳，不要捡最大的，也不要捡最漂亮的，就捡你最喜欢的那一个，捡到了就永远不要再去海滩。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>如果喜欢有理由，那么这个喜欢就是不纯正的。假如说我喜欢你的长发，哪天你剪了短发，我就不喜欢你了？不，不是这样的，我喜欢你就是喜欢你，没有什么为什么。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>海鸟跟鱼相爱，云与海浪交怀。你我明明未隔空与海，何故将欢喜紧揣，慌于表白。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>有意义的人等再久都不算久，爱只会在没见面的日子里更加浓烈。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>值不值得有意义吗 做我所想 爱我所爱 何必顾及流言蜚语。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>浪漫的不一定是夏天，而是有你的夏天。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>可是我几乎不主动聊天，不主动约人。能让我主动的人，真的是我打心眼里喜欢到不行的人。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>她最大的吸引力，就是你的想像力吧。</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>拖着疲惫不堪的身体回到租房，妻子低声数落着柴米油盐贵，不知何时能剩下钱买房，顽皮的孩子看着电视剧，被你责备撵去写功课，年迈的父母体力不及当年，在乡下守着二亩地望子成龙，可你知道，你只是芸芸众生中的一个普通人，此时你骤然想起小时的理想：不是房子、车子，是成为一个科学家、是一个宇航员…你拿起筷子，夹起菜，不出所料，妻子做的菜盐又放多了，嘴里咸，心中咸，可是你吐不出来，因为你知道来之不易，不能浪费，这咸了的菜如你的人生一样：咸苦，你皱着眉头咬着牙咽了下去，而后摸了摸孩子的头，把不多的肉夹给他，让他刻苦学习，你的余生如接棒一般传给了孩子，希望他不被经济压迫生活，可以肆意的追寻梦想，不用品尝那咸苦的菜。</strong></em></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>摘录</category>
-      </categories>
   </entry>
 </search>
