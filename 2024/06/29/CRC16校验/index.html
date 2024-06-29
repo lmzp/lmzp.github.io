@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"lmzp.kryzin.eu.org","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="循环冗余码校验英文名称为Cyclical Redundancy Check，简称CRC。它是利用除法及余数的原理来作错误侦测（Error Detecting）的。实际应用时，发送装置计算出CRC值并随数据一同发送给接收装置，接收装置对收到的数据重新计算CRC并与收到的CRC相比较，若两个CRC值不同，则说明数据通讯出现错误。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="串口DMA接收与Modbus CRC16校验">
+<meta property="og:url" content="http://lmzp.kryzin.eu.org/2024/06/29/CRC16%E6%A0%A1%E9%AA%8C/index.html">
+<meta property="og:site_name" content="Pursue">
+<meta property="og:description" content="循环冗余码校验英文名称为Cyclical Redundancy Check，简称CRC。它是利用除法及余数的原理来作错误侦测（Error Detecting）的。实际应用时，发送装置计算出CRC值并随数据一同发送给接收装置，接收装置对收到的数据重新计算CRC并与收到的CRC相比较，若两个CRC值不同，则说明数据通讯出现错误。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/06/29/4U9SgnH2QIvcxTu.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/29/Zvd7kMFfrYA5GLb.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/29/xGEhdW8gBTq9zR2.png">
+<meta property="article:published_time" content="2024-06-29T09:30:34.000Z">
+<meta property="article:modified_time" content="2024-06-29T09:46:35.608Z">
+<meta property="article:author" content="Levin">
+<meta property="article:tag" content="stm32">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/06/29/4U9SgnH2QIvcxTu.png">
+
+
+<link rel="canonical" href="http://lmzp.kryzin.eu.org/2024/06/29/CRC16%E6%A0%A1%E9%AA%8C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://lmzp.kryzin.eu.org/2024/06/29/CRC16%E6%A0%A1%E9%AA%8C/","path":"2024/06/29/CRC16校验/","title":"串口DMA接收与Modbus CRC16校验"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>串口DMA接收与Modbus CRC16校验 | Pursue</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Pursue</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%B8%B2%E5%8F%A3DMA%E6%8E%A5%E6%94%B6"><span class="nav-number">1.</span> <span class="nav-text">1. 串口DMA接收</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-CRC16%E6%A0%A1%E9%AA%8C"><span class="nav-number">2.</span> <span class="nav-text">2. CRC16校验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-c%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">3. c语言实现</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Levin"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Levin</p>
+  <div class="site-description" itemprop="description">像风一样自由！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lmzp" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lmzp" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:nma02098@gmail.com" title="E-Mail → mailto:nma02098@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/@lh00321" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;@lh00321" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lmzp.kryzin.eu.org/2024/06/29/CRC16%E6%A0%A1%E9%AA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Levin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pursue">
+      <meta itemprop="description" content="像风一样自由！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="串口DMA接收与Modbus CRC16校验 | Pursue">
+      <meta itemprop="description" content="循环冗余码校验英文名称为Cyclical Redundancy Check，简称CRC。它是利用除法及余数的原理来作错误侦测（Error Detecting）的。实际应用时，发送装置计算出CRC值并随数据一同发送给接收装置，接收装置对收到的数据重新计算CRC并与收到的CRC相比较，若两个CRC值不同，则说明数据通讯出现错误。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          串口DMA接收与Modbus CRC16校验
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-06-29 17:30:34" itemprop="dateCreated datePublished" datetime="2024-06-29T17:30:34+08:00">2024-06-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/STM32/" itemprop="url" rel="index"><span itemprop="name">STM32</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">循环冗余码校验英文名称为Cyclical Redundancy Check，简称CRC。它是利用除法及余数的原理来作错误侦测（Error Detecting）的。实际应用时，发送装置计算出CRC值并随数据一同发送给接收装置，接收装置对收到的数据重新计算CRC并与收到的CRC相比较，若两个CRC值不同，则说明数据通讯出现错误。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="1-串口DMA接收"><a href="#1-串口DMA接收" class="headerlink" title="1. 串口DMA接收"></a>1. 串口DMA接收</h2><p>首先，在cubeMX中打开串口中断与DMA，如下图。</p>
+<p><img src="https://s2.loli.net/2024/06/29/4U9SgnH2QIvcxTu.png" alt="Untitled.png"></p>
+<p><img src="https://s2.loli.net/2024/06/29/Zvd7kMFfrYA5GLb.png" alt="Untitled 1.png"></p>
+<p>串口printf发送实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"><span class="type">uint8_t</span> u_buf[<span class="number">256</span>];         <span class="comment">//首先定义接收数组</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//阻塞发送就可定义</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> u1_printf(...) HAL_UART_Transmit(&amp;huart1, (uint8_t *)u_buf, sprintf((char*)u_buf,__VA_ARGS__), 0xFFFF)</span></span><br><span class="line"><span class="comment">//同时对于DMA</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> u1_DMA_printf(...) HAL_UART_Transmit_DMA(&amp;huart1, (uint8_t *)u_buf, sprintf((char*)u_buf,__VA_ARGS__))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//使用方法同&#x27;printf&#x27;</span></span><br><span class="line">u1_printf(<span class="string">&quot;hello world!\r\n&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-CRC16校验"><a href="#2-CRC16校验" class="headerlink" title="2. CRC16校验"></a>2. CRC16校验</h2><p>在<code>uart.c</code>中添加：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*  使用查表法获取相应位数的CRC值</span></span><br><span class="line"><span class="comment">*  Return: 16位CRC值</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">ModbusCRCCalc</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> *pbuf,<span class="type">unsigned</span> <span class="type">char</span> nlen)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> index;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> crch = <span class="number">0xFF</span>;  <span class="comment">//高CRC字节</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> crcl = <span class="number">0xFF</span>;  <span class="comment">//低CRC字节</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (nlen--)  <span class="comment">//计算指定长度的CRC</span></span><br><span class="line">    &#123;</span><br><span class="line">        index = crch ^ *pbuf++;</span><br><span class="line">        crch = crcl ^ TabH[ index];</span><br><span class="line">        crcl = TabL[ index];</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span> ((crch&lt;&lt;<span class="number">8</span>) | crcl);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>uart.h</code>中添加：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> TabH[] = &#123;  <span class="comment">//CRC高位字节值表</span></span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>,  </span><br><span class="line">        <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>,  </span><br><span class="line">        <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>,  </span><br><span class="line">        <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>,  </span><br><span class="line">        <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>,  </span><br><span class="line">        <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>,  </span><br><span class="line">        <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>,  </span><br><span class="line">        <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>,  </span><br><span class="line">        <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>  </span><br><span class="line">    &#125; ;  </span><br><span class="line"><span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> TabL[] = &#123;  <span class="comment">//CRC低位字节值表</span></span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC0</span>, <span class="number">0xC1</span>, <span class="number">0x01</span>, <span class="number">0xC3</span>, <span class="number">0x03</span>, <span class="number">0x02</span>, <span class="number">0xC2</span>, <span class="number">0xC6</span>, <span class="number">0x06</span>,  </span><br><span class="line">        <span class="number">0x07</span>, <span class="number">0xC7</span>, <span class="number">0x05</span>, <span class="number">0xC5</span>, <span class="number">0xC4</span>, <span class="number">0x04</span>, <span class="number">0xCC</span>, <span class="number">0x0C</span>, <span class="number">0x0D</span>, <span class="number">0xCD</span>,  </span><br><span class="line">        <span class="number">0x0F</span>, <span class="number">0xCF</span>, <span class="number">0xCE</span>, <span class="number">0x0E</span>, <span class="number">0x0A</span>, <span class="number">0xCA</span>, <span class="number">0xCB</span>, <span class="number">0x0B</span>, <span class="number">0xC9</span>, <span class="number">0x09</span>,  </span><br><span class="line">        <span class="number">0x08</span>, <span class="number">0xC8</span>, <span class="number">0xD8</span>, <span class="number">0x18</span>, <span class="number">0x19</span>, <span class="number">0xD9</span>, <span class="number">0x1B</span>, <span class="number">0xDB</span>, <span class="number">0xDA</span>, <span class="number">0x1A</span>,  </span><br><span class="line">        <span class="number">0x1E</span>, <span class="number">0xDE</span>, <span class="number">0xDF</span>, <span class="number">0x1F</span>, <span class="number">0xDD</span>, <span class="number">0x1D</span>, <span class="number">0x1C</span>, <span class="number">0xDC</span>, <span class="number">0x14</span>, <span class="number">0xD4</span>,  </span><br><span class="line">        <span class="number">0xD5</span>, <span class="number">0x15</span>, <span class="number">0xD7</span>, <span class="number">0x17</span>, <span class="number">0x16</span>, <span class="number">0xD6</span>, <span class="number">0xD2</span>, <span class="number">0x12</span>, <span class="number">0x13</span>, <span class="number">0xD3</span>,  </span><br><span class="line">        <span class="number">0x11</span>, <span class="number">0xD1</span>, <span class="number">0xD0</span>, <span class="number">0x10</span>, <span class="number">0xF0</span>, <span class="number">0x30</span>, <span class="number">0x31</span>, <span class="number">0xF1</span>, <span class="number">0x33</span>, <span class="number">0xF3</span>,  </span><br><span class="line">        <span class="number">0xF2</span>, <span class="number">0x32</span>, <span class="number">0x36</span>, <span class="number">0xF6</span>, <span class="number">0xF7</span>, <span class="number">0x37</span>, <span class="number">0xF5</span>, <span class="number">0x35</span>, <span class="number">0x34</span>, <span class="number">0xF4</span>,  </span><br><span class="line">        <span class="number">0x3C</span>, <span class="number">0xFC</span>, <span class="number">0xFD</span>, <span class="number">0x3D</span>, <span class="number">0xFF</span>, <span class="number">0x3F</span>, <span class="number">0x3E</span>, <span class="number">0xFE</span>, <span class="number">0xFA</span>, <span class="number">0x3A</span>,  </span><br><span class="line">        <span class="number">0x3B</span>, <span class="number">0xFB</span>, <span class="number">0x39</span>, <span class="number">0xF9</span>, <span class="number">0xF8</span>, <span class="number">0x38</span>, <span class="number">0x28</span>, <span class="number">0xE8</span>, <span class="number">0xE9</span>, <span class="number">0x29</span>,  </span><br><span class="line">        <span class="number">0xEB</span>, <span class="number">0x2B</span>, <span class="number">0x2A</span>, <span class="number">0xEA</span>, <span class="number">0xEE</span>, <span class="number">0x2E</span>, <span class="number">0x2F</span>, <span class="number">0xEF</span>, <span class="number">0x2D</span>, <span class="number">0xED</span>,  </span><br><span class="line">        <span class="number">0xEC</span>, <span class="number">0x2C</span>, <span class="number">0xE4</span>, <span class="number">0x24</span>, <span class="number">0x25</span>, <span class="number">0xE5</span>, <span class="number">0x27</span>, <span class="number">0xE7</span>, <span class="number">0xE6</span>, <span class="number">0x26</span>,  </span><br><span class="line">        <span class="number">0x22</span>, <span class="number">0xE2</span>, <span class="number">0xE3</span>, <span class="number">0x23</span>, <span class="number">0xE1</span>, <span class="number">0x21</span>, <span class="number">0x20</span>, <span class="number">0xE0</span>, <span class="number">0xA0</span>, <span class="number">0x60</span>,  </span><br><span class="line">        <span class="number">0x61</span>, <span class="number">0xA1</span>, <span class="number">0x63</span>, <span class="number">0xA3</span>, <span class="number">0xA2</span>, <span class="number">0x62</span>, <span class="number">0x66</span>, <span class="number">0xA6</span>, <span class="number">0xA7</span>, <span class="number">0x67</span>,  </span><br><span class="line">        <span class="number">0xA5</span>, <span class="number">0x65</span>, <span class="number">0x64</span>, <span class="number">0xA4</span>, <span class="number">0x6C</span>, <span class="number">0xAC</span>, <span class="number">0xAD</span>, <span class="number">0x6D</span>, <span class="number">0xAF</span>, <span class="number">0x6F</span>,  </span><br><span class="line">        <span class="number">0x6E</span>, <span class="number">0xAE</span>, <span class="number">0xAA</span>, <span class="number">0x6A</span>, <span class="number">0x6B</span>, <span class="number">0xAB</span>, <span class="number">0x69</span>, <span class="number">0xA9</span>, <span class="number">0xA8</span>, <span class="number">0x68</span>,  </span><br><span class="line">        <span class="number">0x78</span>, <span class="number">0xB8</span>, <span class="number">0xB9</span>, <span class="number">0x79</span>, <span class="number">0xBB</span>, <span class="number">0x7B</span>, <span class="number">0x7A</span>, <span class="number">0xBA</span>, <span class="number">0xBE</span>, <span class="number">0x7E</span>,  </span><br><span class="line">        <span class="number">0x7F</span>, <span class="number">0xBF</span>, <span class="number">0x7D</span>, <span class="number">0xBD</span>, <span class="number">0xBC</span>, <span class="number">0x7C</span>, <span class="number">0xB4</span>, <span class="number">0x74</span>, <span class="number">0x75</span>, <span class="number">0xB5</span>,  </span><br><span class="line">        <span class="number">0x77</span>, <span class="number">0xB7</span>, <span class="number">0xB6</span>, <span class="number">0x76</span>, <span class="number">0x72</span>, <span class="number">0xB2</span>, <span class="number">0xB3</span>, <span class="number">0x73</span>, <span class="number">0xB1</span>, <span class="number">0x71</span>,  </span><br><span class="line">        <span class="number">0x70</span>, <span class="number">0xB0</span>, <span class="number">0x50</span>, <span class="number">0x90</span>, <span class="number">0x91</span>, <span class="number">0x51</span>, <span class="number">0x93</span>, <span class="number">0x53</span>, <span class="number">0x52</span>, <span class="number">0x92</span>,  </span><br><span class="line">        <span class="number">0x96</span>, <span class="number">0x56</span>, <span class="number">0x57</span>, <span class="number">0x97</span>, <span class="number">0x55</span>, <span class="number">0x95</span>, <span class="number">0x94</span>, <span class="number">0x54</span>, <span class="number">0x9C</span>, <span class="number">0x5C</span>,  </span><br><span class="line">        <span class="number">0x5D</span>, <span class="number">0x9D</span>, <span class="number">0x5F</span>, <span class="number">0x9F</span>, <span class="number">0x9E</span>, <span class="number">0x5E</span>, <span class="number">0x5A</span>, <span class="number">0x9A</span>, <span class="number">0x9B</span>, <span class="number">0x5B</span>,  </span><br><span class="line">        <span class="number">0x99</span>, <span class="number">0x59</span>, <span class="number">0x58</span>, <span class="number">0x98</span>, <span class="number">0x88</span>, <span class="number">0x48</span>, <span class="number">0x49</span>, <span class="number">0x89</span>, <span class="number">0x4B</span>, <span class="number">0x8B</span>,  </span><br><span class="line">        <span class="number">0x8A</span>, <span class="number">0x4A</span>, <span class="number">0x4E</span>, <span class="number">0x8E</span>, <span class="number">0x8F</span>, <span class="number">0x4F</span>, <span class="number">0x8D</span>, <span class="number">0x4D</span>, <span class="number">0x4C</span>, <span class="number">0x8C</span>,  </span><br><span class="line">        <span class="number">0x44</span>, <span class="number">0x84</span>, <span class="number">0x85</span>, <span class="number">0x45</span>, <span class="number">0x87</span>, <span class="number">0x47</span>, <span class="number">0x46</span>, <span class="number">0x86</span>, <span class="number">0x82</span>, <span class="number">0x42</span>,  </span><br><span class="line">        <span class="number">0x43</span>, <span class="number">0x83</span>, <span class="number">0x41</span>, <span class="number">0x81</span>, <span class="number">0x80</span>, <span class="number">0x40</span>  </span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="type">uint16_t</span> <span class="title function_">ModbusCRCCalc</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> *pbuf,<span class="type">unsigned</span> <span class="type">char</span> nlen)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>串口中断回调函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">uint8_t</span> rxBuffer[<span class="number">15</span>];       <span class="comment">//接收数据缓冲，假设14为高位CRC,15为低位CRC</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">HAL_UART_RxCpltCallback</span><span class="params">(UART_HandleTypeDef *huart)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(huart -&gt; Instance == USART3)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//判断是否校验成功</span></span><br><span class="line">		<span class="keyword">if</span>(ModbusCRCCalc(rxBuffer,<span class="number">13</span>)==((rxBuffer[<span class="number">13</span>]&lt;&lt;<span class="number">8</span>)|rxBuffer[<span class="number">14</span>])) &#123;</span><br><span class="line">			...<span class="comment">//数据处理</span></span><br><span class="line">			HAL_UART_Receive_DMA((UART_HandleTypeDef *)&amp;huart3, (<span class="type">uint8_t</span> *)rxBuffer, <span class="number">15</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			HAL_UART_DMAStop((UART_HandleTypeDef *)&amp;huart3);</span><br><span class="line">			HAL_Delay(<span class="number">3</span>);</span><br><span class="line">			HAL_UART_Receive_DMA((UART_HandleTypeDef *)&amp;huart3, (<span class="type">uint8_t</span> *)rxBuffer, <span class="number">15</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-c语言实现"><a href="#3-c语言实现" class="headerlink" title="3. c语言实现"></a>3. c语言实现</h2><p><code>test.c</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdint.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">uint8_t</span> rxSoil[<span class="number">15</span>]=&#123;<span class="number">0x01</span>, <span class="number">0x03</span>, <span class="number">0x0A</span>, <span class="number">0xFF</span>, <span class="number">0xDD</span>, <span class="number">0x01</span>, <span class="number">0x64</span>, <span class="number">0x00</span>, <span class="number">0x87</span>, <span class="number">0x00</span>, <span class="number">0x8A</span>, <span class="number">0x00</span>, <span class="number">0x8E</span>,<span class="number">0x25</span>,<span class="number">0x8A</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> TabH[] = &#123;  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>,  </span><br><span class="line">        <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>,  </span><br><span class="line">        <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>,  </span><br><span class="line">        <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>,  </span><br><span class="line">        <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>,  </span><br><span class="line">        <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>,  </span><br><span class="line">        <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>,  </span><br><span class="line">        <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>,  </span><br><span class="line">        <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>,  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>, <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x01</span>, <span class="number">0xC0</span>,  </span><br><span class="line">        <span class="number">0x80</span>, <span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0xC1</span>, <span class="number">0x81</span>, <span class="number">0x40</span>  </span><br><span class="line">    &#125; ;  </span><br><span class="line"><span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> TabL[] = &#123;  </span><br><span class="line">        <span class="number">0x00</span>, <span class="number">0xC0</span>, <span class="number">0xC1</span>, <span class="number">0x01</span>, <span class="number">0xC3</span>, <span class="number">0x03</span>, <span class="number">0x02</span>, <span class="number">0xC2</span>, <span class="number">0xC6</span>, <span class="number">0x06</span>,  </span><br><span class="line">        <span class="number">0x07</span>, <span class="number">0xC7</span>, <span class="number">0x05</span>, <span class="number">0xC5</span>, <span class="number">0xC4</span>, <span class="number">0x04</span>, <span class="number">0xCC</span>, <span class="number">0x0C</span>, <span class="number">0x0D</span>, <span class="number">0xCD</span>,  </span><br><span class="line">        <span class="number">0x0F</span>, <span class="number">0xCF</span>, <span class="number">0xCE</span>, <span class="number">0x0E</span>, <span class="number">0x0A</span>, <span class="number">0xCA</span>, <span class="number">0xCB</span>, <span class="number">0x0B</span>, <span class="number">0xC9</span>, <span class="number">0x09</span>,  </span><br><span class="line">        <span class="number">0x08</span>, <span class="number">0xC8</span>, <span class="number">0xD8</span>, <span class="number">0x18</span>, <span class="number">0x19</span>, <span class="number">0xD9</span>, <span class="number">0x1B</span>, <span class="number">0xDB</span>, <span class="number">0xDA</span>, <span class="number">0x1A</span>,  </span><br><span class="line">        <span class="number">0x1E</span>, <span class="number">0xDE</span>, <span class="number">0xDF</span>, <span class="number">0x1F</span>, <span class="number">0xDD</span>, <span class="number">0x1D</span>, <span class="number">0x1C</span>, <span class="number">0xDC</span>, <span class="number">0x14</span>, <span class="number">0xD4</span>,  </span><br><span class="line">        <span class="number">0xD5</span>, <span class="number">0x15</span>, <span class="number">0xD7</span>, <span class="number">0x17</span>, <span class="number">0x16</span>, <span class="number">0xD6</span>, <span class="number">0xD2</span>, <span class="number">0x12</span>, <span class="number">0x13</span>, <span class="number">0xD3</span>,  </span><br><span class="line">        <span class="number">0x11</span>, <span class="number">0xD1</span>, <span class="number">0xD0</span>, <span class="number">0x10</span>, <span class="number">0xF0</span>, <span class="number">0x30</span>, <span class="number">0x31</span>, <span class="number">0xF1</span>, <span class="number">0x33</span>, <span class="number">0xF3</span>,  </span><br><span class="line">        <span class="number">0xF2</span>, <span class="number">0x32</span>, <span class="number">0x36</span>, <span class="number">0xF6</span>, <span class="number">0xF7</span>, <span class="number">0x37</span>, <span class="number">0xF5</span>, <span class="number">0x35</span>, <span class="number">0x34</span>, <span class="number">0xF4</span>,  </span><br><span class="line">        <span class="number">0x3C</span>, <span class="number">0xFC</span>, <span class="number">0xFD</span>, <span class="number">0x3D</span>, <span class="number">0xFF</span>, <span class="number">0x3F</span>, <span class="number">0x3E</span>, <span class="number">0xFE</span>, <span class="number">0xFA</span>, <span class="number">0x3A</span>,  </span><br><span class="line">        <span class="number">0x3B</span>, <span class="number">0xFB</span>, <span class="number">0x39</span>, <span class="number">0xF9</span>, <span class="number">0xF8</span>, <span class="number">0x38</span>, <span class="number">0x28</span>, <span class="number">0xE8</span>, <span class="number">0xE9</span>, <span class="number">0x29</span>,  </span><br><span class="line">        <span class="number">0xEB</span>, <span class="number">0x2B</span>, <span class="number">0x2A</span>, <span class="number">0xEA</span>, <span class="number">0xEE</span>, <span class="number">0x2E</span>, <span class="number">0x2F</span>, <span class="number">0xEF</span>, <span class="number">0x2D</span>, <span class="number">0xED</span>,  </span><br><span class="line">        <span class="number">0xEC</span>, <span class="number">0x2C</span>, <span class="number">0xE4</span>, <span class="number">0x24</span>, <span class="number">0x25</span>, <span class="number">0xE5</span>, <span class="number">0x27</span>, <span class="number">0xE7</span>, <span class="number">0xE6</span>, <span class="number">0x26</span>,  </span><br><span class="line">        <span class="number">0x22</span>, <span class="number">0xE2</span>, <span class="number">0xE3</span>, <span class="number">0x23</span>, <span class="number">0xE1</span>, <span class="number">0x21</span>, <span class="number">0x20</span>, <span class="number">0xE0</span>, <span class="number">0xA0</span>, <span class="number">0x60</span>,  </span><br><span class="line">        <span class="number">0x61</span>, <span class="number">0xA1</span>, <span class="number">0x63</span>, <span class="number">0xA3</span>, <span class="number">0xA2</span>, <span class="number">0x62</span>, <span class="number">0x66</span>, <span class="number">0xA6</span>, <span class="number">0xA7</span>, <span class="number">0x67</span>,  </span><br><span class="line">        <span class="number">0xA5</span>, <span class="number">0x65</span>, <span class="number">0x64</span>, <span class="number">0xA4</span>, <span class="number">0x6C</span>, <span class="number">0xAC</span>, <span class="number">0xAD</span>, <span class="number">0x6D</span>, <span class="number">0xAF</span>, <span class="number">0x6F</span>,  </span><br><span class="line">        <span class="number">0x6E</span>, <span class="number">0xAE</span>, <span class="number">0xAA</span>, <span class="number">0x6A</span>, <span class="number">0x6B</span>, <span class="number">0xAB</span>, <span class="number">0x69</span>, <span class="number">0xA9</span>, <span class="number">0xA8</span>, <span class="number">0x68</span>,  </span><br><span class="line">        <span class="number">0x78</span>, <span class="number">0xB8</span>, <span class="number">0xB9</span>, <span class="number">0x79</span>, <span class="number">0xBB</span>, <span class="number">0x7B</span>, <span class="number">0x7A</span>, <span class="number">0xBA</span>, <span class="number">0xBE</span>, <span class="number">0x7E</span>,  </span><br><span class="line">        <span class="number">0x7F</span>, <span class="number">0xBF</span>, <span class="number">0x7D</span>, <span class="number">0xBD</span>, <span class="number">0xBC</span>, <span class="number">0x7C</span>, <span class="number">0xB4</span>, <span class="number">0x74</span>, <span class="number">0x75</span>, <span class="number">0xB5</span>,  </span><br><span class="line">        <span class="number">0x77</span>, <span class="number">0xB7</span>, <span class="number">0xB6</span>, <span class="number">0x76</span>, <span class="number">0x72</span>, <span class="number">0xB2</span>, <span class="number">0xB3</span>, <span class="number">0x73</span>, <span class="number">0xB1</span>, <span class="number">0x71</span>,  </span><br><span class="line">        <span class="number">0x70</span>, <span class="number">0xB0</span>, <span class="number">0x50</span>, <span class="number">0x90</span>, <span class="number">0x91</span>, <span class="number">0x51</span>, <span class="number">0x93</span>, <span class="number">0x53</span>, <span class="number">0x52</span>, <span class="number">0x92</span>,  </span><br><span class="line">        <span class="number">0x96</span>, <span class="number">0x56</span>, <span class="number">0x57</span>, <span class="number">0x97</span>, <span class="number">0x55</span>, <span class="number">0x95</span>, <span class="number">0x94</span>, <span class="number">0x54</span>, <span class="number">0x9C</span>, <span class="number">0x5C</span>,  </span><br><span class="line">        <span class="number">0x5D</span>, <span class="number">0x9D</span>, <span class="number">0x5F</span>, <span class="number">0x9F</span>, <span class="number">0x9E</span>, <span class="number">0x5E</span>, <span class="number">0x5A</span>, <span class="number">0x9A</span>, <span class="number">0x9B</span>, <span class="number">0x5B</span>,  </span><br><span class="line">        <span class="number">0x99</span>, <span class="number">0x59</span>, <span class="number">0x58</span>, <span class="number">0x98</span>, <span class="number">0x88</span>, <span class="number">0x48</span>, <span class="number">0x49</span>, <span class="number">0x89</span>, <span class="number">0x4B</span>, <span class="number">0x8B</span>,  </span><br><span class="line">        <span class="number">0x8A</span>, <span class="number">0x4A</span>, <span class="number">0x4E</span>, <span class="number">0x8E</span>, <span class="number">0x8F</span>, <span class="number">0x4F</span>, <span class="number">0x8D</span>, <span class="number">0x4D</span>, <span class="number">0x4C</span>, <span class="number">0x8C</span>,  </span><br><span class="line">        <span class="number">0x44</span>, <span class="number">0x84</span>, <span class="number">0x85</span>, <span class="number">0x45</span>, <span class="number">0x87</span>, <span class="number">0x47</span>, <span class="number">0x46</span>, <span class="number">0x86</span>, <span class="number">0x82</span>, <span class="number">0x42</span>,  </span><br><span class="line">        <span class="number">0x43</span>, <span class="number">0x83</span>, <span class="number">0x41</span>, <span class="number">0x81</span>, <span class="number">0x80</span>, <span class="number">0x40</span>  </span><br><span class="line">    &#125; ;</span><br><span class="line"> </span><br><span class="line">		</span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">ModbusCRCCalc</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> *pbuf,<span class="type">unsigned</span> <span class="type">char</span> nlen)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">ModbusCRCCalc</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> *pbuf,<span class="type">unsigned</span> <span class="type">char</span> nlen)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> index;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> crch = <span class="number">0xFF</span>;  </span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> crcl = <span class="number">0xFF</span>; </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (nlen--)  </span><br><span class="line">    &#123;</span><br><span class="line">        index = crch ^ *pbuf++;</span><br><span class="line">        crch = crcl ^ TabH[ index];</span><br><span class="line">        crcl = TabL[ index];</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span> ((crch&lt;&lt;<span class="number">8</span>) | crcl);  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%x\r\n&quot;</span>,ModbusCRCCalc(rxSoil,<span class="number">13</span>));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%x\r\n&quot;</span>,(rxSoil[<span class="number">13</span>]&lt;&lt;<span class="number">8</span>)|rxSoil[<span class="number">14</span>]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://s2.loli.net/2024/06/29/xGEhdW8gBTq9zR2.png" alt="Untitled 2.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/stm32/" rel="tag"># stm32</a>
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/01/18/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E4%B8%8E%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/" rel="prev" title="函数指针与回调函数">
+                  <i class="fa fa-angle-left"></i> 函数指针与回调函数
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Levin</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
