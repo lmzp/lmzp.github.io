@@ -33,164 +33,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ROS与stm32通信</title>
-    <url>/2023/12/14/ROS%E4%B8%8Estm32%E9%80%9A%E4%BF%A1/</url>
-    <content><![CDATA[<h3 id="rosserial"><a href="#rosserial" class="headerlink" title="rosserial"></a>rosserial</h3><h4 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h4><p>ROS提供的一种嵌入式节点和运行在主控PC上的ros master通信的方式，使得在嵌入式节点上编写、运行ros节点成为可能，主要用于转接IO和各类传感器，运行底层控制算法。要使用rosserial，需要分别在嵌入式板卡和主控PC上部署。</p>
-<h4 id="2-结果"><a href="#2-结果" class="headerlink" title="2. 结果"></a>2. 结果</h4><p>移植成功后可以将<strong>stm32</strong>当成一个<strong>节点</strong>直接订阅ros通信网络上的话题，即可以直接往ros的通信网络发布话题。<br><strong>RosLibs下载链接：<a href="https://www.123pan.com/s/00f0Vv-MnAq.html">https://www.123pan.com/s/00f0Vv-MnAq.html</a></strong></p>
-<h3 id="stm32-端配置"><a href="#stm32-端配置" class="headerlink" title="stm32 端配置"></a>stm32 端配置</h3><h4 id="1-创建CUBEMX工程"><a href="#1-创建CUBEMX工程" class="headerlink" title="1. 创建CUBEMX工程"></a>1. 创建CUBEMX工程</h4><h5 id="RCC配置"><a href="#RCC配置" class="headerlink" title="RCC配置"></a>RCC配置</h5><p><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hkto81k6z7j30su0futeo.jpg" alt="image.png"></p>
-<h5 id="SYS配置"><a href="#SYS配置" class="headerlink" title="SYS配置"></a>SYS配置</h5><p><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hkto9vryroj30su0hhq8u.jpg" alt="image.png"></p>
-<h5 id="定时器配置"><a href="#定时器配置" class="headerlink" title="定时器配置"></a>定时器配置</h5><p>我所用芯片时钟最高100MHZ，预分频系数设置为<code>10000</code>，自动重装载值为<code>0xffffffff</code>。最好是高级定时器和部分通用定时器，要求ARR寄存器是32位，使定时器计数频率为1K。<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktobubclgj30tw0l8k0z.jpg" alt="image.png"></p>
-<h5 id="usart"><a href="#usart" class="headerlink" title="usart"></a>usart</h5><ul>
-<li>打开串口中断，波特率设置为57600，因为这是serial_node的默认参数，方便。<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktolr86t5j31ei0k348d.jpg" alt="image.png"></li>
-<li>打开串口DMA<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktoogyhikj30np06jgor.jpg" alt="image.png"></li>
-</ul>
-<h5 id="时钟树"><a href="#时钟树" class="headerlink" title="时钟树"></a>时钟树</h5><p>直接输入最大100，回车，自动配置。<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktorcm6e0j312n0gldn6.jpg" alt="image.png"></p>
-<h5 id="文件配置"><a href="#文件配置" class="headerlink" title="文件配置"></a>文件配置</h5><p>选好路径，设置好名称，生成工程，并在keil中打开并编译。<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktosktwc4j31370f0gsb.jpg" alt="image.png"></p>
-<h4 id="2-keil工程配置"><a href="#2-keil工程配置" class="headerlink" title="2. keil工程配置"></a>2. keil工程配置</h4><ul>
-<li><p>将RosLibs文件夹复制粘贴到我们的工程文件夹下，这个文件夹是arduino移植过程生成的，里面储存的是ROS的各种消息类型，方便以后调用。<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktozdiwx7j30wk0a7djq.jpg" alt="image.png"></p>
-</li>
-<li><p>将刚才加进来的文件添加进32的工程<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktp2qyd78j30wm0jcagr.jpg" alt="image.png"></p>
-</li>
-</ul>
-<p><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktp4ijw33j30n20gmtck.jpg" alt="1702564913659.png"></p>
-<ul>
-<li><p>由于ros数据类型是以类的方式写好的，属于C++的特性，所以我们的32工程需要进行C与C++的混编，同时我们添加数据类型文件的路径。<code>--cpp</code><br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktp6yrb4hj30n50hvjyq.jpg" alt="1702565054471.png"></p>
-</li>
-<li><p>在main.c文件调用mainpp.cpp的函数，记住要添加mainpp.cpp的头文件，并添加<code>setup()</code>与<code>loop()</code>函数。<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktp8sxzg8j30nx087adj.jpg" alt="image.png"><br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktpa6p7n1j30l70b9goz.jpg" alt="image.png"></p>
-</li>
-<li><p>如果移植到其他板子，修改<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktplsgc4cj30w60e7k0q.jpg" alt="image.png"></p>
-</li>
-</ul>
-<blockquote>
-<p>编译后我们可以看到编译是通过的，但是有15个警告，不要慌，这是由于keil对C++的支持不太好，但是不影响我们使用。烧录进去后，使用USB转TTL连接Ubuntu测试。</p>
-</blockquote>
-<h3 id="ROS端配置"><a href="#ROS端配置" class="headerlink" title="ROS端配置"></a>ROS端配置</h3><h4 id="1-安装rosserial"><a href="#1-安装rosserial" class="headerlink" title="1. 安装rosserial"></a>1. 安装rosserial</h4><p>打开终端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install python-serial</span><br><span class="line">sudo apt-get install ros-noetic-rosserial</span><br><span class="line">sudo apt-get install ros-noetic-rosserial-arduino</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-测试"><a href="#2-测试" class="headerlink" title="2. 测试"></a>2. 测试</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看是否连接到系统</span></span><br><span class="line"><span class="built_in">ls</span> -l /dev |grep ttyUSB</span><br><span class="line"><span class="comment">#提高串口权限</span></span><br><span class="line">sudo <span class="built_in">chmod</span> 777 /dev/ttyUSB0</span><br><span class="line"><span class="comment">#运行测试</span></span><br><span class="line">roscore</span><br><span class="line">rosrun rosserial_python serial_node.py</span><br></pre></td></tr></table></figure>
-
-<p>新开两个终端，分别输入</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rostopic <span class="built_in">echo</span> /stm32_to_pc </span><br><span class="line">rostopic pub -r 1 pc_to_stm32 std_msgs/String hello</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>发布话题 &#x2F;pc_to_stm32 ,同时我们可以看到STM32通过话题&#x2F;stm32_to_pc将数据转反回来，到这里就说明我们移植成功了。</p>
-</blockquote>
-<p><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktpu22fnnj30v80dvqbb.jpg" alt="image.png"></p>
-<p>参考链接</p>
-<p><a href="https://blog.csdn.net/strangechen/article/details/89367433">ROS学习笔记–移植rosserial到stm32</a><br><a href="https://blog.csdn.net/qq_37416258/article/details/84844051">rosserial移植到STM32(CUBEMX+HAL库)</a><br><a href="https://blog.csdn.net/leida_wt/article/details/109690562">在STM32上运行ROS节点——rosserial</a></p>
-]]></content>
-      <categories>
-        <category>ROS</category>
-      </categories>
-      <tags>
-        <tag>stm32</tag>
-        <tag>嵌入式</tag>
-        <tag>linux</tag>
-        <tag>ros</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ROS架构</title>
-    <url>/2023/10/20/ROS%E6%9E%B6%E6%9E%84/</url>
-    <content><![CDATA[<h3 id="1-ROS安装目录"><a href="#1-ROS安装目录" class="headerlink" title="1. ROS安装目录"></a>1. ROS安装目录</h3><p><em>ROS默认安装在</em><code>/opt/ros/noetic</code><em>路径下。</em></p>
-<p><img src="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41so1yzcj30ol0gd0vl.jpg" alt="5415"></p>
-<table>
-<thead>
-<tr>
-<th>bin文件夹</th>
-<th>放置的是一些在终端可执行的命令</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>etc文件夹</td>
-<td>存放ros和catkin配置文件</td>
-</tr>
-<tr>
-<td>include文件夹</td>
-<td>通过终端安装的功能包代码的头文件</td>
-</tr>
-<tr>
-<td>lib文件夹</td>
-<td>通过终端安装的一些可执行功能包的节点</td>
-</tr>
-<tr>
-<td>share文件夹</td>
-<td>cmake的配置文件、话题消息的具体格式、服务的接口信息等</td>
-</tr>
-</tbody></table>
-<p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41v7h6t0j30y80d5goe.jpg" alt="img"></p>
-<h3 id="2-ROS文件系统级"><a href="#2-ROS文件系统级" class="headerlink" title="2. ROS文件系统级"></a>2. ROS文件系统级</h3><p><img src="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41w6tngyj31040jdgo0.jpg" alt="img"></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">WorkSpace --- 自定义的工作空间</span><br><span class="line"></span><br><span class="line">    |--- build:编译空间，用于存放CMake和catkin的缓存信息、配置信息和其他中间文件。</span><br><span class="line"></span><br><span class="line">    |--- devel:开发空间，用于存放编译后生成的目标文件，包括头文件、动态&amp;静态链接库、可执行文件等。</span><br><span class="line"></span><br><span class="line">    |--- src: 源码</span><br><span class="line"></span><br><span class="line">        |-- package：功能包(ROS基本单元)包含多个节点、库与配置文件，包名所有字母小写，只能由字母、数字与下划线组成</span><br><span class="line"></span><br><span class="line">            |-- CMakeLists.txt 配置编译规则，比如源文件、依赖项、目标文件</span><br><span class="line"></span><br><span class="line">            |-- package.xml 包信息，比如:包名、版本、作者、依赖项...(以前版本是 manifest.xml)</span><br><span class="line"></span><br><span class="line">            |-- scripts 存储python文件</span><br><span class="line"></span><br><span class="line">            |-- src 存储C++源文件</span><br><span class="line"></span><br><span class="line">            |-- include 头文件</span><br><span class="line"></span><br><span class="line">            |-- msg 消息通信格式文件</span><br><span class="line"></span><br><span class="line">            |-- srv 服务通信格式文件</span><br><span class="line"></span><br><span class="line">            |-- action 动作格式文件</span><br><span class="line"></span><br><span class="line">            |-- launch 可一次性运行多个节点 </span><br><span class="line"></span><br><span class="line">            |-- config 配置信息</span><br><span class="line"></span><br><span class="line">        |-- CMakeLists.txt: 编译的基本配置</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-1-查看当前使用工作空间"><a href="#2-1-查看当前使用工作空间" class="headerlink" title="2.1. 查看当前使用工作空间"></a>2.1. 查看当前使用工作空间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$ROS_PACKAGE_PATH</span></span><br></pre></td></tr></table></figure>
-
-<p>显示：&#x2F;opt&#x2F;ros&#x2F;noetic&#x2F;share</p>
-<h4 id="2-2-创建工作空间"><a href="#2-2-创建工作空间" class="headerlink" title="2.2. 创建工作空间"></a>2.2. 创建工作空间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p ~/catkin_ws/src		<span class="comment">#在主文件夹下创建空文件夹</span></span><br><span class="line"><span class="built_in">cd</span> ~/catkin_ws/src          <span class="comment">#进入src文件夹</span></span><br><span class="line">catkin_init_workspace       <span class="comment">#初始化工作空间</span></span><br></pre></td></tr></table></figure>
-
-<p>此时 src 文件夹下将生成一个 CMakeLists.txt 文件。</p>
-<h4 id="2-3-编译工作空间"><a href="#2-3-编译工作空间" class="headerlink" title="2.3. 编译工作空间"></a>2.3. 编译工作空间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/				<span class="comment">#回到工作空间，编译必须在此文件夹下</span></span><br><span class="line">catkin_make                 <span class="comment">#进行编译</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="2-4-把工作空间添加到ROS环境变量"><a href="#2-4-把工作空间添加到ROS环境变量" class="headerlink" title="2.4. 把工作空间添加到ROS环境变量"></a>2.4. 把工作空间添加到ROS环境变量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source ~/catkin_ws/devel/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-
-<p>在每次编译之后要使用<code>source ~/catkin_ws/devel/setup.bash</code>指令刷新 devel 目录下的setup.bash文件，将生成的文件手动刷新到系统环境中，将此指令加入~&#x2F;.bashrc文件中，在终端启动时都会自动执行这个文件的命令，所以就不必在手动刷新环境。😅</p>
-<h4 id="2-5-创建ROS功能包"><a href="#2-5-创建ROS功能包" class="headerlink" title="2.5. 创建ROS功能包"></a>2.5. 创建ROS功能包</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/src</span><br><span class="line">catkin_create_pkg <span class="built_in">test</span> std_msgs rospy roscpp</span><br></pre></td></tr></table></figure>
-
-<p>使用<code>catkin_create_pkg</code>指令在src文件夹下创建一个名称为test的功能包，依赖于std_msgs rospy roscpp。</p>
-<h4 id="2-6-编译ROS功能包"><a href="#2-6-编译ROS功能包" class="headerlink" title="2.6. 编译ROS功能包"></a>2.6. 编译ROS功能包</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/				<span class="comment">#回到工作空间，编译必须在此文件夹下</span></span><br><span class="line">catkin_make                 <span class="comment">#进行编译</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-ROS计算图级"><a href="#3-ROS计算图级" class="headerlink" title="3. ROS计算图级"></a>3. ROS计算图级</h3><p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41x2gk9ij30gs0a1ta6.jpg" alt="img"></p>
-<p>rqt_graph能够创建一个显示当前系统运行情况的动态图形。ROS 分布式系统中不同进程需要进行数据交互，计算图可以以点对点的网络形式表现数据交互过程。rqt_graph是rqt程序包中的一部分。  </p>
-<p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41xyvci1j30y00vh411.jpg" alt="img"></p>
-<h3 id="4-ROS开源社区级"><a href="#4-ROS开源社区级" class="headerlink" title="4. ROS开源社区级"></a>4. ROS开源社区级</h3><p>通过独立的网络社区，用户可以共享和获取知识、算法和代码。开源社区的大力支持使ROS得以快速成长。</p>
-<ul>
-<li><strong>发行版（Distribution）</strong> ROS发行版是可以独立安装、带有版本号的一系列综合功能包。ROS发行版像Linux发行版一样发挥类似的作用。这使得ROS软件安装更加容易，而且能够通过一个软件集合维持一致的版本。 </li>
-<li><strong>软件库（Repository）</strong> ROS依赖于共享开源代码与软件库的网站或主机服务，在这里不同的机构能够发布和分享各自的机器人软件与程序。 </li>
-<li><strong>ROS维基（ROS Wiki）</strong> ROS Wiki是用于记录有关ROS系统信息的主要论坛。任何人都可以注册账户、贡献自己的文件、提供更正或更新、编写教程以及其他行为。网址是<a href="https://link.zhihu.com/?target=http://wiki.ros.org/">http://wiki.ros.org/</a>。 </li>
-<li><strong>Bug提交系统（Bug Ticket System）</strong> 如果你发现问题或者想提出一个新功能，ROS提供这个资源去做这些。 </li>
-<li><strong>邮件列表（Mailing list）</strong> ROS用户邮件列表是关于ROS的主要交流渠道，能够像论坛一样交流从ROS软件更新到ROS软件使用中的各种疑问或信息。网址是<a href="https://link.zhihu.com/?target=http://lists.ros.org/">http://lists.ros.org/</a>。 </li>
-<li><strong>ROS问答（ROS Answer）</strong> 用户可以使用这个资源去提问题。网址是<a href="https://link.zhihu.com/?target=https://answers.ros.org/questions/">https://answers.ros.org/questions/</a>。</li>
-<li><strong>博客（Blog）</strong> 你可以看到定期更新、照片和新闻。网址是<a href="https://link.zhihu.com/?target=https://www.ros.org/news/">https://www.ros.org/news/</a>，不过博客系统已经退休，ROS社区取而代之，网址是<a href="https://link.zhihu.com/?target=https://discourse.ros.org/">https://discourse.ros.org/</a>。 为了便于理解，下图给出了ROS资源社区的组织形式。</li>
-</ul>
-<hr>
-<p>几个学习网站</p>
-<ul>
-<li><a href="http://www.autolabor.com.cn/book/ROSTutorials/">Autolabor</a></li>
-<li><a href="https://www.guyuehome.com/">古月居</a></li>
-</ul>
-<hr>
-<h3 id="5-常用包管理指令"><a href="#5-常用包管理指令" class="headerlink" title="5. 常用包管理指令"></a>5. 常用包管理指令</h3><ol>
-<li><strong>rospack</strong></li>
-</ol>
-<p>查看某个 pkg 的地址：<code>rospack fand [package_name]</code></p>
-<ol start="2">
-<li><strong>roscd</strong></li>
-</ol>
-<p>跳转到某个 pkg 路径下：<code>roscd [package_name]</code></p>
-<ol start="3">
-<li><strong>rosls</strong></li>
-</ol>
-<p>列举某个 pkg 下的文件信息：<code>rosls [package_name]</code></p>
-<ol start="4">
-<li><strong>rosed</strong></li>
-</ol>
-<p>编辑 pkg 中的文件：<code>rosed [package_name] [file_name]</code></p>
-<ol start="5">
-<li><strong>catkin_create_pkg</strong></li>
-</ol>
-<p>创建一个 pkg：<code>catkin_create_pkg [package_name] [deps]</code></p>
-<ol start="6">
-<li><strong>rosdep</strong></li>
-</ol>
-<p>安装某个功能包所需依赖：<code>rosdep install [package_name]</code></p>
-]]></content>
-      <categories>
-        <category>ROS</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>ros</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SLAM 之 cartographer 安装</title>
     <url>/2023/11/03/SLAM-%E4%B9%8B-cartographer-%E5%AE%89%E8%A3%85/</url>
     <content><![CDATA[<ul>
@@ -344,6 +186,164 @@
       </tags>
   </entry>
   <entry>
+    <title>ROS架构</title>
+    <url>/2023/10/20/ROS%E6%9E%B6%E6%9E%84/</url>
+    <content><![CDATA[<h3 id="1-ROS安装目录"><a href="#1-ROS安装目录" class="headerlink" title="1. ROS安装目录"></a>1. ROS安装目录</h3><p><em>ROS默认安装在</em><code>/opt/ros/noetic</code><em>路径下。</em></p>
+<p><img src="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41so1yzcj30ol0gd0vl.jpg" alt="5415"></p>
+<table>
+<thead>
+<tr>
+<th>bin文件夹</th>
+<th>放置的是一些在终端可执行的命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>etc文件夹</td>
+<td>存放ros和catkin配置文件</td>
+</tr>
+<tr>
+<td>include文件夹</td>
+<td>通过终端安装的功能包代码的头文件</td>
+</tr>
+<tr>
+<td>lib文件夹</td>
+<td>通过终端安装的一些可执行功能包的节点</td>
+</tr>
+<tr>
+<td>share文件夹</td>
+<td>cmake的配置文件、话题消息的具体格式、服务的接口信息等</td>
+</tr>
+</tbody></table>
+<p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41v7h6t0j30y80d5goe.jpg" alt="img"></p>
+<h3 id="2-ROS文件系统级"><a href="#2-ROS文件系统级" class="headerlink" title="2. ROS文件系统级"></a>2. ROS文件系统级</h3><p><img src="https://i0.wp.com/tvax2.sinaimg.cn/large/008BeftEly1hj41w6tngyj31040jdgo0.jpg" alt="img"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">WorkSpace --- 自定义的工作空间</span><br><span class="line"></span><br><span class="line">    |--- build:编译空间，用于存放CMake和catkin的缓存信息、配置信息和其他中间文件。</span><br><span class="line"></span><br><span class="line">    |--- devel:开发空间，用于存放编译后生成的目标文件，包括头文件、动态&amp;静态链接库、可执行文件等。</span><br><span class="line"></span><br><span class="line">    |--- src: 源码</span><br><span class="line"></span><br><span class="line">        |-- package：功能包(ROS基本单元)包含多个节点、库与配置文件，包名所有字母小写，只能由字母、数字与下划线组成</span><br><span class="line"></span><br><span class="line">            |-- CMakeLists.txt 配置编译规则，比如源文件、依赖项、目标文件</span><br><span class="line"></span><br><span class="line">            |-- package.xml 包信息，比如:包名、版本、作者、依赖项...(以前版本是 manifest.xml)</span><br><span class="line"></span><br><span class="line">            |-- scripts 存储python文件</span><br><span class="line"></span><br><span class="line">            |-- src 存储C++源文件</span><br><span class="line"></span><br><span class="line">            |-- include 头文件</span><br><span class="line"></span><br><span class="line">            |-- msg 消息通信格式文件</span><br><span class="line"></span><br><span class="line">            |-- srv 服务通信格式文件</span><br><span class="line"></span><br><span class="line">            |-- action 动作格式文件</span><br><span class="line"></span><br><span class="line">            |-- launch 可一次性运行多个节点 </span><br><span class="line"></span><br><span class="line">            |-- config 配置信息</span><br><span class="line"></span><br><span class="line">        |-- CMakeLists.txt: 编译的基本配置</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-1-查看当前使用工作空间"><a href="#2-1-查看当前使用工作空间" class="headerlink" title="2.1. 查看当前使用工作空间"></a>2.1. 查看当前使用工作空间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$ROS_PACKAGE_PATH</span></span><br></pre></td></tr></table></figure>
+
+<p>显示：&#x2F;opt&#x2F;ros&#x2F;noetic&#x2F;share</p>
+<h4 id="2-2-创建工作空间"><a href="#2-2-创建工作空间" class="headerlink" title="2.2. 创建工作空间"></a>2.2. 创建工作空间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p ~/catkin_ws/src		<span class="comment">#在主文件夹下创建空文件夹</span></span><br><span class="line"><span class="built_in">cd</span> ~/catkin_ws/src          <span class="comment">#进入src文件夹</span></span><br><span class="line">catkin_init_workspace       <span class="comment">#初始化工作空间</span></span><br></pre></td></tr></table></figure>
+
+<p>此时 src 文件夹下将生成一个 CMakeLists.txt 文件。</p>
+<h4 id="2-3-编译工作空间"><a href="#2-3-编译工作空间" class="headerlink" title="2.3. 编译工作空间"></a>2.3. 编译工作空间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/				<span class="comment">#回到工作空间，编译必须在此文件夹下</span></span><br><span class="line">catkin_make                 <span class="comment">#进行编译</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-把工作空间添加到ROS环境变量"><a href="#2-4-把工作空间添加到ROS环境变量" class="headerlink" title="2.4. 把工作空间添加到ROS环境变量"></a>2.4. 把工作空间添加到ROS环境变量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source ~/catkin_ws/devel/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>在每次编译之后要使用<code>source ~/catkin_ws/devel/setup.bash</code>指令刷新 devel 目录下的setup.bash文件，将生成的文件手动刷新到系统环境中，将此指令加入~&#x2F;.bashrc文件中，在终端启动时都会自动执行这个文件的命令，所以就不必在手动刷新环境。😅</p>
+<h4 id="2-5-创建ROS功能包"><a href="#2-5-创建ROS功能包" class="headerlink" title="2.5. 创建ROS功能包"></a>2.5. 创建ROS功能包</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/src</span><br><span class="line">catkin_create_pkg <span class="built_in">test</span> std_msgs rospy roscpp</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>catkin_create_pkg</code>指令在src文件夹下创建一个名称为test的功能包，依赖于std_msgs rospy roscpp。</p>
+<h4 id="2-6-编译ROS功能包"><a href="#2-6-编译ROS功能包" class="headerlink" title="2.6. 编译ROS功能包"></a>2.6. 编译ROS功能包</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/catkin_ws/				<span class="comment">#回到工作空间，编译必须在此文件夹下</span></span><br><span class="line">catkin_make                 <span class="comment">#进行编译</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-ROS计算图级"><a href="#3-ROS计算图级" class="headerlink" title="3. ROS计算图级"></a>3. ROS计算图级</h3><p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41x2gk9ij30gs0a1ta6.jpg" alt="img"></p>
+<p>rqt_graph能够创建一个显示当前系统运行情况的动态图形。ROS 分布式系统中不同进程需要进行数据交互，计算图可以以点对点的网络形式表现数据交互过程。rqt_graph是rqt程序包中的一部分。  </p>
+<p><img src="https://i0.wp.com/tvax3.sinaimg.cn/large/008BeftEly1hj41xyvci1j30y00vh411.jpg" alt="img"></p>
+<h3 id="4-ROS开源社区级"><a href="#4-ROS开源社区级" class="headerlink" title="4. ROS开源社区级"></a>4. ROS开源社区级</h3><p>通过独立的网络社区，用户可以共享和获取知识、算法和代码。开源社区的大力支持使ROS得以快速成长。</p>
+<ul>
+<li><strong>发行版（Distribution）</strong> ROS发行版是可以独立安装、带有版本号的一系列综合功能包。ROS发行版像Linux发行版一样发挥类似的作用。这使得ROS软件安装更加容易，而且能够通过一个软件集合维持一致的版本。 </li>
+<li><strong>软件库（Repository）</strong> ROS依赖于共享开源代码与软件库的网站或主机服务，在这里不同的机构能够发布和分享各自的机器人软件与程序。 </li>
+<li><strong>ROS维基（ROS Wiki）</strong> ROS Wiki是用于记录有关ROS系统信息的主要论坛。任何人都可以注册账户、贡献自己的文件、提供更正或更新、编写教程以及其他行为。网址是<a href="https://link.zhihu.com/?target=http://wiki.ros.org/">http://wiki.ros.org/</a>。 </li>
+<li><strong>Bug提交系统（Bug Ticket System）</strong> 如果你发现问题或者想提出一个新功能，ROS提供这个资源去做这些。 </li>
+<li><strong>邮件列表（Mailing list）</strong> ROS用户邮件列表是关于ROS的主要交流渠道，能够像论坛一样交流从ROS软件更新到ROS软件使用中的各种疑问或信息。网址是<a href="https://link.zhihu.com/?target=http://lists.ros.org/">http://lists.ros.org/</a>。 </li>
+<li><strong>ROS问答（ROS Answer）</strong> 用户可以使用这个资源去提问题。网址是<a href="https://link.zhihu.com/?target=https://answers.ros.org/questions/">https://answers.ros.org/questions/</a>。</li>
+<li><strong>博客（Blog）</strong> 你可以看到定期更新、照片和新闻。网址是<a href="https://link.zhihu.com/?target=https://www.ros.org/news/">https://www.ros.org/news/</a>，不过博客系统已经退休，ROS社区取而代之，网址是<a href="https://link.zhihu.com/?target=https://discourse.ros.org/">https://discourse.ros.org/</a>。 为了便于理解，下图给出了ROS资源社区的组织形式。</li>
+</ul>
+<hr>
+<p>几个学习网站</p>
+<ul>
+<li><a href="http://www.autolabor.com.cn/book/ROSTutorials/">Autolabor</a></li>
+<li><a href="https://www.guyuehome.com/">古月居</a></li>
+</ul>
+<hr>
+<h3 id="5-常用包管理指令"><a href="#5-常用包管理指令" class="headerlink" title="5. 常用包管理指令"></a>5. 常用包管理指令</h3><ol>
+<li><strong>rospack</strong></li>
+</ol>
+<p>查看某个 pkg 的地址：<code>rospack fand [package_name]</code></p>
+<ol start="2">
+<li><strong>roscd</strong></li>
+</ol>
+<p>跳转到某个 pkg 路径下：<code>roscd [package_name]</code></p>
+<ol start="3">
+<li><strong>rosls</strong></li>
+</ol>
+<p>列举某个 pkg 下的文件信息：<code>rosls [package_name]</code></p>
+<ol start="4">
+<li><strong>rosed</strong></li>
+</ol>
+<p>编辑 pkg 中的文件：<code>rosed [package_name] [file_name]</code></p>
+<ol start="5">
+<li><strong>catkin_create_pkg</strong></li>
+</ol>
+<p>创建一个 pkg：<code>catkin_create_pkg [package_name] [deps]</code></p>
+<ol start="6">
+<li><strong>rosdep</strong></li>
+</ol>
+<p>安装某个功能包所需依赖：<code>rosdep install [package_name]</code></p>
+]]></content>
+      <categories>
+        <category>ROS</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ros</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ROS与stm32通信</title>
+    <url>/2023/12/14/ROS%E4%B8%8Estm32%E9%80%9A%E4%BF%A1/</url>
+    <content><![CDATA[<h3 id="rosserial"><a href="#rosserial" class="headerlink" title="rosserial"></a>rosserial</h3><h4 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h4><p>ROS提供的一种嵌入式节点和运行在主控PC上的ros master通信的方式，使得在嵌入式节点上编写、运行ros节点成为可能，主要用于转接IO和各类传感器，运行底层控制算法。要使用rosserial，需要分别在嵌入式板卡和主控PC上部署。</p>
+<h4 id="2-结果"><a href="#2-结果" class="headerlink" title="2. 结果"></a>2. 结果</h4><p>移植成功后可以将<strong>stm32</strong>当成一个<strong>节点</strong>直接订阅ros通信网络上的话题，即可以直接往ros的通信网络发布话题。<br><strong>RosLibs下载链接：<a href="https://www.123pan.com/s/00f0Vv-MnAq.html">https://www.123pan.com/s/00f0Vv-MnAq.html</a></strong></p>
+<h3 id="stm32-端配置"><a href="#stm32-端配置" class="headerlink" title="stm32 端配置"></a>stm32 端配置</h3><h4 id="1-创建CUBEMX工程"><a href="#1-创建CUBEMX工程" class="headerlink" title="1. 创建CUBEMX工程"></a>1. 创建CUBEMX工程</h4><h5 id="RCC配置"><a href="#RCC配置" class="headerlink" title="RCC配置"></a>RCC配置</h5><p><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hkto81k6z7j30su0futeo.jpg" alt="image.png"></p>
+<h5 id="SYS配置"><a href="#SYS配置" class="headerlink" title="SYS配置"></a>SYS配置</h5><p><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hkto9vryroj30su0hhq8u.jpg" alt="image.png"></p>
+<h5 id="定时器配置"><a href="#定时器配置" class="headerlink" title="定时器配置"></a>定时器配置</h5><p>我所用芯片时钟最高100MHZ，预分频系数设置为<code>10000</code>，自动重装载值为<code>0xffffffff</code>。最好是高级定时器和部分通用定时器，要求ARR寄存器是32位，使定时器计数频率为1K。<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktobubclgj30tw0l8k0z.jpg" alt="image.png"></p>
+<h5 id="usart"><a href="#usart" class="headerlink" title="usart"></a>usart</h5><ul>
+<li>打开串口中断，波特率设置为57600，因为这是serial_node的默认参数，方便。<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktolr86t5j31ei0k348d.jpg" alt="image.png"></li>
+<li>打开串口DMA<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktoogyhikj30np06jgor.jpg" alt="image.png"></li>
+</ul>
+<h5 id="时钟树"><a href="#时钟树" class="headerlink" title="时钟树"></a>时钟树</h5><p>直接输入最大100，回车，自动配置。<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktorcm6e0j312n0gldn6.jpg" alt="image.png"></p>
+<h5 id="文件配置"><a href="#文件配置" class="headerlink" title="文件配置"></a>文件配置</h5><p>选好路径，设置好名称，生成工程，并在keil中打开并编译。<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktosktwc4j31370f0gsb.jpg" alt="image.png"></p>
+<h4 id="2-keil工程配置"><a href="#2-keil工程配置" class="headerlink" title="2. keil工程配置"></a>2. keil工程配置</h4><ul>
+<li><p>将RosLibs文件夹复制粘贴到我们的工程文件夹下，这个文件夹是arduino移植过程生成的，里面储存的是ROS的各种消息类型，方便以后调用。<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktozdiwx7j30wk0a7djq.jpg" alt="image.png"></p>
+</li>
+<li><p>将刚才加进来的文件添加进32的工程<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktp2qyd78j30wm0jcagr.jpg" alt="image.png"></p>
+</li>
+</ul>
+<p><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktp4ijw33j30n20gmtck.jpg" alt="1702564913659.png"></p>
+<ul>
+<li><p>由于ros数据类型是以类的方式写好的，属于C++的特性，所以我们的32工程需要进行C与C++的混编，同时我们添加数据类型文件的路径。<code>--cpp</code><br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktp6yrb4hj30n50hvjyq.jpg" alt="1702565054471.png"></p>
+</li>
+<li><p>在main.c文件调用mainpp.cpp的函数，记住要添加mainpp.cpp的头文件，并添加<code>setup()</code>与<code>loop()</code>函数。<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktp8sxzg8j30nx087adj.jpg" alt="image.png"><br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktpa6p7n1j30l70b9goz.jpg" alt="image.png"></p>
+</li>
+<li><p>如果移植到其他板子，修改<br><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktplsgc4cj30w60e7k0q.jpg" alt="image.png"></p>
+</li>
+</ul>
+<blockquote>
+<p>编译后我们可以看到编译是通过的，但是有15个警告，不要慌，这是由于keil对C++的支持不太好，但是不影响我们使用。烧录进去后，使用USB转TTL连接Ubuntu测试。</p>
+</blockquote>
+<h3 id="ROS端配置"><a href="#ROS端配置" class="headerlink" title="ROS端配置"></a>ROS端配置</h3><h4 id="1-安装rosserial"><a href="#1-安装rosserial" class="headerlink" title="1. 安装rosserial"></a>1. 安装rosserial</h4><p>打开终端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install python-serial</span><br><span class="line">sudo apt-get install ros-noetic-rosserial</span><br><span class="line">sudo apt-get install ros-noetic-rosserial-arduino</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-测试"><a href="#2-测试" class="headerlink" title="2. 测试"></a>2. 测试</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看是否连接到系统</span></span><br><span class="line"><span class="built_in">ls</span> -l /dev |grep ttyUSB</span><br><span class="line"><span class="comment">#提高串口权限</span></span><br><span class="line">sudo <span class="built_in">chmod</span> 777 /dev/ttyUSB0</span><br><span class="line"><span class="comment">#运行测试</span></span><br><span class="line">roscore</span><br><span class="line">rosrun rosserial_python serial_node.py</span><br></pre></td></tr></table></figure>
+
+<p>新开两个终端，分别输入</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rostopic <span class="built_in">echo</span> /stm32_to_pc </span><br><span class="line">rostopic pub -r 1 pc_to_stm32 std_msgs/String hello</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>发布话题 &#x2F;pc_to_stm32 ,同时我们可以看到STM32通过话题&#x2F;stm32_to_pc将数据转反回来，到这里就说明我们移植成功了。</p>
+</blockquote>
+<p><img src="https://i0.wp.com/tva1.sinaimg.cn/large/008BZDgigy1hktpu22fnnj30v80dvqbb.jpg" alt="image.png"></p>
+<p>参考链接</p>
+<p><a href="https://blog.csdn.net/strangechen/article/details/89367433">ROS学习笔记–移植rosserial到stm32</a><br><a href="https://blog.csdn.net/qq_37416258/article/details/84844051">rosserial移植到STM32(CUBEMX+HAL库)</a><br><a href="https://blog.csdn.net/leida_wt/article/details/109690562">在STM32上运行ROS节点——rosserial</a></p>
+]]></content>
+      <categories>
+        <category>ROS</category>
+      </categories>
+      <tags>
+        <tag>stm32</tag>
+        <tag>嵌入式</tag>
+        <tag>linux</tag>
+        <tag>ros</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>人权</title>
     <url>/2022/12/10/%E4%BA%BA%E6%9D%83/</url>
     <content><![CDATA[<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">hello world!</span><br></pre></td></tr></table></figure>
@@ -469,6 +469,31 @@
       </tags>
   </entry>
   <entry>
+    <title>root</title>
+    <url>/2021/11/21/root/</url>
+    <content><![CDATA[<p><strong>Magisk</strong> : </p>
+<ul>
+<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
+<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
+
+<p>刷入boot</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
+<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Root</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>函数指针与回调函数</title>
     <url>/2024/01/18/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E4%B8%8E%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h3 id="函数指针-Function-Pointer"><a href="#函数指针-Function-Pointer" class="headerlink" title="函数指针(Function Pointer):"></a>函数指针(Function Pointer):</h3><blockquote>
@@ -492,31 +517,6 @@
         <tag>stm32</tag>
         <tag>嵌入式</tag>
         <tag>c/c++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>root</title>
-    <url>/2021/11/21/root/</url>
-    <content><![CDATA[<p><strong>Magisk</strong> : </p>
-<ul>
-<li><a href="https://github.com/topjohnwu/Magisk/releases">Github</a>   </li>
-<li><a href="https://magiskcn.com/">Magisk中文网</a></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash [镜像] [镜像文件地址]</span><br></pre></td></tr></table></figure>
-
-<p>刷入boot</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fastboot flash boot_ab boot.img</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>LSPosed</strong> : <a href="https://github.com/LSPosed/LSPosed/releases">Github</a>   </p>
-<p><strong>Uperf</strong> : <a href="https://github.com/yc9559/uperf/releases">Github</a> </p>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>Root</tag>
       </tags>
   </entry>
   <entry>
@@ -748,30 +748,6 @@
       </categories>
   </entry>
   <entry>
-    <title>诗歌</title>
-    <url>/2022/10/10/%E8%AF%97%E6%AD%8C/</url>
-    <content><![CDATA[<blockquote>
-<p><em><strong>二八佳人体似酥，腰间仗剑斩凡夫。虽然不见人头落，暗里教君骨髓枯。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——吕岩«警世»</p>
-</blockquote>
-<blockquote>
-<p><em><strong>看水看山独坐，听风听雨高眠。客去客来日日，花开花落年年。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——徐贲«写意»</p>
-</blockquote>
-<blockquote>
-<p><em><strong>孩儿立志出乡关，学不成名誓不还。埋骨何须桑梓地，人生无处不青山。</strong></em></p>
-<p style="text-align: right; font-style: italic; font-weight: bold;">——毛泽东«七绝·改诗赠父亲»</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>摘录</category>
-      </categories>
-      <tags>
-        <tag>随记</tag>
-        <tag>诗歌</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>短信轰炸</title>
     <url>/2022/09/21/%E7%9F%AD%E4%BF%A1%E8%BD%B0%E7%82%B8/</url>
     <content><![CDATA[<blockquote>
@@ -820,6 +796,30 @@
       </categories>
       <tags>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>诗歌</title>
+    <url>/2022/10/10/%E8%AF%97%E6%AD%8C/</url>
+    <content><![CDATA[<blockquote>
+<p><em><strong>二八佳人体似酥，腰间仗剑斩凡夫。虽然不见人头落，暗里教君骨髓枯。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——吕岩«警世»</p>
+</blockquote>
+<blockquote>
+<p><em><strong>看水看山独坐，听风听雨高眠。客去客来日日，花开花落年年。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——徐贲«写意»</p>
+</blockquote>
+<blockquote>
+<p><em><strong>孩儿立志出乡关，学不成名誓不还。埋骨何须桑梓地，人生无处不青山。</strong></em></p>
+<p style="text-align: right; font-style: italic; font-weight: bold;">——毛泽东«七绝·改诗赠父亲»</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>摘录</category>
+      </categories>
+      <tags>
+        <tag>随记</tag>
+        <tag>诗歌</tag>
       </tags>
   </entry>
 </search>
